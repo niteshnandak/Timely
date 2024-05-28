@@ -1,5 +1,5 @@
 .sidenavbar{
-    background: #3f3f3f;
+    background: #121212;
     transition: all .5s ease;
     position: fixed;
     z-index: 1;
@@ -7,7 +7,7 @@
     width: 5rem;
     /* width: 16.5625rem; */
     height: 100vh;
-    box-shadow: 0.063rem 0 1.25rem 0 #8690a3;
+    /* box-shadow: 0.063rem 0 1.25rem 0 #8690a3; */
 
     .logo-container {
         display:flex;
@@ -101,6 +101,15 @@
             background-color: #fff;
             color: #000;
         }
+    }
+}
+
+.active {
+    background-color: #fff;
+
+    .sidenavbar-link-icon,
+    .sidenavbar-link-text{
+        color: #000;
     }
 }
 
