@@ -1,0 +1,181 @@
+<div class="container mt-5 ml-4">
+    <app-loader [isLoading]="isLoading"></app-loader>
+
+
+  <div class="row">
+    <div class="col-5">
+      <h2 class="text-dark">Organisation Details:</h2>
+      <table class="table table-bordered">
+        <tbody class="col-12">
+          <tr>
+            <th class="bg-light col-5">Name</th>
+            <td>
+              <span class="text-primary col-7">{{
+                organisationDetails.organisation.about.name || "   -   "
+              }}</span>
+            </td>
+          </tr>
+          <tr>
+            <th class="bg-light">Email</th>
+            <td>
+              <span class="text-primary">{{
+                organisationDetails.organisation.about.email_address ||
+                  "   -   "
+              }}</span>
+            </td>
+          </tr>
+          <tr>
+            <th class="bg-light">Helpline Number</th>
+            <td>
+              <span class="text-primary">{{
+                organisationDetails.organisation.about.contact_number ||
+                  "   -   "
+              }}</span>
+            </td>
+          </tr>
+          <tr>
+            <th class="bg-light">Status</th>
+            <td>
+              <span class="text-primary">{{
+                organisationDetails.organisation.about.status || "   -   "
+              }}</span>
+            </td>
+          </tr>
+          <tr>
+            <th class="bg-light">City</th>
+            <td>
+              <span class="text-primary">{{
+                organisationDetails.organisation.address.city || "   -   "
+              }}</span>
+            </td>
+          </tr>
+          <tr>
+            <th class="bg-light">State</th>
+            <td>
+              <span class="text-primary">{{
+                organisationDetails.organisation.address.state || "   -   "
+              }}</span>
+            </td>
+          </tr>
+          <tr>
+            <th class="bg-light">Country</th>
+            <td>
+              <span class="text-primary">{{
+                organisationDetails.organisation.address.country ||
+                  "   -   "
+              }}</span>
+            </td>
+          </tr>
+          <tr>
+            <th class="bg-light">Pincode</th>
+            <td>
+              <span class="text-primary">{{
+                organisationDetails.organisation.address.pincode ||
+                  "   -   "
+              }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-3 mt-5">
+      <h4 class="text-secondary">AFA Users Details:</h4>
+      <p>
+        Total:
+        <span class="text-primary">{{
+          organisationDetails.afaUsers.total
+        }}</span>
+      </p>
+      <p>
+        Active:
+        <span class="text-primary">{{
+          organisationDetails.afaUsers.active
+        }}</span>
+      </p>
+      <p>
+        Inactive:
+        <span class="text-primary">{{
+          organisationDetails.afaUsers.inactive
+        }}</span>
+      </p>
+      <p>
+        Yet to Set Password:
+        <span class="text-primary">{{
+          organisationDetails.afaUsers.yetToSetPassword
+        }}</span>
+      </p>
+
+      <h4 class="text-secondary">Company Details:</h4>
+      <p >
+        Total: <span class="text-primary">{{ organisationDetails.company.total }}</span>
+      </p>
+      <p>
+        Active:
+        <span class="text-primary">{{
+          organisationDetails.afaUsers.active
+        }}</span>
+      </p>
+      <p>
+        Inactive:
+        <span class="text-primary">{{
+          organisationDetails.afaUsers.inactive
+        }}</span>
+      </p>
+
+      <h4 class="text-secondary">Customer Details:</h4>
+      <p>
+        Total:
+        <span class="text-primary">{{
+          organisationDetails.customer.total
+        }}</span>
+      </p>
+    </div>
+
+    <div class="col-4 mt-5">
+      
+
+      <h4 class="text-secondary">Assignment Details:</h4>
+      <p>
+        Total:
+        <span class="text-primary">{{
+          organisationDetails.assignments.total
+        }}</span>
+      </p>
+      <p>
+        Pending:
+        <span class="text-primary">{{
+          organisationDetails.assignments.pending
+        }}</span>
+      </p>
+      <p>
+        Ongoing:
+        <span class="text-primary">{{
+          organisationDetails.assignments.ongoing
+        }}</span>
+      </p>
+      <p>
+        Completed:
+        <span class="text-primary">{{
+          organisationDetails.assignments.completed
+        }}</span>
+      </p>
+
+      <h4 class="text-secondary">People Details:</h4>
+      <p>
+        Total:
+        <span class="text-primary">{{ organisationDetails.people.total }}</span>
+      </p>
+      <p>
+        Male:
+        <span class="text-primary">{{ organisationDetails.people.male }}</span>
+      </p>
+      <p>
+        Female:
+        <span class="text-primary">{{
+          organisationDetails.people.female
+        }}</span>
+      </p>
+    </div>
+  </div>
+</div>

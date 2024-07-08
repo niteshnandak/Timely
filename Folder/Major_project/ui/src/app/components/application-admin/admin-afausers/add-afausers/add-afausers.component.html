@@ -1,0 +1,200 @@
+<app-loader [isLoading]="isLoading"></app-loader>
+<div class="row m-0 my-2 p-0">
+  <h4 class="text-white">Add AFA User</h4>
+  <form
+    [formGroup]="adminCreateUserForm"
+    (ngSubmit)="onSubmit()"
+    class=" "
+  >
+
+    <div class="row mb-3">
+      <div class="col-12 my-2">
+        <h6 class="text-info">AFA User Details</h6>
+      </div>
+      <div class="col-6" style="height: 70px">
+        <b>
+          <small>
+              <label class="form-label text-white m-0" for="people_name ">First Name<span class="text-danger">*</span></label>
+          </small>
+        </b>
+        <input
+          type="text"
+          class="form-control text-dark rounded-0"
+          placeholder="Enter first name"
+          name="first_name"
+          id="first_name"
+          formControlName="firstName"
+        />
+
+        <div class="error-message" *ngIf="isInputValid('firstName')">
+          <small
+            class="text-danger"
+            *ngIf="
+              adminCreateUserForm.get('firstName')?.hasError('required')
+            "
+          >
+            First name is required.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="
+              adminCreateUserForm.get('firstName')?.hasError('pattern')
+            "
+          >
+            Invalid First name.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="
+              adminCreateUserForm.get('firstName')?.hasError('maxlength')
+            "
+          >
+            Exceeds 30 characters.
+          </small>
+          <small
+          class="text-danger"
+          *ngIf="
+            adminCreateUserForm.get('firstName')?.hasError('minlength')
+          "
+        >
+          Minimum 3 characters required
+        </small>
+        </div>
+      </div>
+
+      <div class="col-6" style="height: 50px">
+        <b>
+          <small>
+              <label class="form-label text-white m-0" for="people_name ">Surname<span class="text-danger">*</span></label>
+          </small>
+        </b>
+        <input
+          type="text"
+          class="form-control text-dark rounded-0"
+          placeholder="Enter surname"
+          name="surname"
+          id="surname"
+          formControlName="surName"
+        />
+
+        <div class="error-message" *ngIf="isInputValid('surName')">
+          <small
+            class="text-danger"
+            *ngIf="
+              adminCreateUserForm.get('surName')?.hasError('required')
+            "
+          >
+            Surname is required.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="
+              adminCreateUserForm.get('surName')?.hasError('pattern')
+            "
+          >
+            Invalid Surname.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="
+              adminCreateUserForm.get('surName')?.hasError('maxlength')
+            "
+          >
+            Exceeds 30 characters.
+          </small>
+          <small
+          class="text-danger"
+          *ngIf="
+            adminCreateUserForm.get('surName')?.hasError('minlength')
+          "
+        >
+          Minimum 3 characters required
+        </small>
+        </div>
+      </div>
+    </div>
+
+    <div class="row my-3" style="height: 70px">
+      <div class="col-6">
+        <b>
+          <small>
+              <label class="form-label text-white m-0" for="people_name ">Username<span class="text-danger">*</span></label>
+          </small>
+        </b>
+        <input
+          type="text"
+          class="form-control text-dark rounded-0"
+          placeholder="Enter unique username"
+          name="user_name"
+          id="user_name"
+          formControlName="userName"
+        />
+
+        <div class="error-message" *ngIf="isInputValid('userName')">
+          <small
+            class="text-danger"
+            *ngIf="
+              adminCreateUserForm.get('userName')?.hasError('required')
+            "
+          >
+            Username is required.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="
+              adminCreateUserForm.get('userName')?.hasError('pattern')
+            "
+          >
+            Invalid Username.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="
+              adminCreateUserForm.get('userName')?.hasError('maxlength')
+            "
+          >
+            Exceeds 50 characters.
+          </small>
+        </div>
+      </div>
+
+      <div class="col-6" style="height: 70px">
+        <b>
+          <small>
+              <label class="form-label text-white m-0" for="people_name ">Email<span class="text-danger">*</span></label>
+          </small>
+        </b>
+        <input
+          type="email"
+          class="form-control text-dark rounded-0"
+          placeholder="Enter user email"
+          name="email"
+          id="email"
+          formControlName="email"
+        />
+
+        <div class="error-message" *ngIf="isInputValid('email')">
+          <small
+            class="text-danger"
+            *ngIf="adminCreateUserForm.get('email')?.hasError('required')"
+          >
+            Email is required.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="adminCreateUserForm.get('email')?.hasError('email')"
+          >
+            Invalid Email address.
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer my-2">
+      <button type="reset" class="btn btn-info mx-2" (click)="resetForm()">
+        Reset
+      </button>
+      <button type="submit" class="btn btn-success mx-2" [disabled]="adminCreateUserForm.invalid" >Save</button>
+    </div>
+  </form>
+</div>

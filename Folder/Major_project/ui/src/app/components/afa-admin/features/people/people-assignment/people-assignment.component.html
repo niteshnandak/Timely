@@ -1,0 +1,215 @@
+<div>
+  <app-loader [isLoading]="isLoading"></app-loader>
+  <div class="detail-button">
+    <a routerLink="/people" class="back button detail-back">
+      <i class="bi bi-arrow-left text-dark"></i>&nbsp; &nbsp;<span
+        class="text-dark"
+        >Back</span
+      >
+    </a>
+  </div>
+  <div class="d-flex justify-content-between align-items-center p-3">
+    <h2 class="mb-0">{{peopleName}}/Assignments</h2>
+  </div>
+
+  <!-- ACCORDION SEARCH -->
+  <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseSearch"
+          aria-expanded="false"
+          aria-controls="collapseSearch"
+        >
+          Search Assignments
+        </button>
+      </h2>
+      <div
+        id="collapseSearch"
+        class="accordion-collapse collapse"
+        data-bs-parent="#accordionExample"
+      >
+        <div class="accordion-body">
+          <div class="search-form">
+            <form [formGroup]="searchFormData" (ngSubmit)="onSearch()">
+              <div class="row">
+                <div class="col-2">
+                  <label for="assignmentNumber">Assignment Number</label>
+                  <input
+                    type="text"
+                    id="assignmentNumber"
+                    placeholder="Enter Assignment Number"
+                    formControlName="assignmentNumber"
+                    class="form-control"
+                  />
+                </div>
+                <div class="col-3">
+                  <label for="customerName">Customer Name</label>
+                  <input
+                    type="text"
+                    id="customerName"
+                    placeholder="Enter Customer Name"
+                    formControlName="customerName"
+                    class="form-control"
+                  />
+                </div>
+                <div class="col-3">
+                  <label for="location">Location</label>
+                  <input
+                    type="text"
+                    id="location"
+                    placeholder="Enter Location"
+                    formControlName="location"
+                    class="form-control"
+                  />
+                </div>
+                <div class="col-2">
+                  <label for="status">Status</label>
+                  <select
+                    id="status"
+                    formControlName="status"
+                    class="form-select"
+                  >
+                    <option value="" selected disabled>Select</option>
+                    <option value="Ongoing">Ongoing</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Pending">Pending</option>
+                  </select>
+                </div>
+                <div class="col-2 d-flex justify-content-end mt-3">
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-secondary"
+                    (click)="onSearchReset()"
+                  >
+                    Reset
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-sm btn-primary mx-2"
+                    [disabled]="isFormEmpty()"
+                  >
+                    Search
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="grid-container p-3">
+    <kendo-grid
+      class="k-grid k-border-none"
+      [data]="gridData"
+      [pageable]="true"
+      [skip]="skip"
+      [pageSize]="pageSize"
+      [loading]="isGridLoading"
+      (pageChange)="pageChange($event)"
+    >
+      <kendo-grid-column
+        field="assignment_number"
+        title="Assign. No"
+        [headerStyle]="{ 'font-weight': 'bold' }"
+        [width]="75"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <span class="custom-cell" [title]="dataItem.assignment_number">
+            {{  dataItem.assignment_num }}
+          </span>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column
+        field="customer_name"
+        title="Customer Name"
+        [headerStyle]="{ 'font-weight': 'bold' }"
+        [width]="135"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <span
+            class="custom-cell"
+            [title]="dataItem.customer_name"
+            style="
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            "
+          >
+            {{ dataItem.customer_name }}
+          </span>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column
+        field="start_date"
+        title="Start Date"
+        [headerStyle]="{ 'font-weight': 'bold' }"
+        [width]="110"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          {{ dataItem.start_date | date : "dd-MM-yyyy" }}
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column
+        field="end_date"
+        title="End Date"
+        [headerStyle]="{ 'font-weight': 'bold' }"
+        [width]="110"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          {{ dataItem.end_date | date : "dd-MM-yyyy" }}
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column
+        field="location"
+        title="Location"
+        [headerStyle]="{ 'font-weight': 'bold' }"
+        [width]="85"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <span
+            class="custom-cell"
+            [title]="dataItem.location"
+            style="
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            "
+          >
+            {{ dataItem.location }}
+          </span>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column
+        field="status"
+        title="Status"
+        [headerStyle]="{ 'font-weight': 'bold' }"
+        [width]="70"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div class="button-container">
+            @if (dataItem.status === 'Ongoing' || dataItem.status == '1' ) {
+            <span class="badge rounded-pill text-bg-info">Ongoing</span>
+            }@else if (dataItem.status === 'Completed' || dataItem.status ==
+            '2'){
+            <span class="badge rounded-pill text-bg-success">Completed</span>
+            }@else{
+            <span class="badge rounded-pill text-bg-danger">Pending</span>
+            }
+          </div>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
+  </div>
+</div>

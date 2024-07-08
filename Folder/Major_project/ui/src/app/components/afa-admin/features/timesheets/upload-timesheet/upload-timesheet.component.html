@@ -1,0 +1,49 @@
+<div>
+  <app-loader [isLoading]="isLoading"></app-loader>
+  <div class="go-back-button d-flex align-items-center">
+    <a routerLink="/company/company-details/timesheets" class="tms-back">
+      <i class="bi bi-arrow-left"></i>&nbsp; &nbsp;<span>Back</span>
+    </a>
+  </div>
+  <div class="d-flex align-items-center justify-content-between">
+    <div class="ms-4 d-flex align-items-center">
+      <p class="timesheet-heading" [attr.title]="'Timesheet '+timesheetName + '\'s details'">{{timesheetName}} /Timesheet Details</p> &nbsp;&nbsp;
+      <p>[ Uploaded by CSV ]</p>
+    </div>
+    <div *ngIf="invoiceStatus == 'Pending'">
+      <button class="btn btn-info me-5" (click)="openModal('confirm')"><i class="bi bi-floppy"></i> Proceed to Invoice</button>
+    </div>
+  </div>
+  <div class="d-flex align-items-center mt-1" style="margin-left: 35px;"  *ngIf="invoiceStatus === 'Pending'">
+    <button class="mapping-buttons" (click)="selectTab('mapped')"
+      [class.active]="selectedTab === 'mapped'">Mapped</button>
+    <button class="mapping-buttons" (click)="selectTab('unmapped')"
+      [class.active]="selectedTab === 'unmapped'">Unmapped</button>
+  </div>
+
+  <hr class="seperator" style="width: 97%;">
+
+  <div class="px-4">
+    <div *ngIf="selectedTab === 'mapped'">
+      <app-mapping-grid [timesheetId]="timesheetId" [mapping]="selectedTab" [invoiceStatus]="invoiceStatus"></app-mapping-grid>
+    </div>
+    <div *ngIf="selectedTab === 'unmapped'">
+      <app-mapping-grid [timesheetId]="timesheetId" [mapping]="selectedTab" [invoiceStatus]="invoiceStatus"></app-mapping-grid>
+    </div>
+  </div>
+
+  <app-modal [isVisible]="confirmModal" (closeModal)="closeModal('confirm')">
+    <div class="modal-title d-flex align-items-center">
+      <p class="upload-csv-header">Send Timesheet to Invoicing</p>
+    </div>
+    <div class="modal-content d-flex ">
+      All the Unmapped details of this timesheet will be deleted, if any. <br>
+      Proceed to send this timesheet to invoicing ?<br><br>
+      <div class="d-flex justify-content-center">
+        <div class="d-flex mt-3">
+          <button class="btn btn-outline-secondary me-2" (click)="closeModal('confirm')">Cancel</button>
+          <button class="btn btn-success" (click)="proceedToInvoice(timesheetId)">Proceed</button>
+        </div>
+      </div>
+    </div>
+  </app-modal>

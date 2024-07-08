@@ -1,0 +1,45 @@
+.cell-padding {
+  padding: 3px;
+}
+
+.check-icon::before {
+  color: green; /* Change color to green */
+}
+
+/* .text-right {
+  text-align: right;
+} */
+
+
+.error-message {
+  color: red;
+  display: block;
+  /* margin-top: 1px; */
+}
+
+.modal .form-control {
+  margin-bottom: 0;
+}
+
+.modal .row .col-sm-8 {
+  padding-top: 5px;
+}
+
+.modal .modal-footer {
+  justify-content: flex-end;
+}
+
+
+.k-combobox {
+  width: 300px;
+  height: 35px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.k-search-combobox {
+  width: 260px;
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

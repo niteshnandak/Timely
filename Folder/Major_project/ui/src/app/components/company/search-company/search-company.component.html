@@ -1,0 +1,56 @@
+<div class="row m-0 my-2 p-0">
+    <h4 class="text-white">Search Company</h4>
+    <form [formGroup]="searchCompanyForm" (ngSubmit)="searchCompanySubmit()">
+      <div class="row">
+        <div class="col-12 my-2">
+          <h6 class="text-info">Company Details</h6>
+        </div>
+        <div class="col-12 input-height">
+          <b>
+            <small>
+              <label class="form-label text-white m-0" for="company_name">Company Name</label>
+            </small>
+          </b>
+          <input type="text" class="form-control text-dark rounded" placeholder="Company Name" formControlName="company_name" />
+          <div class="error-message" *ngIf="searchCompanyForm.get('company_name')?.invalid && searchCompanyForm.get('company_name')?.touched">
+            Enter a valid Name
+          </div>
+        </div>
+        <div class="col-12 input-height">
+          <b>
+            <small>
+              <label class="form-label text-white m-0" for="email_address">Email</label>
+            </small>
+          </b>
+          <input type="text" class="form-control text-dark rounded" placeholder="Email" formControlName="email_address" />
+          <div class="error-message" *ngIf="searchCompanyForm.get('email_address')?.invalid && searchCompanyForm.get('email_address')?.touched">
+            Enter a valid email
+          </div>
+        </div>
+        <div class="col-12 text-dark">
+          <b>
+            <small>
+              <label class="form-label text-white m-0" for="status"
+                >Active status</label
+              >
+            </small>
+          </b>
+          <select
+            class="form-select text-dark rounded"
+            name="status"
+            id="status"
+            formControlName="status"
+          >
+            <option value="null" selected disabled >Select</option>
+            <option value="1">Activated</option>
+            <option value="0">Deactivated</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer my-2">
+        <button type="reset" class="btn btn-info mx-2" (click)="resetForm()">Reset</button>
+        <button type="submit" class="btn btn-success mx-2">Search</button>
+      </div>
+    </form>
+  </div>
+  

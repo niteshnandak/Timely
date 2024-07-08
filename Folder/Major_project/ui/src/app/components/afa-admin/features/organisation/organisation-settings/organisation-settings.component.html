@@ -1,0 +1,124 @@
+<div class="organisation-settings d-flex flex-column">
+  <app-loader [isLoading]="isLoading"></app-loader>
+  <div class="back-button d-flex align-items-center">
+    <a routerLink="/dashboard" class="back button">
+      <i class="bi bi-arrow-left"></i>&nbsp; &nbsp;<span>Back</span>
+    </a>
+  </div>
+  <div class="settings-title">
+    <p><strong>Organisation Settings</strong></p>
+  </div>
+  <hr class="seperator">
+  <div class="sub-settings">
+    <p>Organisation Logo</p>
+  </div>
+  <div class="logo-container d-flex align-items-center">
+    <div class="upload-logo d-flex align-items-center">
+      <input type="file" id="organisation_logo" (change)="onFileChange($event)" accept="image/*" hidden />
+      <div class="d-flex flex-column align-items-center">
+        <label class="org-logo" for="organisation_logo">Upload logo for Organisation</label>
+        <span id="file-chosen">{{ fileChosen }}</span>
+      </div>
+      <div class="d-flex flex-column">
+        <span style="margin-left: 2rem;">This Logo will be visible on Invoices and Emails</span>
+        <span style="margin-left: 2rem; font-size:12px;">Preferred Image Dimensions: 40 x 40 pixels; Max Size: 2
+          MB</span>
+      </div>
+    </div>
+    <div class="current-logo">
+      <div class="profile-picture-container d-flex flex-column">
+        <img class="org-image" [src]="imageUrl" alt="Organisation Logo">
+        <label for="org-image" class="org-image-label">{{logoLabel}}</label>
+      </div>
+    </div><br>
+  </div>
+  <div>
+    <button class="btn btn-success" style="margin: 0rem 4rem" (click)="uploadLogo($event)">Upload</button>
+  </div>
+  <br>
+  <div id="seperator-2"><hr class="seperator"></div>
+  <div class="sub-settings">
+    <p>Organisation Details</p>
+  </div>
+  <div class="org-settings-form">
+    <form [formGroup]="organisationSettingsForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="organisation_name">Organisation Name</label>
+        <input id="name" formControlName="name" placeholder="Enter Organisation Name">
+        <div class="d-flex align-items-center" *ngIf="organisationSettingsForm.get('name')?.invalid ">
+          <div class="invalid-field" *ngIf="organisationSettingsForm.get('name')?.errors?.['required']">Name is
+            required.</div>
+          <div class="invalid-field" *ngIf="organisationSettingsForm.get('name')?.errors?.['maxlength']"> Max 50
+            characters allowed.</div>
+          <div class="invalid-field" *ngIf="organisationSettingsForm.get('name')?.errors?.['minlength']"> Min 3
+            characters allowed.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email_address">Email Address</label>
+        <input id="email_address" formControlName="email_address" placeholder="Enter Organisation Email Address">
+        <div class="d-flex align-items-center" *ngIf="organisationSettingsForm.get('email_address')?.invalid">
+          <div class="invalid-field" *ngIf="organisationSettingsForm.get('email_address')?.errors?.['required']">
+            Email address is required.</div>
+          <div class="invalid-field" *ngIf="organisationSettingsForm.get('email_address')?.errors?.['pattern']">
+            Invalid email address format.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="contact_number">Contact Number</label>
+        <input id="contact_number" maxlength="10" formControlName="contact_number"
+          placeholder="Enter Organisation Phone Number" appNumberOnly>
+        <div class="d-flex align-items-center" *ngIf="organisationSettingsForm.get('contact_number')?.invalid">
+          <div class="invalid-field" *ngIf="organisationSettingsForm.get('contact_number')?.errors?.['required']">
+            Phone Number is required.</div>
+          <div class="invalid-field" *ngIf="organisationSettingsForm.get('contact_number')?.errors?.['pattern']">
+            Phone number should be 10 digits long</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="">Address</label>
+        <input id="address_line_1" class="me-3" formControlName="address_line_1"
+          placeholder="Organisation Address Line 1" appSomeChars>
+        <input id="address_line_2" formControlName="address_line_2" placeholder="Organisation Address Line 2"
+          appSomeChars>
+        <div class="d-flex align-items-center">
+          <div class="invalid-field" *ngIf="organisationSettingsForm.get('address_line_1')?.errors?.['required']">
+            Address Line 1 is required.</div>
+          <div class="invalid-field"
+            *ngIf="organisationSettingsForm.get('address_line_1')?.errors?.['pattern'] || organisationSettingsForm.get('address_line_2')?.errors?.['pattern']">
+            Address should contain alphanumeric characters with " , - . / "</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="city">City</label>
+        <input id="city" formControlName="city" placeholder="Enter Organisation's City" appCharWithSpace>
+        <div class="d-flex align-items-center" *ngIf="organisationSettingsForm.get('city')?.invalid">
+          <div class="invalid-field" *ngIf="organisationSettingsForm.get('city')?.errors?.['required']">
+            City is required.</div>
+          <div class="invalid-field" *ngIf="organisationSettingsForm.get('city')?.errors?.['pattern']">
+            City can only contain alphabets and spaces</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="state">State</label>
+        <input id="state" formControlName="state" placeholder="Enter Organisation's State" appCharWithSpace>
+        <div class="d-flex align-items-center" *ngIf="organisationSettingsForm.get('state')?.invalid">
+          <div class="invalid-field" *ngIf="organisationSettingsForm.get('state')?.errors?.['required']">
+            State is required.</div>
+          <div class="invalid-field" *ngIf="organisationSettingsForm.get('state')?.errors?.['pattern']">
+            State can only contain alphabets and spaces</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" formControlName="description"
+          placeholder="Organisation Description in brief"></textarea>
+      </div><br>
+      <div class="form-buttons">
+        <button type="submit" [disabled]="this.organisationSettingsForm.invalid" class="btn btn-success">Save</button>
+        <button type="button" class="btn btn-outline-secondary" (click)="onReset()">Reset</button>
+      </div>
+    </form>
+  </div>
+
+</div>

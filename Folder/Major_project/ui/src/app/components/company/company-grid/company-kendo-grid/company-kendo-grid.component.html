@@ -1,0 +1,108 @@
+
+<app-loader [isLoading]="isLoading"></app-loader>
+<kendo-grid class="k-grid k-border-none"
+
+[data]="gridData"
+[pageSize]="pageSize"
+[skip]="skip"
+[pageable]="pageableFlag"
+(pageChange)="pageChange($event)"
+[loading]="gridloading"
+>
+<kendo-grid-column
+title="S.No"
+[headerStyle]="{'font-weight': 'bold'}"
+[width]="57"
+>
+<ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+    {{ rowIndex + 1 }}
+</ng-template>
+</kendo-grid-column>
+<kendo-grid-column field="company_name" title="Company Name"
+[headerStyle]="{'font-weight':'bold'}"
+[width]="100"> </kendo-grid-column>
+
+<kendo-grid-column field="email_address" title="Email Address"
+[headerStyle]="{'font-weight':'bold'}"
+[width]="100"> 
+<ng-template kendoGridCellTemplate let-dataItem>
+  <span [title]="dataItem.email_address">{{ dataItem.email_address }}</span>
+</ng-template></kendo-grid-column>
+
+<kendo-grid-column field="city" title="City"
+[headerStyle]="{'font-weight':'bold'}"
+[width]="80">
+<ng-template kendoGridCellTemplate let-dataItem>
+  <span [title]="
+  (dataItem.address_line_1 ? dataItem.address_line_1 + ', ' : '') +
+  (dataItem.address_line_2 ? dataItem.address_line_2 + ', ' : '') +
+  (dataItem.city ? dataItem.city + '-' : '') +
+  (dataItem.pincode ? dataItem.pincode + ', ' : '') +
+  (dataItem.state ? dataItem.state + ', ' : '') +
+  (dataItem.country ? dataItem.country : '')
+  "> {{ dataItem.city }}
+  </span>  
+</ng-template>
+</kendo-grid-column>
+
+<kendo-grid-column field="status" title="Status" [headerStyle]="{'font-weight':'bold'}" [width]="60">
+  <!-- <ng-template kendoGridCellTemplate let-dataItem>
+    <div class="button-container">
+        <button
+            [ngClass]="{'btn-green': dataItem.status, 'btn-red': !dataItem.status}"
+            (click)="toggleStatus(dataItem)"
+          >
+            {{ dataItem.status ? 'Active' : 'Inactive' }}
+        </button>
+    </div>
+</ng-template> -->
+<ng-template kendoGridCellTemplate let-dataItem>
+  <div class="button-container">
+
+    <label class="switch">
+      <input type="checkbox" 
+      
+      [checked]="dataItem.status==1"
+      (click)="toggleStatus(dataItem)"
+      />
+      <span class="slider"></span>
+    </label>
+  </div>
+</ng-template>
+</kendo-grid-column>
+
+<kendo-grid-column field="Action" title="Action"
+  [headerStyle]="{'font-weight':'bold'}"
+  [width]="80">
+  <ng-template kendoGridCellTemplate let-dataItem>
+    <button class="btn btn-sm btn-smaller" title="View Company Details" tooltip="View Company Details" (click)="navigateToCompanyDetails(dataItem.company_id)" [hidden]="dataItem.status === 0">
+      <i class="bi bi-eye" style="font-weight: bold;"></i>
+    </button>
+    <button class="btn btn-sm btn-smaller btn-edit" title="Edit" tooltip="Edit" (click)="navigateToCompanySettings(dataItem.company_id)">
+      <i class="fas fa-edit" style="font-weight: bold;"></i>
+    </button>
+    <button class="btn btn-sm btn-smaller btn-delete" title="Delete" tooltip="Delete" data-bs-toggle="modal" data-bs-target="#deleteCompanyModal" [hidden]="dataItem.customer_count > 0 || dataItem.assignment_count > 0" (click)="setDataItem(dataItem.company_id)">
+      <i class="fas fa-trash" style="font-weight: bold;"></i>
+    </button>
+  </ng-template>
+</kendo-grid-column>
+
+</kendo-grid>
+
+<div class="modal fade" id="deleteCompanyModal" tabindex="-1" aria-labelledby="deleteCompanyModal" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="deleteCompanyModal">Delete Company</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure want to Delete the Company?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success"  data-bs-dismiss="modal" (click)="deleteCompany(deleteCompanyId)">Proceed</button>
+      </div>
+    </div>
+  </div>
+</div>

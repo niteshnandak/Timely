@@ -1,0 +1,245 @@
+<div>
+  <app-loader [isLoading]="isLoading"></app-loader>
+  <div class="d-flex align-items-center ms-3 mt-3" >
+    <a routerLink="/dashboard" class="back button" style="text-decoration: none; color:black">
+      <i class="bi bi-arrow-left"></i>&nbsp; &nbsp;<span>Back</span>
+    </a>
+  </div>
+  <div class="px-3 py-2">
+    <h5><b>{{ organisation_name }} / AFA Users</b></h5>
+
+
+
+
+
+
+    <div class="row row-container" [@heightControl]="state === 'none' ? 'null' : 'open'">
+      <div class="p-2 col-6">
+        <div class="card big-card" [@heightControl]="state === 'none' ? 'null' : 'open'">
+          <div class="card-body" [@displayControl]="state === 'none' ? 'null' : 'open'">
+            <h5 class="card-title">Organisation User Details</h5>
+            <!-- <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle {{ state }}</h6> -->
+            <div class="row m-0 p-0">
+              <div class="col-10 m-0 p-0">
+                <p>Active AFA Users in last 24 hours : <strong><span>{{ org_active_users_last_24_hours }}</span></strong> </p>
+                <p>New Registered AFA Users in last one month :  <strong><span>{{ org_new_users_last_month }}</span></strong> </p>
+                <p>Number of Pending verifications : <strong><span>{{ org_users_pending_verification }}</span></strong> </p>
+              </div>
+              <div class="col-2 m-0 p-0">
+                <img src="assets/images/people/undraw_people_re_8spw.svg" alt="Admin Profile" class="card-info-image">
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="p-2 col-3">
+        <div class="card small-card1" [@heightControl]="state === 'none' ? 'null' : 'open'">
+          <div class="card-body" [@displayControl]="state === 'none' ? 'null' : 'open'">
+            <h5 class="card-title">Total AFA Users</h5>
+            <!-- <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6> -->
+            <div class="row m-0 p-0 ">
+                <div class="col-6 m-0 p-0">
+                  <div class="col-9 mt-4 mx-auto ">
+                    <h6 class="card-subtitle mb-2 text-body-secondary  fw-bold" style="font-size: 39px;">{{ org_user_count }}</h6>
+                  </div>
+                </div>
+                <div class="col-6 m-0 p-0 card-image">
+                  <img src="assets/images/people/undraw_join_re_w1lh.svg" alt="Admin Profile" class="card-info-image">
+                </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="p-2 col-3">
+        <div class="card small-card2" [@heightControl]="state === 'none' ? 'null' : 'open'">
+          <div class="card-body" [@displayControl]="state === 'none' ? 'null' : 'open'">
+            <h5 class="card-title">Active AFA Users</h5>
+            <div class="row m-0 p-0 ">
+              <div class="col-6 m-0 p-0">
+                <div class="col-9 mt-4 mx-auto ">
+                  <h6 class="card-subtitle mb-2 text-body-secondary fs-1 fw-bold">{{ org_active_users }}</h6>
+                </div>
+              </div>
+              <div class="col-6 m-0 p-0">
+
+                <img src="assets/images/people/undraw_connected_re_lmq2.svg" alt="Admin Profile" class="card-info-image">
+              </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row row-container" [@popOverState]="state !== 'none' ? 'open' : 'null'">
+      <div [ngClass]="state === 'add' || state === 'edit' ? 'col-3' : 'col-9'" class="kendo-grid-component p-2 transistion-box">
+        <kendo-grid class="k-grid k-border-none"
+          [data]="gridData"
+          [pageSize]="pageSize"
+          [skip]="skip"
+          [pageable]="true"
+          (pageChange)="pageChange($event)"
+          [loading]="gridloading"
+          >
+
+          <kendo-grid-column
+            title="S.No"
+            [headerStyle]="{'font-weight': 'bold'}"
+            [width]="50"
+            >
+              <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                  {{ rowIndex + 1 }}
+              </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="username" title="Username"
+            [headerStyle]="{'font-weight':'bold'}"
+            [width]="100"
+            >
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span class="custom-cell text-truncate" [title]="dataItem.username">
+                {{ dataItem.username }}
+              </span>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column title="User Details"
+            [headerStyle]="{'font-weight':'bold'}"
+            [width]="150">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <div class="d-flex flex-column">
+                  <span [title]="dataItem.firstname + ' ' + dataItem.surname">{{ dataItem.firstname }} {{ dataItem.surname }}</span>
+                  <span [title]="dataItem.email" class="text-muted">{{ dataItem.email }}</span>
+                </div>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="last_active" title="Last Active"
+            [headerStyle]="{'font-weight':'bold'}"
+            [width]="80" >
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem.last_active | date:'dd-MM-yyyy' }}
+              <span [title]="dataItem.last_active" class="text-muted">{{ dataItem.last_active | date:'HH:mm:ss' }}</span>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="status" title="Status"
+            [headerStyle]="{'font-weight':'bold'}" [width]="80">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <div class="button-container">
+                    <button title="Toggle status"
+                        [ngClass]="{'btn-green': dataItem.status, 'btn-red': !dataItem.status, 'disabled': !dataItem.password}"
+                        data-bs-toggle="modal" data-bs-target="#toggleAfaUserModal" (click)="setToggleDataItem(dataItem.organisation_id, dataItem.user_id, dataItem.status)"
+                      >
+                        {{ dataItem.status ? 'Activated' : 'Deactivated' }}
+                    </button>
+                </div>
+            </ng-template>
+          </kendo-grid-column>
+
+
+          <kendo-grid-column field="Action" title="Action"
+            [headerStyle]="{'font-weight':'bold'}"
+            [width]="100"
+            [sticky]="true"
+            >
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <button class="btn btn-sm btn-smaller btn-edit"  title="Edit" tooltip="Edit" (click)="toggleState('edit', dataItem.user_id)"  >
+                  <i class="fas fa-edit" style="font-weight: bold;"  ></i>
+              </button>
+              <button class="btn btn-sm btn-smaller btn-delete"  title="Delete" tooltip="Delete" data-bs-toggle="modal" data-bs-target="#deleteAfaUserModal" (click)="setDataItem(dataItem.user_id)">
+                  <i class="fas fa-trash" style="font-weight: bold;"></i>
+              </button>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </div>
+
+
+
+      <div [ngClass]="state === 'add' || state === 'edit' ? 'col-9' : 'col-3'" class="p-2 transistion-box">
+        <div class="search-container p-2">
+          @if(state != "edit"){
+            <div class="radio-inputs">
+              <label class="radio">
+                <input type="radio" name="radio" [checked]="state === 'search'" (click)="toggleState('search', null)">
+                <span class="name">
+                  @if (state === 'search') {
+                    <i class="bi bi-x-lg"></i> &nbsp; Close
+                  }@else {
+                    <i class="bi bi-search"></i> &nbsp; Detailed Search
+                  }
+                </span>
+              </label>
+              <label class="radio">
+                <input type="radio" name="radio" [checked]="state === 'add'" (click)="toggleState('add', null)">
+                <span class="name">
+                    @if (state === 'add') {
+                      <i class="bi bi-x-lg"></i> &nbsp; Close
+                    }@else {
+                      <i class="bi bi-file-plus-fill"></i> &nbsp; Add
+                    }
+                </span>
+              </label>
+            </div>
+          }
+          <div>
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal fade" id="deleteAfaUserModal" tabindex="-1" aria-labelledby="deleteAfaUserModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="deleteAfaUserModal">Delete</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to remove this user?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger"  data-bs-dismiss="modal" (click)="deleteUser(deleteUserId)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<div class="modal fade" id="toggleAfaUserModal" tabindex="-1" aria-labelledby="toggleAfaUserModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="toggleAfaUserModal">Toggle User</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        @if(toggleStatus == true) {
+          Are you sure you want to Deactivate User?
+        }
+        @if(toggleStatus == false) {
+          Are you sure you want to Activate User?
+        }
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger"  data-bs-dismiss="modal" (click)="toggleActiveStatus(toggleOrgId, toggleUserId)">
+          Toggle
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,257 @@
+<!-- ADD ORGANISATION FORM -->
+<div class="row m-0 my-2 p-0">
+  <h4 class="text-white">Add Organisation</h4>
+  <form
+    [formGroup]="adminOrgForm"
+    (ngSubmit)="$event.preventDefault(); onSubmit()"
+    class=" "
+  >
+    <div class="row mb-3">
+      <div class="col-12 my-2">
+        <h6 class="text-info">Organisation Details</h6>
+      </div>
+
+      <!-- organisation name div -->
+      <div class="col-8" style="height: 50px">
+        <b>
+          <small>
+            <label class="form-label text-white m-0" for="organisation_name"
+              >Organisation name</label
+            >
+            <span class="text-danger">*</span>
+          </small>
+        </b>
+        <input
+          type="text"
+          class="form-control text-dark rounded-0"
+          placeholder="Enter Organisation name"
+          name="organisation_name"
+          id="organisation_name"
+          formControlName="organisationName"
+        />
+        
+        <!-- ORGANISATION FORM DETAILS-->
+        <!-- error-div -->
+        <div class="error-message" *ngIf="isInputValid('organisationName')">
+          <small
+            class="text-danger"
+            *ngIf="adminOrgForm.get('organisationName')?.hasError('required')"
+          >
+            Organisation is required.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="adminOrgForm.get('organisationName')?.hasError('pattern')"
+          >
+            Invalid Organisation name.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="adminOrgForm.get('organisationName')?.hasError('maxlength')"
+          >
+            Exceeds 30 characters.
+          </small>
+        </div>
+      </div>
+
+      <!-- active status select div -->
+      <div class="col-4 text-dark">
+        <b>
+          <small>
+            <label class="form-label text-white m-0" for="status"
+              >Active status</label
+            >
+            <span class="text-danger">*</span>
+          </small>
+        </b>
+        <select
+          class="form-select text-dark rounded-0"
+          name="status"
+          id="status"
+          formControlName="status"
+        >
+          <option value="null" selected disabled>Select</option>
+          <option value="1">Enabled</option>
+          <option value="0">Disabled</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- ENTER AFA USER DETAILS  -->
+    <div class="row my-3">
+      <div class="col-12 my-2">
+        <h6 class="text-info">AFA User Details</h6>
+      </div>
+
+      <!-- user first name div -->
+      <div class="col-3" style="height: 70px">
+        <b>
+          <small>
+            <label class="form-label text-white m-0" for="first_name"
+              >First name</label
+            >
+            <span class="text-danger">*</span>
+          </small>
+        </b>
+        <input
+          type="text"
+          class="form-control text-dark rounded-0"
+          placeholder="Enter First name"
+          name="first_name"
+          id="first_name"
+          formControlName="firstName"
+        />
+        <div class="error-message" *ngIf="isInputValid('firstName')">
+          <small
+            class="text-danger"
+            *ngIf="adminOrgForm.get('firstName')?.hasError('required')"
+          >
+            First name is required.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="adminOrgForm.get('firstName')?.hasError('pattern')"
+          >
+            Invalid First name.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="adminOrgForm.get('firstName')?.hasError('maxlength')"
+          >
+            Exceeds 30 characters.
+          </small>
+        </div>
+      </div>
+
+      <!--  surname form control div -->
+      <div class="col-3" style="height: 70px">
+        <b>
+          <small>
+            <label class="form-label text-white m-0" for="surname"
+              >Surname</label
+            >
+            <span class="text-danger">*</span>
+          </small>
+        </b>
+        <input
+          type="text"
+          class="form-control text-dark rounded-0"
+          placeholder="Enter Surname"
+          name="surname"
+          id="surname"
+          formControlName="surName"
+        />
+        <div class="error-message" *ngIf="isInputValid('surName')">
+          <small
+            class="text-danger"
+            *ngIf="adminOrgForm.get('surName')?.hasError('required')"
+          >
+            Surname is required.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="adminOrgForm.get('surName')?.hasError('pattern')"
+          >
+            Invalid Surname.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="adminOrgForm.get('surName')?.hasError('maxlength')"
+          >
+            Exceeds 30 characters.
+          </small>
+        </div>
+      </div>
+
+            <!--  username form control div -->
+
+      <div class="col-3" style="height: 70px">
+        <b>
+          <small>
+            <label class="form-label text-white m-0" for="user_name"
+              >User name</label
+            >
+            <span class="text-danger">*</span>
+          </small>
+        </b>
+        <input
+          type="text"
+          class="form-control text-dark rounded-0"
+          placeholder="Enter User name"
+          name="user_name"
+          id="user_name"
+          formControlName="userName"
+        />
+        <div class="error-message" *ngIf="isInputValid('userName')">
+          <small
+            class="text-danger"
+            *ngIf="adminOrgForm.get('userName')?.hasError('required')"
+          >
+            User name is required.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="adminOrgForm.get('userName')?.hasError('pattern')"
+          >
+            Invalid User name.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="adminOrgForm.get('userName')?.hasError('maxlength')"
+          >
+            Exceeds 30 characters.
+          </small>
+        </div>
+      </div>
+
+      <!-- user email form control div -->
+      <div class="col-3" style="height: 70px">
+        <b>
+          <small>
+            <label class="form-label text-white m-0" for="email"
+              >User email</label
+            >
+            <span class="text-danger">*</span>
+          </small>
+        </b>
+
+        <input
+          type="email"
+          class="form-control text-dark rounded-0"
+          placeholder="Enter User email"
+          name="email"
+          id="email"
+          formControlName="email"
+        />
+        <div class="error-message" *ngIf="isInputValid('email')">
+          <small
+            class="text-danger"
+            *ngIf="adminOrgForm.get('email')?.hasError('required')"
+          >
+            Email is required.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="adminOrgForm.get('email')?.hasError('pattern')"
+          >
+            Invalid Email address.
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <!-- submit organisation button details -->
+    <div class="modal-footer my-2">
+      <button
+        type="submit"
+        class="btn btn-success mx-2"
+        [disabled]="adminOrgForm.invalid"
+      >
+        Save
+      </button>
+      <button type="reset" class="btn btn-info mx-2" (click)="resetForm()">
+        Reset
+      </button>
+    </div>
+  </form>
+</div>

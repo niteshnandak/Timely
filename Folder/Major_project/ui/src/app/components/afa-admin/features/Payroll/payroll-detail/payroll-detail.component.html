@@ -1,0 +1,132 @@
+<div>
+  <div class="p-3">
+    <div>
+      <a routerLink="/company/company-details/payroll-batch" class="back button detail-back">
+        <i class="bi bi-arrow-left text-dark"></i>&nbsp; &nbsp;<span class="text-dark ">Back</span>
+      </a>
+    </div>
+    <h4>{{company_name}} / Payroll-Details</h4>
+    <h6>Total Amount:{{total_amount}} </h6>
+
+    <div class="d-flex">
+      <div class="select-container" [ngClass]="take == 5 ? 'change-kendo-row-size-2' : 'change-kendo-row-size-1'">
+
+        <kendo-grid class="k-grid k-border-none"
+        [data]="payrollDetailGridData"
+        [pageable]="{ buttonCount: 5, info: true, type: 'numeric', pageSizes: true, previousNext: true }"
+        [loading]="gridLoading"
+        [skip]="skip"
+        [pageSize]="take"
+        (pageChange)="payrollPageChange($event)"
+        >
+
+        <kendo-grid-column field="people_name" title="Employee Name"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="100">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div style="text-align: right;" [title]="dataItem.people_name">
+            {{ dataItem.people_name }}
+          </div>
+        </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="gross_salary" title="Gross Salary (£)"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="115">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div style="text-align: right;" [title]="dataItem.gross_salary">
+            {{ dataItem.gross_salary | currency:'£' }}
+          </div>
+        </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="total_tax_deduction" title="Tax Amount (£)"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="115">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div style="text-align: right;" [title]="dataItem.total_tax_deduction">
+            {{ dataItem.total_tax_deduction | currency:'£'}}
+          </div>
+        </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="invoice_numbers" title="Invoice Numbers"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="115">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div style="text-align: right;" [title]="dataItem.invoice_numbers">
+            {{ dataItem.invoice_numbers }}
+          </div>
+        </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="margin" title="Margin (£)"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="115">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div style="text-align: right;" [title]="dataItem.margin">
+            {{ dataItem.margin | currency:'£' }}
+          </div>
+        </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="expense_amount" title="Expenses (£)"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="115">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          @if(dataItem.expense_amount){
+            <div style="text-align: right;" [title]="dataItem.expense_amount">
+              {{ dataItem.expense_amount | currency }}
+            </div>
+          }
+          @else {
+            <div style="text-align: right;" [title]="dataItem.expense_amount">
+              0
+            </div>
+          }
+        </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="is_rollback" title="Rollback Status"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="115">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div class="button-container">
+            @if (dataItem.is_rollback === 0 ) {
+            <span
+              class="badge rounded-pill text-bg-danger"
+              >No</span
+            >
+            }@else if (dataItem.is_rollback === 1){
+            <span
+              class="badge rounded-pill text-bg-success"
+              >Yes</span
+            >
+            }
+          </div>
+        </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="net_pay" title="Net Pay (£)"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="115">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div style="text-align: right;" [title]="dataItem.net_pay">
+            {{ dataItem.net_pay | currency:'£'}}
+          </div>
+        </ng-template>
+        </kendo-grid-column>
+      </kendo-grid>
+      </div>
+    </div>
+    <div class="d-flex flex-row-reverse py-2">
+      @if(flag){
+        <button class="btn btn-success" (click)="updatePayrollRun(payroll_batch_id)">
+          Complete
+        </button>
+      }
+    </div>
+  </div>
+</div>
+
+

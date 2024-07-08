@@ -1,0 +1,22 @@
+.navbar {
+  min-height: 70px; 
+}
+  
+.nav-link {
+  transition: color 0.3s;
+}
+  
+.nav-link:hover {
+   color: #06bef8 ; /* Change to the desired hover color */
+}
+  
+.navbar-brand img {
+    margin-left : 10px;
+}
+
+a.nav-link {
+    color : white;
+    font-weight : bold;
+    cursor: pointer;
+}
+  

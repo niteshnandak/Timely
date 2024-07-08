@@ -1,0 +1,192 @@
+<div class="p-2"> <!--  class="page-container" -->
+  <app-loader [isLoading]="isLoading"></app-loader>
+  <div class="detail-button">
+    <a routerLink="/people"  class="back button detail-back">
+      <i class="bi bi-arrow-left text-dark"></i>&nbsp; &nbsp;<span class="text-dark">Back</span>
+    </a>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center p-3">
+    <h2 class="mb-0">{{ people_name }} / Expenses</h2>
+  </div>
+
+
+
+  <div class="accordion p-3" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseThree"
+          aria-expanded="false"
+          aria-controls="collapseThree"
+        >
+          Search Expense
+        </button>
+      </h2>
+      <div
+        id="collapseThree"
+        class="accordion-collapse collapse"
+        data-bs-parent="#accordionExample"
+      >
+        <div class="accordion-body">
+          <div class="search-form">
+            <form [formGroup]="searchExpenseForm" (ngSubmit)="onSearch()">
+              <div class="row">
+
+                <div class="col-3">
+                  <label for="expense_type">Expense Type</label>
+                  <kendo-combobox
+                    [data]="filteredExpenseTypes"
+                    textField="expense_type"
+                    valueField="expense_type_id"
+                    formControlName="expense_type"
+                    placeholder="Select an expense type"
+                    [valuePrimitive]="true"
+                    [filterable]="true"
+                    (filterChange)="handleExpenseTypesFilter($event)"
+                    class="k-search-combobox"
+                  >
+                  </kendo-combobox>
+                </div>
+
+                <div class="col-3">
+                  <label for="expense_date_from">Expense Date From</label>
+                  <input type="date" style="height: 40px;" class="form-control text-dark" id="expense_date_from" formControlName="expense_date_from">
+                </div>
+
+                <div class="col-3">
+                  <label for="expense_date_to">Expense Date To</label>
+                  <input type="date" style="height: 40px;" class="form-control text-dark" id="expense_date_to" formControlName="expense_date_to">
+                  <div class="mt-0 " *ngIf="searchExpenseForm.hasError('dateRangeInvalid')" class="text-danger warning-text">
+                    <small class="error-message">Date To must be greater than Date From.</small>
+                  </div>
+                </div>
+
+                <div class="col-3">
+                  <label for="status">Expense Status</label>
+                  <select
+                    id="status"
+                    formControlName="status"
+                    class="form-select"
+                  >
+                    <option value="" selected>Select Status</option>
+                    <option value="processed">Processed</option>
+                    <option value="approved">Approved</option>
+                  </select>
+                </div>
+
+                <div class="col-12 d-flex justify-content-end">
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-secondary mt-4"
+                    (click)="resetSearchExpenseForm()"
+                  >
+                    Reset
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-sm btn-primary mt-4 mx-2"
+                    [disabled]="isFormEmpty()"
+                  >
+                    Search
+                  </button>
+                </div>
+
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="grid-container p-3">
+    <kendo-grid
+      [data]="gridData"
+      [pageSize]="pageSize"
+      [skip]="skip"
+      [pageable]="{ buttonCount: 5, info: true, type: 'numeric', pageSizes: true, previousNext: true }"
+      (pageChange)="pageChange($event)"
+      [loading]="gridloading"
+    >
+      <kendo-grid-column
+        title="Expense Number"
+        [headerStyle]="{'font-weight': 'bold'}"
+        [width]="70"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span kendoTooltip [title]="dataItem.expense_number">
+              {{dataItem.expense_number}}
+            </span>
+          </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column field="expense_type" title="Expense Type"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="120"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <span kendoTooltip [title]="dataItem.expense_type">
+            {{dataItem.expense_type}}
+          </span>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column field="expense_date" title="Expense Date"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="100"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <span kendoTooltip [title]="dataItem.expense_date">
+            {{ dataItem.expense_date | date:'dd-MM-yyyy' }}
+          </span>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column field="amount" title="Amount (&pound;)"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="100"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div style="text-align: right;">
+            <span kendoTooltip [title]="dataItem.amount">
+              {{dataItem.amount | currency:' '}}
+            </span>
+          </div>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column field="status" title="Status"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="60">
+
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div class="button-container">
+            @if (dataItem.status === 'draft' ) {
+            <span title="Draft" class="badge rounded-pill text-bg-warning">
+              Draft
+            </span
+            >
+            }@else if (dataItem.status === 'approved'){
+              <span title="Approved" class="badge rounded-pill text-bg-primary">
+                Approved
+              </span>
+            }
+            @else if (dataItem.status === 'processed'){
+              <span title="Processed" class="badge rounded-pill text-bg-success">
+                Processed
+              </span>
+            }
+          </div>
+        </ng-template>
+      </kendo-grid-column>
+
+    </kendo-grid>
+  </div>
+
+</div>

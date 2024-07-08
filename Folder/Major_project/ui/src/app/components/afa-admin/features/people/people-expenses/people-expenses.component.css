@@ -1,0 +1,10 @@
+.cell-padding {
+  padding: 3px; /* Adjust the padding value as needed */
+}
+
+.k-search-combobox {
+  width: 250px;
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

@@ -1,0 +1,111 @@
+<div class="row  m-0 ">
+    <div class="col-6 ">
+        <app-onboard-image></app-onboard-image>
+    </div>
+    <div class="col-lg-6 mt-4 ">
+        <div class="row">
+            <div class="col-lg-9  p-1 rounded ">
+                <form [formGroup]="registrationForm" (ngSubmit)="OnRegisterSubmit()" >
+                    <div class="col-3 mx-auto">
+                        <h5 class="text-dark">{{title}}</h5>
+                    </div>
+                    <div class="m-2" style="height: 80px;">
+                        <b>
+                            <small>
+                                <label class="form-label text-info " for="first_name ">First Name</label>
+                            </small>
+                        </b>
+                        <input type="text" class="form-control text-dark rounded-0 register"
+                            placeholder="Enter First Name" name="first_name" id="first_name"
+                            formControlName="first_name" appCharOnly [length]="10"/>
+                        @if (first_name?.errors?.['required'] && first_name?.touched) {
+                            <b><small class="text-danger warning-text">*Firstname field is required</small></b> <br>
+                        }
+                        @if (first_name?.errors?.['pattern']) {
+                            <b><small class="text-danger warning-text">*Name should have only characters</small></b> <br>
+                        }
+                        @if (first_name?.errors?.['maxlength']) {
+                            <b><small class="text-danger warning-text">*Firstname field exceeds 30 Characters</small></b> <br>
+                        }
+                    </div>
+                    <div class="m-2" style="height: 80px;">
+                        <b><small>
+                            <label class="form-label text-info" for="last_name ">Last Name</label>
+                        </small></b>
+                        <input type="text" class="form-control rounded-0 register" placeholder="Enter Last Name"
+                            name="last_name" id="last_name" formControlName="last_name" appCharOnly />
+                        @if (last_name?.errors?.['required'] && last_name?.touched) {
+                            <b><small class="text-danger warning-text">*Lastname field is required</small></b> <br>
+                        }
+                        @if (last_name?.errors?.['pattern']) {
+                            <b><small class="text-danger warning-text">*Name should have only characters</small></b> <br>
+                        }
+                        @if (last_name?.errors?.['maxlength']) {
+                            <b><small class="text-danger warning-text">*Lastname field exceeds 30 Characters</small></b> <br>
+                        }
+
+                    </div>
+
+                    <div class="m-2" style="height: 80px;">
+                        <b><small>
+                            <label class="form-label text-info " for="email ">Email Address</label>
+                        </small></b>
+                        <input type="text" class="form-control rounded-0 register" placeholder="Enter Email Address"
+                            name="email" id="email" formControlName="email" />
+                        @if (email?.errors?.['required'] && email?.touched) {
+                            <b><small class="text-danger warning-text">*Email field is required</small></b>
+                        }
+                        @if (email?.errors?.['pattern'] && (email?.touched || email?.dirty)) {
+                            <b><small class="text-danger warning-text">*Invalid Email Address</small></b>
+                        }
+                    </div>
+
+                    <div class="m-2 " style="height: 80px;">
+                        <b><small>
+                            <label class="form-label text-info" for="phone_number ">Phone Number</label>
+                        </small></b>
+                        <div class="d-flex">
+                            <div class="col-2 me-2">
+                                <input class="form-control rounded-0  phone-number " type="text" value="+91" readonly>
+                            </div>
+                            <div class="col">
+                                
+                                <input type="text" class="form-control rounded-0 register " placeholder="Enter Phone Number"
+                                    name="phone_number" id="phone_number" formControlName="phone_number" appNumberOnly />
+                            </div>
+                        </div>
+                        
+                      
+                        @if (phone_number?.errors?.['required'] && phone_number?.touched) {
+                            <b><small class="text-danger warning-text">*Phonenumber field is required</small></b> <br>
+                        }
+                        @if (phone_number?.errors?.['pattern']) {
+                            <b><small class="text-danger warning-text">*Phone Number should have only numbers</small></b> <br>
+                        }
+                        @if (phone_number?.errors?.['minlength'] || phone_number?.errors?.['maxlength'] ) {
+                            <b><small class="text-danger warning-text">*Phone Number should have 10 numbers</small></b> <br>
+                        }
+
+                    </div>
+
+
+
+                    <div class="col-3 m-2 mt-3" id="btn-div ">
+                        <button type="submit" class="form-control btn btn-info text-dark rounded-0 register" 
+                        id="submit" name="submit" [disabled]="registrationForm.invalid">Submit </button>
+                    </div>
+                    <div class="d-flex">
+                        <span class="mx-auto">
+                            Already Have An Account ?
+                            <a routerLink="/login" class="m-2 text-info">Login</a>
+                        </span>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+        <app-loader-login [isLoading]="isLoading"></app-loader-login>
+    </div>
+
+</div>

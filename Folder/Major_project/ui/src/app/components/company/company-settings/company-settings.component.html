@@ -1,0 +1,152 @@
+<div class="organisation-settings d-flex flex-column">
+  <app-loader [isLoading]="isLoading"></app-loader>
+  <div class="back-button d-flex align-items-center">
+    <a routerLink="/companies" class="back button">
+      <i class="bi bi-arrow-left"></i>&nbsp; &nbsp;<span>Back</span>
+    </a>
+  </div>
+  <div class="settings-title">
+    <p><strong>Company Settings</strong></p>
+  </div>
+  <hr class="separator">
+  <div class="sub-settings">
+    <p>Company Logo</p>
+  </div>
+  <div class="logo-container d-flex align-items-center">
+    <div class="upload-logo d-flex align-items-center">
+      <input type="file" id="company_logo" (change)="onFileChange($event)" accept="image/*" hidden />
+      <div class="d-flex flex-column align-items-center">
+        <label class="comp-logo" for="company_logo">Upload logo for Company</label>
+        <span id="file-chosen">{{ fileChosen }}</span>
+      </div>
+      <div class="d-flex flex-column">
+        <span style="margin-left: 2rem;">This Logo will be visible on Invoices and Emails</span>
+        <span style="margin-left: 2rem; font-size: 12px;">Preferred Image Dimensions: 240 x 240 pixels</span>
+      </div>
+    </div>
+    <div class="current-logo">
+      <div class="profile-picture-container d-flex flex-column align-items-center">
+        <img class="comp-image" id="comp-image" [src]="company_logo_path" alt="Company Logo" />
+        <label for="comp-image" class="comp-image-label">Current Logo</label>
+      </div>
+    </div>
+  </div>
+  <div class="mx-5">
+    <button type="button" class="btn btn-success ms-3" (click)="onImageUpload($event)">Upload</button>
+  </div>
+  <br>
+  <hr class="separator">
+  <div class="sub-settings">
+    <p>Company Details</p>
+  </div>
+  <div class="comp-settings-form">
+    <form [formGroup]="companySettingsForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="company_name">Company Name</label>
+        <input id="company_name" formControlName="company_name" placeholder="Enter Company Name">
+        <div class="d-flex align-items-center" *ngIf="companySettingsForm.get('company_name')?.invalid && (companySettingsForm.get('company_name')?.dirty || companySettingsForm.get('company_name')?.touched)">
+          <div class="invalid-field" *ngIf="companySettingsForm.get('company_name')?.errors?.['required']">&nbsp; Name is required.</div>
+          <div class="invalid-field" *ngIf="companySettingsForm.get('company_name')?.errors?.['maxlength']">&nbsp; Max 50 characters allowed.</div>
+          <div class="invalid-field" *ngIf="companySettingsForm.get('company_name')?.errors?.['minlength']">&nbsp; Min 3 characters allowed.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email_address">Email Address</label>
+        <input id="email_address" formControlName="email_address" placeholder="Enter Company Email Address">
+        <div class="d-flex align-items-center" *ngIf="companySettingsForm.get('email_address')?.invalid && (companySettingsForm.get('email_address')?.dirty || companySettingsForm.get('email_address')?.touched)">
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('email_address')?.errors?.['required']">&nbsp; Email address is required.</div>
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('email_address')?.errors?.['pattern']">&nbsp; Invalid email address format.</div>
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('email_address')?.hasError?.('maxlength')">&nbsp; Max 75 characters allowed.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="phone_number">Phone Number</label>
+        <input id="phone_number" formControlName="phone_number" placeholder="Enter Company Phone Number" appNumberOnly>
+        <div class="d-flex align-items-center" *ngIf="companySettingsForm.get('phone_number')?.invalid && (companySettingsForm.get('phone_number')?.dirty || companySettingsForm.get('phone_number')?.touched)">
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('phone_number')?.hasError?.('required')">&nbsp; Phone number is required.</div>
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('phone_number')?.hasError?.('pattern')">&nbsp; Phone number should be 10 digits long.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="vat_percent">VAT Percent</label>
+        <select id="vat_percent_setting" class="form-select" formControlName="vat_percent">
+          <option value="0%">0%</option>
+          <option value="5%">5%</option>
+          <option value="20%">20%</option>
+        </select>
+        <div class="d-flex align-items-center" *ngIf="companySettingsForm.get('vat_percent')?.invalid && (companySettingsForm.get('vat_percent')?.dirty || companySettingsForm.get('vat_percent')?.touched)">
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('vat_percent')?.hasError?.('required')">&nbsp; Vat Percent is required.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="address_line_1">Address Line 1</label>
+        <input id="address_line_1_settings" class="" formControlName="address_line_1" placeholder="Company Address Line 1" appSomeChars>
+        <div class="d-flex align-items-center" *ngIf="companySettingsForm.get('address_line_1')?.invalid && (companySettingsForm.get('address_line_1')?.dirty || companySettingsForm.get('address_line_1')?.touched)">
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('address_line_1')?.errors?.['required']">&nbsp; Address Line 1 is required.</div>
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('address_line_1')?.errors?.['minlength']">&nbsp; Min 3 characters allowed.</div>
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('address_line_1')?.errors?.['maxlength']">&nbsp; Max 50 characters allowed.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="address_line_2">Address Line 2</label>
+        <input id="address_line_2" formControlName="address_line_2" placeholder="Company Address Line 2" appSomeChars>
+        <div class="d-flex align-items-center" *ngIf="companySettingsForm.get('address_line_2')?.invalid && (companySettingsForm.get('address_line_2')?.dirty || companySettingsForm.get('address_line_2')?.touched)">
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('address_line_2')?.errors?.['maxlength']">&nbsp; Max 50 characters allowed.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="state">State</label>
+        <input id="state" formControlName="state" placeholder="Enter State">
+        <div class="d-flex align-items-center" *ngIf="companySettingsForm.get('state')?.invalid && (companySettingsForm.get('state')?.dirty || companySettingsForm.get('state')?.touched)">
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('state')?.errors?.['required']">&nbsp; State is required.</div>
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('state')?.errors?.['minlength']">&nbsp; Min 3 characters allowed.</div>
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('state')?.errors?.['maxlength']">&nbsp; Max 50 characters allowed.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="city">City</label>
+        <input id="city" formControlName="city" placeholder="Enter City">
+        <div class="d-flex align-items-center" *ngIf="companySettingsForm.get('city')?.invalid && (companySettingsForm.get('city')?.dirty || companySettingsForm.get('city')?.touched)">
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('city')?.errors?.['required']">&nbsp; City is required.</div>
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('city')?.errors?.['minlength']">&nbsp; Min 3 characters allowed.</div>
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('city')?.errors?.['maxlength']">&nbsp; Max 50 characters allowed.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="city">pincode</label>
+        <input id="city" formControlName="pincode" placeholder="Enter pincode">
+        <div class="d-flex align-items-center" *ngIf="companySettingsForm.get('pincode')?.invalid && (companySettingsForm.get('pincode')?.dirty || companySettingsForm.get('pincode')?.touched)">
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('pincode')?.errors?.['required']">&nbsp; Pincode is required.</div>
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('pincode')?.errors?.['minlength']">&nbsp; Min 6 characters allowed.</div>
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('pincode')?.errors?.['maxlength']">&nbsp; Max 6 characters allowed.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="country">Country</label>
+        <input id="country" formControlName="country" placeholder="Enter Country">
+        <div class="d-flex align-items-center" *ngIf="companySettingsForm.get('country')?.invalid && (companySettingsForm.get('country')?.dirty || companySettingsForm.get('country')?.touched)">
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('country')?.errors?.['required']">&nbsp; Country is required.</div>
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('country')?.errors?.['minlength']">&nbsp; Min 3 characters allowed.</div>
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('country')?.errors?.['maxlength']">&nbsp; Max 50 characters allowed.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" formControlName="company_description" placeholder="Company Description in brief"></textarea>
+        <div class="d-flex align-items-center" *ngIf="companySettingsForm.get('company_description')?.invalid && (companySettingsForm.get('company_description')?.dirty || companySettingsForm.get('company_description')?.touched)">
+          <div class="invalid-company-field" *ngIf="companySettingsForm.get('company_description')?.errors?.['required']"> Description is required.</div>
+        </div>
+      </div>
+      <br>
+      <div class="form-buttons">
+        <button type="submit" class="btn btn-success" [disabled]="this.companySettingsForm.invalid">Save</button>
+        <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">Reset</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,161 @@
+<app-loader [isLoading]="isLoading"></app-loader>
+
+<div class="row m-0 my-2 p-0">
+  <h4 class="text-white">Edit Organisation details</h4>
+  <form [formGroup]="editAdminOrgForm" class=" ">
+    <div class="row mb-3">
+      <div class="col-12 my-2">
+        <h6 class="text-info">Organisation Details</h6>
+      </div>
+      <div class="col-6">
+        <b>
+          <small>
+            <label class="form-label text-white m-0" for="organisation_name"
+              >Organisation name</label
+            >
+          </small>
+        </b>
+        <input
+          type="text"
+          class="form-control text-dark rounded-0"
+          placeholder="Organisation Name"
+          name="organisation_name"
+          id="organisation_name"
+          formControlName="organisationName"
+          readonly
+        />
+        <div class="error-message" *ngIf="isInputValid('organisationName')">
+          <small
+            class="text-danger"
+            *ngIf="
+              editAdminOrgForm.get('organisationName')?.hasError('required')
+            "
+          >
+            Organisation is required.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="
+              editAdminOrgForm.get('organisationName')?.hasError('pattern')
+            "
+          >
+            Invalid Organisation name.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="
+              editAdminOrgForm.get('organisationName')?.hasError('maxlength')
+            "
+          >
+            Exceeds 30 characters.
+          </small>
+        </div>
+      </div>
+      <div class="col-6" style="height: 50px">
+        <b>
+          <small>
+            <label class="form-label text-white m-0" for="email_address"
+              >Email</label
+            >
+            <span class="text-danger">*</span>
+          </small>
+        </b>
+        <input
+          type="email"
+          class="form-control text-dark rounded-0"
+          placeholder="Enter email address"
+          name="email_address"
+          id="email_address"
+          formControlName="emailAddress"
+        />
+        <div class="error-message" *ngIf="isInputValid('emailAddress')">
+          <small
+            class="text-danger"
+            *ngIf="editAdminOrgForm.get('emailAddress')?.hasError('required')"
+          >
+            Email is required.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="editAdminOrgForm.get('emailAddress')?.hasError('pattern')"
+          >
+            Invalid Email address.
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <div class="row my-3" style="height: 70px">
+      <div class="col-6">
+        <b>
+          <small>
+            <label class="form-label text-white m-0" for="description"
+              >Description</label
+            >
+          </small>
+        </b>
+        <input
+          type="text"
+          class="form-control text-dark rounded-0"
+          placeholder="Enter description"
+          name="description"
+          id="description"
+          formControlName="description"
+        />
+        <div class="error-message" *ngIf="isInputValid('description')">
+          <small
+            class="text-danger"
+            *ngIf="editAdminOrgForm.get('description')?.hasError('maxlength')"
+          >
+            Exceeds 250 charecters.
+          </small>
+        </div>
+      </div>
+      <div class="col-6" style="height: 70px">
+        <b>
+          <small>
+            <label class="form-label text-white m-0" for="contact_number"
+              >Contact number</label
+            >
+            <span class="text-danger">*</span>
+          </small>
+        </b>
+        <input
+          type="text"
+          class="form-control text-dark rounded-0"
+          placeholder="Enter contact number"
+          name="contact_number"
+          id="contact_number"
+          formControlName="contactNumber"
+        />
+        <div class="error-message" *ngIf="isInputValid('contactNumber')">
+          <small
+            class="text-danger"
+            *ngIf="editAdminOrgForm.get('contactNumber')?.hasError('required')"
+          >
+            Contact number is required.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="editAdminOrgForm.get('contactNumber')?.hasError('pattern')"
+          >
+            Invalid contact number.
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer my-2">
+      <button type="button" class="btn btn-danger mx-2" (click)="closeEdit()">
+        Close
+      </button>
+      <button
+        type="submit"
+        class="btn btn-success mx-2"
+        (click)="onSubmit()"
+        [disabled]="editAdminOrgForm.invalid"
+      >
+        Save Changes
+      </button>
+    </div>
+  </form>
+</div>

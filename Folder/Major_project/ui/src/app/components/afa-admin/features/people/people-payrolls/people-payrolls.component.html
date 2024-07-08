@@ -1,0 +1,226 @@
+<div class="p-2"> <!--  class="page-container" -->
+  <app-loader [isLoading]="isLoading"></app-loader>
+  <div class="detail-button">
+    <a routerLink="/people"  class="back button detail-back">
+      <i class="bi bi-arrow-left text-dark"></i>&nbsp; &nbsp;<span class="text-dark">Back</span>
+    </a>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center p-3">
+    <h2 class="mb-0">{{ people_name }} / Payrolls</h2>
+  </div>
+
+
+  <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseThree"
+          aria-expanded="false"
+          aria-controls="collapseThree"
+        >
+          Search Payrolls
+        </button>
+      </h2>
+      <div
+        id="collapseThree"
+        class="accordion-collapse collapse"
+        data-bs-parent="#accordionExample"
+      >
+        <div class="accordion-body">
+          <div class="search-form">
+            <form [formGroup]="searchPayrollForm" (ngSubmit)="onSearch()">
+              <div class="row">
+
+                <div class="col-3">
+                  <label for="payroll_batch_name">Payroll Batch Names</label>
+                  <kendo-combobox
+                    [data]="filteredPayrollBatchNames"
+                    textField="payroll_batch_name"
+                    valueField="payroll_batch_name"
+                    formControlName="payroll_batch_name"
+                    placeholder="Select Payroll Batch Name"
+                    [valuePrimitive]="true"
+                    [filterable]="true"
+                    (filterChange)="handlePayrollBatchNamesFilter($event)"
+                    class="k-search-combobox"
+                  >
+
+                  </kendo-combobox>
+                </div>
+
+                <div class="col-3">
+                  <label for="status">Rollback Status</label>
+                  <select
+                    id="status"
+                    formControlName="status"
+                    class="form-select"
+                  >
+                    <option value="" selected>Select Status</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                </div>
+
+                <div class="col-1 d-flex just-content-center">
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-secondary mt-4"
+                    (click)="resetSearchPayrollForm()"
+                  >
+                    Reset
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-sm btn-primary mt-4 mx-2"
+                    [disabled]="isFormEmpty()"
+                  >
+                    Search
+                  </button>
+                </div>
+
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="grid-container p-3">
+    <kendo-grid
+      [data]="gridData"
+      [pageSize]="pageSize"
+      [skip]="skip"
+      [pageable]="{ buttonCount: 5, info: true, type: 'numeric', pageSizes: true, previousNext: true }"
+      (pageChange)="pageChange($event)"
+      [loading]="gridloading"
+    >
+
+      <kendo-grid-column
+        title="S.No"
+        [headerStyle]="{'font-weight': 'bold'}"
+        [width]="60"
+      >
+          <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <div class="cell-padding">
+              {{ rowIndex + 1 }}
+            </div>
+          </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column field="payroll_batch_name" title="Payroll Batch Name"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="200"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <span kendoTooltip [title]="dataItem.payroll_batch_name">
+              {{dataItem.payroll_batch_name}}
+            </span>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column field="gross_salary" title="Gross Salary (&pound;)"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="150"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div style="text-align: right;">
+            <span kendoTooltip [title]="dataItem.gross_salary">
+              {{dataItem.gross_salary | currency:' '}}
+            </span>
+          </div>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column field="expense_amount" title="Expenses (&pound;)"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="150"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div style="text-align: right;">
+            <span kendoTooltip [title]="dataItem.expense_amount">
+              {{dataItem.expense_amount | currency:' '}}
+            </span>
+          </div>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column field="total_tax_deduction" title="Tax (&pound;)"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="120"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div style="text-align: right;">
+            <span kendoTooltip [title]="dataItem.total_tax_deduction">
+              {{dataItem.total_tax_deduction | currency:' '}}
+            </span>
+          </div>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column field="net_pay" title="Net Pay (&pound;)"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="150"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div style="text-align: right;">
+            <span kendoTooltip [title]="dataItem.net_pay">
+              {{dataItem.net_pay | currency:' '}}
+            </span>
+          </div>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column field="is_rollback" title="Rollback Status"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="150"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div class="button-container">
+            @if (dataItem.is_rollback === 1 ) {
+            <span title="Yes" class="badge rounded-pill text-bg-warning w-25">
+              Yes
+            </span
+            >
+            }@else if (dataItem.is_rollback === 0){
+              <span title="No" class="badge rounded-pill text-bg-primary w-25">
+                No
+              </span>
+            }
+          </div>
+        </ng-template>
+      </kendo-grid-column>
+
+
+      <kendo-grid-column field="action" title="Action"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="200"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <button class="btn btn-sm btn-smaller btn-eye" (click)="viewPdf(dataItem.payroll_history_id)"
+            title="View Payslip" tooltip="View Payslip">
+            <i class="fas fa-eye" style="font-weight: bold;"></i>
+          </button>
+          <button class="btn btn-sm btn-smaller btn-download" (click)="downloadPdf(dataItem.payroll_history_id)"
+            title="Download Payslip" tooltip="Download Payslip">
+            <i class="fas fa-download" style="font-weight: bold;"></i>
+          </button>
+          <button class="btn btn-sm btn-smaller btn-envelope"
+                  (click)="sendMail(dataItem)"
+                  [disabled]="isDisabled[dataItem.payroll_history_id]"
+                  title="Mail Payslip"
+                  tooltip="Mail Payslip">
+            <i class="fas fa-envelope" style="font-weight: bold;"></i>
+          </button>
+        </ng-template>
+      </kendo-grid-column>
+
+    </kendo-grid>
+  </div>
+
+</div>

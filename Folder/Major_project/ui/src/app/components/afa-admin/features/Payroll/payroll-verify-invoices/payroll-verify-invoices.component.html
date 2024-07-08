@@ -1,0 +1,145 @@
+<div class="page-container">
+    <div class="detail-button">
+        <a routerLink="/company/company-details/payroll-batch" class="back button detail-back">
+            <i class="bi bi-arrow-left text-dark"></i>&nbsp; &nbsp;<span class="text-dark ">Back</span>
+        </a>
+    </div>
+    <div class="row m-0 p-0">
+        <div class="col-6 my-auto">
+            <h3>{{companyName}} /Payroll</h3>
+        </div>
+        <div class="col-6 d-flex  justify-content-end my-2 px-0">
+            <button class=" btn btn-success" (click) = "verifiedSubmit()"[disabled]="!selectedLength" >Verify</button>
+        </div>
+
+        @if(unselectedLength){
+<div class="col-12 m-0 p-0 selected-grid mb-2">
+            <b><span class="text-danger">Unselected Invoice for Payroll batch</span></b>
+            <div class="selected-grid-body">
+                <div class="kendo-grid-component transistion-box ">
+                    <kendo-grid
+                    [data]="unselectedInvoices"
+                    [pageSize]="unselecetedPerPage"
+                    [pageable]="{
+                        buttonCount: buttonCount,
+                        info: info,
+                        type: type,
+                        pageSizes: pageSizes,
+                        previousNext: previousNext,
+                        position: position
+                      }"
+                    [skip]="(unselectedCurrentPage -1)*unselecetedPerPage"
+                    [loading]="gridloading"
+                    (pageChange)="unselectedPageChange($event)">
+                        <kendo-grid-column field="invoice_number" title="Invoice Number" [headerStyle]="{'font-weight':'bold'}"
+                            [width]="100">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <span class="custom-cell" [title]="dataItem.invoice_number">
+                                    {{ dataItem.invoice_number }}
+                                </span>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="payroll_batch_number" title="Payroll Batch Number" [headerStyle]="{'font-weight':'bold'}"
+                        [width]="125">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="payroll_batch_name" title="Payroll Batch Name" [headerStyle]="{'font-weight':'bold'}"
+                    [width]="115"></kendo-grid-column>
+                    <kendo-grid-column field="people_name" title="People Name" [headerStyle]="{'font-weight':'bold'}"
+                        [width]="115">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="customer_name" title="Customer Name" [headerStyle]="{'font-weight':'bold'}"
+                    [width]="115">
+                </kendo-grid-column>
+                    <kendo-grid-column field="period_end_date" title="Invoice Date" [headerStyle]="{'font-weight':'bold'}"
+                        [width]="115">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <span class="custom-cell" [title]="dataItem.period_end_date">
+                                {{ dataItem.period_end_date | date:'dd-MM-yyyy' }}
+                            </span>
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <kendo-grid-column field="total_amount" title="Total Amount (£)" [headerStyle]="{'font-weight':'bold'}"
+                        [width]="115">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                          <div style="text-align: right;">
+                            {{ dataItem.total_amount | currency:'':''}}
+                          </div>
+                        </ng-template>
+                    </kendo-grid-column>
+                    </kendo-grid>
+                </div>
+            </div>
+        </div>
+        }
+
+
+        <div class="col-12 m-0 p-0 selected-grid mb-4">
+            <b><span class="text-success ">Selected Invoice for Payroll batch</span></b>
+            <div class="selected-grid-body">
+                <div class="kendo-grid-component  transistion-box ">
+                    <kendo-grid
+                    [data]="selectedInvoices"
+                     [pageSize]="SelectedPerPage"
+                     [pageable]="{
+                        buttonCount: buttonCount,
+                        info: info,
+                        type: type,
+                        pageSizes: pageSizes,
+                        previousNext: previousNext,
+                        position: position
+                      }"
+                     [skip]="(selectedCurrentPage -1)*SelectedPerPage"
+                     [loading]="gridloading"
+                     (pageChange)="selectedPageChange($event)"
+                    >
+                        <kendo-grid-column field="invoice_number" title="Invoice Number" [headerStyle]="{'font-weight':'bold'}"
+                            [width]="100">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <span class="custom-cell" [title]="dataItem.invoice_number">
+                                    {{ dataItem.invoice_number }}
+                                </span>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="payroll_batch_number" title="Payroll Batch Number" [headerStyle]="{'font-weight':'bold'}"
+                            [width]="125">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="payroll_batch_name" title="Payroll Batch Name" [headerStyle]="{'font-weight':'bold'}"
+                            [width]="115">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="people_name" title="People Name" [headerStyle]="{'font-weight':'bold'}"
+                            [width]="115">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="customer_name" title="Customer Name" [headerStyle]="{'font-weight':'bold'}"
+                        [width]="115">
+                    </kendo-grid-column>
+
+                        <kendo-grid-column field="period_end_date" title="Invoice Date" [headerStyle]="{'font-weight':'bold'}"
+                            [width]="115">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <span class="custom-cell" [title]="dataItem.period_end_date">
+                                    {{ dataItem.period_end_date | date:'dd-MM-yyyy' }}
+                                </span>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="total_amount" title="Total Amount (£)" [headerStyle]="{'font-weight':'bold'}"
+                            [width]="115">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                              <div style="text-align: right;">
+                                {{ dataItem.total_amount | currency:'':''}}
+                              </div>
+                            </ng-template>
+                        </kendo-grid-column>
+                    </kendo-grid>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+</div>

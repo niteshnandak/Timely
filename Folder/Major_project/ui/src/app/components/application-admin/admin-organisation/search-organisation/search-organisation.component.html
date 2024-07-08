@@ -1,0 +1,67 @@
+<!-- FILTER ORGANISATION FORM -->
+<div class="row m-0 my-2 p-0">
+
+  <!-- search organisation form -->
+  <form [formGroup]="searchOrgForm">
+    <div class="col-12 my-2">
+      <h6 class="text-info">Search Organisation</h6>
+    </div>
+
+    <!-- organisation form group div -->
+    <div class="col-12">
+      <b>
+        <small>
+          <label class="form-label text-white m-0" for="organisation_name"
+            >Organisation name</label
+          >
+        </small>
+      </b>
+      <input
+        type="text"
+        class="form-control text-dark "
+        placeholder="Enter Organisation name"
+        name="organisation_name"
+        id="organisation_name"
+        formControlName="organisationName"
+      />
+    </div>
+    <br />
+
+    <!-- active status search select -->
+    <div class="col-12 text-dark">
+      <b>
+        <small>
+          <label class="form-label text-white m-0" for="status"
+            >Active status</label
+          >
+        </small>
+      </b>
+      <select
+        class="form-select text-dark "
+        name="status"
+        id="status"
+        formControlName="status"
+      >
+        <option value="null" selected disabled >Select</option>
+        <option value="1">Enabled</option>
+        <option value="false">Disabled</option>
+      </select>
+    </div>
+    <br />
+
+    <!-- submit search button -->
+    <div class="modal-footer my-2">
+      <button
+        type="submit"
+        class="btn btn-success mx-2"
+        (click)="onSubmit()"
+        [disabled]="!isAnyFieldFilled()"
+      >
+        Search
+      </button>
+      <button type="reset" class="btn btn-info mx-2" (click)="resetForm()">
+        Reset
+      </button>
+    </div>
+  </form>
+</div>

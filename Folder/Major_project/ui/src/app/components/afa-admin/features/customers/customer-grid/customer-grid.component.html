@@ -1,0 +1,189 @@
+<div>
+  <app-loader [isLoading]="isLoading"></app-loader>
+  <div class="p-3">
+    <h2 [@fontControl]="state === 'none' ? 'null' : 'open'"> {{company_name}} / Customers</h2>
+
+    <!-- Row for the customer stats and some details of the customer -->
+    <div class="row row-container" [@heightControl]="state === 'none' ? 'null' : 'open'">
+      <div class="p-2 col-6">
+        <div class="card big-card" [@heightControl]="state === 'none' ? 'null' : 'open'">
+          <div class="card-body" [@displayControl]="state === 'none' ? 'null' : 'open'">
+            <h5 class="card-title fw-bold text-body-secondary">Customers</h5>
+            <div class="row col-12">
+              <div class="z-2 row">
+                <div class="col-9">
+                  <p class="">Total number of customers: </p>
+                  <p class="">Total new customers in last week: </p>
+                  <p class="">Total new customers in last Month: </p>
+                </div>
+                <div class="col-2 fw-bold">
+                  <p class="">{{customer_total_count}}</p>
+                  <p class="">{{customer_week_count}}</p>
+                  <p class="">{{customer_month_count}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-2 col-3">
+        <div class="card small-card1" [@heightControl]="state === 'none' ? 'null' : 'open'">
+          <div class="card-body" [@displayControl]="state === 'none' ? 'null' : 'open'">
+            <h5 class="z-2 card-title text-body-secondary fw-bold">Customers Active</h5><br>
+            <div class="d-flex justify-content-center text-align-center">
+              <h6 class="card-subtitle mb-2 text-body-secondary fs-0 fw-bold">{{customer_total_count}}</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-2 col-3">
+        <div class="card small-card2 " [@heightControl]="state === 'none' ? 'null' : 'open'">
+          <div class="card-body" [@displayControl]="state === 'none' ? 'null' : 'open'">
+            <h5 class="z-2 card-title text-body-secondary fw-bold">Top Customers</h5><br>
+            <div class="d-flex justify-content-center text-align-center">
+              <b><p class="card-subtitle mb-2 text-body-secondary fs-6 fw-bold" *ngFor="let customer of top_customers">{{ customer }}</p></b>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row for the customers table and for the crud operations -->
+    <div class="row row-container" [@popOverState]="state !== 'none' ? 'open' : 'null'">
+      <div [ngClass]="(state === 'add' || state === 'edit') ? 'col-3': (state==='none' ||state === 'search') ? 'col-9': (state === 'expand') ? 'col-12 z-3':'' " class="kendo-grid-component p-2 transistion-box">
+
+
+
+        <!-- kendo grid for customer -->
+        <kendo-grid class="k-grid k-border-none"
+        [data]="customerGridData"
+        [pageable]="pageable_status"
+        [skip]="skip"
+        [pageSize]="take"
+        (pageChange)="customerPageChange($event)"
+        >
+        <kendo-grid-column field="customer_name" title="Name"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="115">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span class="custom-cell" [title]="dataItem.customer_name" >
+              {{ dataItem.customer_name }}
+            </span>
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="email_address" title="Email"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="130">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span class="custom-cell" [title]="dataItem.email_address" >
+              {{ dataItem.email_address }}
+            </span>
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="phone_number" title="Phone Number"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="130" >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span class="custom-cell" [title]="dataItem.phone_number" >
+              {{ dataItem.phone_number }}
+            </span>
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="city" title="City"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="95" >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span class="custom-cell" [title]="dataItem.city" >
+              {{ dataItem.city }}
+            </span>
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="Action" title="Action"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="90"
+        [sticky]="true">
+        <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+          Actions &nbsp; &nbsp;
+
+            @if(state! == "expand"){
+              <button (click)="toggleState('expand', null)" class="btn btn-sm btn-smaller btn-dark text-white btn-edit" title="Minimize">
+                <i class="bi bi-arrows-angle-contract"></i>
+              </button>
+            }
+            @else{
+              <button (click)="toggleState('expand', null)" class="btn btn-sm btn-smaller btn-dark text-white btn-edit" title="Expand">
+                <i class="bi bi-arrows-angle-expand"></i>
+              </button>
+            }
+
+       </ng-template>
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <button class="btn btn-sm btn-smaller btn-edit"  title="Edit" tooltip="Edit" (click)="toggleState('edit', dataItem.customer_id)"  >
+              <i class="fas fa-edit" style="font-weight: bold;"  ></i>
+          </button>
+          <button class="btn btn-sm btn-smaller btn-delete" data-bs-toggle="modal" data-bs-target="#deleteCustomerModal" title="Delete" tooltip="Delete" (click)="setDataItem(dataItem.customer_id)">
+              <i class="fas fa-trash" style="font-weight: bold;"></i>
+          </button>
+        </ng-template>
+        </kendo-grid-column>
+        </kendo-grid>
+      </div>
+      <div [ngClass]="(state === 'add' || state === 'edit') ? 'col-9': (state==='none' ||state === 'search') ? 'col-3': (state === 'expand') ? 'minimize z-4':'' " class="p-2 transistion-box">
+        <div class="search-container p-2">
+          @if(state != 'edit'){
+            <div class="radio-inputs">
+              <label class="radio">
+                <input type="radio" name="radio" [checked]="state === 'search'" (click)="toggleState('search', null)">
+                <span class="name">
+                  @if (state === 'search') {
+                    <i class="bi bi-x-lg"></i> &nbsp; Close
+                  }@else {
+                    <i class="bi bi-search"></i> &nbsp; Search
+                  }
+                </span>
+              </label>
+              <label class="radio">
+                <input type="radio" name="radio" [checked]="state === 'add'" (click)="toggleState('add', null)">
+                <span class="name">
+                    @if (state === 'add') {
+                      <i class="bi bi-x-lg"></i> &nbsp; Close
+                    }@else {
+                      <i class="bi bi-file-plus-fill"></i> &nbsp; Add
+                    }
+                </span>
+              </label>
+            </div>
+          }
+          <div>
+
+            <router-outlet></router-outlet>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="deleteCustomerModal" tabindex="-1" aria-labelledby="deleteCustomerModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="deleteCustomerModal">Delete</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure want to delete the Customer
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success"  data-bs-dismiss="modal" (click)="deleteCustomerData(deleteCustomerId)">Proceed</button>
+      </div>
+    </div>
+  </div>
+</div>

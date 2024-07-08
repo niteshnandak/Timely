@@ -1,0 +1,235 @@
+<div>
+  <app-loader [isLoading]="isLoading"></app-loader>
+    <div class="p-3">
+      <h2>{{company_name}} / Assignments</h2>
+      <div class="row row-container" [@heightControl]="state === 'none' ? 'null' : 'open'">
+        <div class="p-2 col-6">
+          <div class="card big-card" [@heightControl]="state === 'none' ? 'null' : 'open'">
+            <div class="card-body" [@displayControl]="state === 'none' ? 'null' : 'open'">
+              <h5 class="card-title fw-bold text-body-secondary">Assignments</h5>
+              <div class="row col-12">
+                <div class="z-2 row">
+                  <div class="col-9">
+                    <p class="">Total number of assignments: </p>
+                    <p class="">Total new assignments in last week: </p>
+                    <p class="">Total new assignments in last Month: </p>
+                  </div>
+                  <div class="col-2 fw-bold">
+                    <p class="">{{assignment_total_count}}</p>
+                    <p class="">{{assignment_week_count}}</p>
+                    <p class="">{{assignment_month_count}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="p-2 col-3">
+          <div class="card small-card1" [@heightControl]="state === 'none' ? 'null' : 'open'">
+            <div class="card-body" [@displayControl]="state === 'none' ? 'null' : 'open'">
+              <h5 class="z-2 card-title text-body-secondary fw-bold">Assignments Completed</h5><br>
+              <div class="d-flex justify-content-center text-align-center">
+                <h6 class="card-subtitle mb-2 text-body-secondary fs-0 fw-bold">{{assignment_completed_count}}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="p-2 col-3">
+          <div class="card small-card2 " [@heightControl]="state === 'none' ? 'null' : 'open'">
+            <div class="card-body" [@displayControl]="state === 'none' ? 'null' : 'open'">
+              <h5 class="z-2 card-title text-body-secondary fw-bold">Assignments Ongoing</h5><br>
+              <div class="d-flex justify-content-center text-align-center">
+                <h6 class="card-subtitle mb-2 text-body-secondary fs-0 fw-bold">{{assignment_ongoing_count}}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row row-container" [@popOverState]="state !== 'none' ? 'open' : 'null'">
+        <div [ngClass]="state === 'add' || state === 'edit' ? 'col-3':'col-9' " class="kendo-grid-component p-2 transistion-box">
+
+          <kendo-grid class="k-grid k-border-none"
+              [data]="assignmentGridData"
+              [pageable]="pageable_status"
+              [skip]="skip"
+              [pageSize]="take"
+              [loading]="gridLoading"
+              (pageChange)="assignmentPageChange($event)"
+              >
+
+              <kendo-grid-column field="assignment_num" title="Ass. No"
+              [headerStyle]="{'font-weight':'bold'}"
+              [width]="75">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <span class="custom-cell" [title]="dataItem.assignment_num" >
+                  {{ dataItem.assignment_num }}
+                </span>
+              </ng-template>
+              </kendo-grid-column>
+
+              <kendo-grid-column field="people_name" title="People Name"
+                [headerStyle]="{'font-weight':'bold'}"
+                [width]="115">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                  <span class="custom-cell" [title]="dataItem.people_name" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                    {{ dataItem.people_name }}
+                  </span>
+                </ng-template>
+              </kendo-grid-column>
+
+              <kendo-grid-column field="customer_name" title="Customer Name"
+              [headerStyle]="{'font-weight':'bold'}"
+              [width]="135">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <span class="custom-cell" [title]="dataItem.customer_name" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                  {{ dataItem.customer_name }}
+                </span>
+              </ng-template>
+            </kendo-grid-column>
+
+              <kendo-grid-column field="start_date" title="Start Date"
+              [headerStyle]="{'font-weight':'bold'}"
+              [width]="110">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                  {{ dataItem.start_date | date:'dd-MM-yyyy' }}
+              </ng-template>
+              </kendo-grid-column>
+
+              <kendo-grid-column field="end_date" title="End Date"
+              [headerStyle]="{'font-weight':'bold'}"
+              [width]="110">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                  {{ dataItem.end_date | date:'dd-MM-yyyy' }}
+              </ng-template>
+              </kendo-grid-column>
+
+              <kendo-grid-column field="role" title="Role"
+              [headerStyle]="{'font-weight':'bold'}"
+              [width]="90">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <span class="custom-cell" [title]="dataItem.role" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                  {{ dataItem.role }}
+                </span>
+              </ng-template>
+            </kendo-grid-column>
+
+              <kendo-grid-column field="location" title="Location"
+              [headerStyle]="{'font-weight':'bold'}"
+              [width]="85">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <span class="custom-cell" [title]="dataItem.location" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                  {{ dataItem.location }}
+                </span>
+              </ng-template>
+            </kendo-grid-column>
+
+            <!-- <kendo-grid-column field="description" title="Description"
+              [headerStyle]="{'font-weight':'bold'}"
+              [width]="115">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <span class="custom-cell text-truncate" [title]="dataItem.description">
+                  {{ dataItem.description }}
+                </span>
+              </ng-template>
+            </kendo-grid-column> -->
+
+              <kendo-grid-column field="status" title="Status"
+              [headerStyle]="{'font-weight':'bold'}"
+              [width]="70">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div class="button-container">
+                  @if (dataItem.status === 'Ongoing' || dataItem.status == '1'  ) {
+                    <span class="badge rounded-pill text-bg-info ">Ongoing</span>
+                  }@else if (dataItem.status === 'Completed' || dataItem.status == '2'){
+                    <span class="badge rounded-pill text-bg-success">Completed</span>
+                  }@else{
+                    <span class="badge rounded-pill text-bg-danger">Pending</span>
+                  }
+                </div>
+              </ng-template>
+            </kendo-grid-column>
+
+              <kendo-grid-column field="type" title="Type"
+              [headerStyle]="{'font-weight':'bold'}"
+              [width]="70">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div class="button-container">
+                  @if (dataItem.type === '1') {
+                    <span class="badge rounded-pill text-bg-danger">Part Time</span>
+                  }@else if (dataItem.type === '2'){
+                    <span class="badge rounded-pill text-bg-success">Full Time</span>
+                  }@else{
+                    <span class="badge rounded-pill text-bg-info">Contract</span>
+                  }
+                </div>
+              </ng-template>
+            </kendo-grid-column>
+
+              <kendo-grid-column field="action" title="Action"
+              [headerStyle]="{'font-weight':'bold'}"
+              [width]="90"
+              [sticky]="true">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                  <button class="btn btn-sm btn-smaller btn-edit"  title="Edit" tooltip="Edit" (click)=" toggleState('edit',dataItem.assignment_id)">
+                      <i class="fas fa-edit" style="font-weight: bold;"></i>
+                  </button>
+                  <button class="btn btn-sm btn-smaller btn-delete"  title="Delete" tooltip="Delete" data-bs-toggle="modal" data-bs-target="#deleteAssignmentModal" (click)="setDataItem(dataItem.assignment_id)">
+                    <i class="fas fa-trash" style="font-weight: bold;"></i>
+                </button>
+              </ng-template>
+              </kendo-grid-column>
+              <!-- <ng-template kendoGridRowClass let-dataItem>
+                {{ dataItem.assignment_id === currentEditAssignmentId ? 'highlight' : '' }}
+              </ng-template> -->
+              </kendo-grid>
+        </div>
+        <div [ngClass]="state === 'add' || state === 'edit' ? 'col-9':'col-3'" class="col-3 p-2 transistion-box">
+          <div class="search-container p-2">
+            <div class="radio-inputs">
+              <label class="radio">
+                <input type="radio" name="radio" [checked]="state === 'search'" (click)="toggleState('search', null)">
+                <span class="name">
+                  @if (state === 'search') {
+                    <i class="bi bi-x-lg"></i> &nbsp; Close
+                  }@else {
+                    <i class="bi bi-search"></i> &nbsp; Detailed Search
+                  }
+                </span>
+              </label>
+              <label class="radio">
+                <input type="radio" name="radio" [checked]="state === 'add'" (click)="toggleState('add', null)">
+                <span class="name">
+                    @if (state === 'add') {
+                      <i class="bi bi-x-lg"></i> &nbsp; Close
+                    }@else {
+                      <i class="bi bi-file-plus-fill"></i> &nbsp; Add
+                    }
+                </span>
+              </label>
+            </div>
+            <div>
+              <router-outlet></router-outlet>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="deleteAssignmentModal" tabindex="-1" aria-labelledby="deleteAssignmentModal" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="deleteAssignmentModal">Delete Assignments</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure want to Delete this Assignment?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-success"  data-bs-dismiss="modal" (click)="deleteAssignmentData(deleteAssignmentId)">Proceed</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

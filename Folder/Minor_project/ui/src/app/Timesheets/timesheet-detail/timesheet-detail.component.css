@@ -1,0 +1,54 @@
+.grid-container{
+    position: relative;
+}
+
+#action-button{
+    border:none;
+    background : none;
+    padding : 3px;
+    cursor : pointer;
+    outline: none;
+    display: inline-block;
+    text-align: center;
+    vertical-align : middle;
+}
+
+.grid-container ::ng-deep kendo-grid-group-panel,
+.grid-container ::ng-deep kendo-grid-toolbar {
+    background-color: black; /* Set the background color of the toolbar */
+    color: white; /* Set the text color of the toolbar */
+    /* Add any additional styles as needed */
+}
+
+.right-aligned {
+    text-align: right;
+  }
+
+  .mandatory {
+    color: red;
+  }
+  .btn-dark {
+    margin-left: 10px; /* Adjust the value as needed */
+  }
+
+  .btn-dark, .btn-primary{
+    margin-top: 10px;
+  }
+
+  .btn-draft-status{
+    margin-top: 0px !important;
+  }
+
+  .warning-text {
+    font-size : 12px;
+    font-weight: bolder;
+  }
+
+  form{
+    overflow-x: hidden;
+
+  }
+  .offcanvas-title{
+    height: 10px !important;
+  }
+

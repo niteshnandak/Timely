@@ -1,0 +1,85 @@
+<app-loader [isLoading]="isLoading"></app-loader>
+<div class="col-12 m-0 p-0">
+  <div class="sidenavbar" (mouseenter)="expandSidebar()" (mouseleave)="collapseSidebar()">
+    <div class="logo-container">
+      <button class="logo" >T</button> <!-- routerLink="dashboard" -->
+      <div class="logo-text" *ngIf="isOpen">Timely</div>
+    </div>
+
+    <ul class="sidenavbar-nav">
+
+      <!-- ADMIN-LOGIN NAVBAR -->
+      <ng-container *ngIf="showAdminOptions">
+        <li class="sidenavbar-nav-item" *ngFor="let data of adminNav">
+          <a class="sidenavbar-nav-link" [routerLink]="data.routeLink"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }">
+            <i class="sidenavbar-link-icon" [class]="data.icon"></i>
+            <span class="sidenavbar-link-text" *ngIf="isOpen">{{ data.label }}</span>
+          </a>
+        </li>
+      </ng-container>
+
+      <!-- !showCompanyOptions -->
+      <ng-container *ngIf="!showAdminOptions">
+        <li class="sidenavbar-nav-item" *ngFor="let data of navData">
+          <a class="sidenavbar-nav-link" [routerLink]="data.routeLink" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <i class="sidenavbar-link-icon" [class]="data.icon"></i>
+            <span class="sidenavbar-link-text" *ngIf="isOpen">{{ data.label }}</span>
+          </a>
+        </li>
+      </ng-container>
+      <li class="sidenavbar-divider"></li>
+      <!-- Display company-specific navigation options -->
+      <ng-container *ngIf="showCompanyOptions && companyId">
+        <li class="sidenavbar-nav-item" *ngFor="let data of companyNav">
+          <a class="sidenavbar-nav-link" [routerLink]="data.routeLink.replace('id', companyId)"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <i class="sidenavbar-link-icon" [class]="data.icon"></i>
+            <span class="sidenavbar-link-text" *ngIf="isOpen">{{ data.label }}</span>
+          </a>
+        </li>
+      </ng-container>
+    </ul>
+    <ul class="sidenavbar-nav-admin">
+      <div class="sidenavbar-admin my-3">
+        <img src="assets/images/admin.png" alt="Admin Profile" class="profile-image">
+        <span class="sidenavbar-admin-text" *ngIf="isOpen">{{name.firstname + ' ' + name.surname}}</span>
+      </div>
+      <li class="sidenavbar-nav-item" *ngFor="let data of bottomNavdata">
+        <a class="sidenavbar-nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" data-bs-toggle="modal" data-bs-target="#logoutModal">
+          <i class="sidenavbar-link-icon" [class]="data.icon"></i>
+          <span class="sidenavbar-link-text" *ngIf="isOpen">{{ data.label }}</span>
+        </a>
+
+        <!-- Logout Modal -->
+        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+          <!-- <app-loader [isLoading]="isLoading"></app-loader> -->
+          <div class="modal-dialog modal-sm"> <!-- modal-dialog-centered -->
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="logoutModalLabel"><i class="bi bi-lock-fill reg-icons"></i>Logout?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="logoutFromAllDevices" [(ngModel)]="logoutFromAllDevices"/>
+                  <label class="form-check-label" for="logoutFromAllDevices">Logout from all devices?</label>
+                </div>
+                <div *ngIf="logoutFromAllDevices" class="text-warning mt-1" style="font-size: 0.65rem;">
+                  <i class="bi bi-info-circle"></i> You will be logged out from all devices.
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="logout()">Logout</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

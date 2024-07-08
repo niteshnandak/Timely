@@ -1,0 +1,82 @@
+<div class="row m-0 my-2 p-0">
+    <h5 class="text-white mt-0">Search Assignment</h5>
+  <form class=" "[formGroup]="searchAssignmentForm" (ngSubmit)="searchAssignmentFormSubmit()">
+    <div class="row">
+        <!-- <div class="col-12 my-2">
+            <h6 class="text-info">
+                Assignment Details
+            </h6>
+        </div> -->
+        <div class="col-12">
+            <b>
+                <small>
+                    <label class="form-label text-white m-0" for="people_name">Person Name </label>
+                </small>
+            </b>
+            <input type="text" class="form-control text-dark"
+            placeholder="Enter People Name" name="people_name" id="people_name"
+            formControlName="people_name">
+        </div>
+        <div class="col-12">
+            <b>
+                <small>
+                    <label class="form-label text-white m-0" for="customer_name">Customer Name </label>
+                </small>
+            </b>
+            <input type="text" class="form-control text-dark"
+            placeholder="Enter Customer Name" name="customer_name" id="customer_name"
+            formControlName="customer_name">
+        </div>
+        <div class="col-12">
+            <b>
+                <small>
+                    <label class="form-label text-white m-0" for="start_date">Start Date </label>
+                </small>
+            </b>
+            <input type="date" class="form-control text-dark"
+            placeholder="YYYY-MM-DD" name="start_date" id="start_date"
+            formControlName="start_date">
+        </div>
+        <div class="col-12">
+            <b>
+                <small>
+                    <label class="form-label text-white m-0" for="end_date">End Date </label>
+                </small>
+            </b>
+            <input type="date" class="form-control text-dark"
+            placeholder="YYYY-MM-DD" name="end_date" id="end_date"
+            formControlName="end_date">
+        </div>
+        <!-- <div class="col-12">
+            <b>
+                <small>
+                    <label class="form-label text-white m-0" for="status">Status </label>
+                </small>
+            </b>
+            <input type="text" class="form-control text-dark"
+            placeholder="Enter Status" name="status" id="status"
+            formControlName="status">
+        </div> -->
+        <div class="col-12">
+            <b>
+                <small>
+                    <label class="form-label text-white m-0" for="status">Status </label>
+                </small>
+            </b>
+            <select class="form-select text-dark " name="status" id="status"
+             formControlName="status">
+                <option value="" disabled selected>Select Status</option>
+                <option value="Ongoing">Ongoing</option>
+                <option value="Completed">Completed</option>
+                <option value="Pending">Pending</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer my-2">
+        <button type="Reset" class="btn btn-info mx-2" (click)="searchAssignmentResetForm()">Reset</button> 
+        <button type="submit" class="btn btn-success mx-2" [disabled]="searchAssignmentForm.invalid">Search</button>
+    </div>
+  </form>
+  
+  </div>
+    

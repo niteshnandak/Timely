@@ -1,0 +1,443 @@
+<div class="container">
+  <div
+    class="border border-2 p-3 my-4 bg-light"
+    *ngIf="getTimesheetDetail.csv_flag === 0 || 1"
+  >
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="text-dark-emphasis">
+        {{
+          getTimesheetDetail.csv_flag === 1
+            ? "Uploaded From File"
+            : "Manual Timesheet"
+        }}: {{ getTimesheetDetail.timesheets_name }}
+      </h5>
+      <div class="text-end" *ngIf="getTimesheetDetail.csv_flag === 0 && getTimesheetDetail.invoice_status == 0">
+        <button
+        *ngIf="getTimesheetDetail.timesheet_count !== 0"
+        class="btn btn-success me-2"
+        type="button"
+        (click)="updateDraftStatus()"
+        >
+          <i class="fa-solid fa-file-export"></i> Send to invoice
+        </button>
+        <button
+          class="btn btn-primary btn-draft-status"
+          type="button"
+          (click)="toggleAddRowForm()"
+        >
+          <i class="bi bi-plus-circle"></i> Add Row
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="" *ngIf="getTimesheetDetail.csv_flag === 0">
+    <div class="col-lg-12 my-3">
+      <div
+        class="offcanvas offcanvas-end"
+        tabindex="-1"
+        id="addRowOffcanvas"
+        [ngClass]="{ show: showAddRowForm }"
+      >
+        <div class="offcanvas-header m-0 ms-4 my-1 p-0">
+          <h5 class="offcanvas-title">Add Row</h5>
+          <button
+            type="button"
+            class="btn-close me-2 my-2"
+            (click)="toggleAddRowForm()"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <div
+          class="offcanvas-body form m-0 p-0"
+        >
+          <form [formGroup]="addRowForm" (ngSubmit)="onAddRow()">
+            <div class="container">
+              <div class="col-12 m-0 p-0 mb-3 staticHeight">
+                <label for="worker_name" class="form-label"
+                  >Worker Name <span class="mandatory">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="worker_name"
+                  formControlName="worker_name"
+                  placeholder="Enter Worker Name"
+                />
+                <div
+                  *ngIf="
+                    addRowForm.get('worker_name')?.invalid &&
+                    (addRowForm.get('worker_name')?.dirty ||
+                      addRowForm.get('worker_name')?.touched)"
+                >
+                  <div
+                    *ngIf="addRowForm.get('worker_name')?.errors?.['required']"
+                    class="text-danger warning-text"
+                  >
+                    *Worker Name is required.
+                  </div>
+                  <div
+                    *ngIf="addRowForm.get('worker_name')?.errors?.['pattern']"
+                    class="text-danger warning-text"
+                  >
+                    *Only alphabets are allowed.
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 mb-3 staticHeight">
+                <label for="worker_id" class="form-label"
+                  >Worker ID<span class="mandatory">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="worker_id"
+                  formControlName="worker_id"
+                  placeholder="Enter Worker ID"
+                  appNumberOnly
+                />
+                <div
+                  *ngIf="
+                    addRowForm.get('worker_id')?.invalid &&
+                    (addRowForm.get('worker_id')?.dirty ||
+                      addRowForm.get('worker_id')?.touched)"
+                >
+                  <div
+                    *ngIf="addRowForm.get('worker_id')?.errors?.['required']"
+                    class="text-danger warning-text"
+                  >
+                    *Worker ID is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 mb-3 staticHeight">
+                <label for="date" class="form-label"
+                  >Date<span class="mandatory">*</span></label
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  id="date"
+                  formControlName="timesheet_detail_date"
+                  placeholder="Enter Date"
+                  (click)="clearInvalidDate($event)"
+                />
+                <div
+                  *ngIf="
+                    addRowForm.get('timesheet_detail_date')?.invalid &&
+                    (addRowForm.get('timesheet_detail_date')?.dirty ||
+                      addRowForm.get('timesheet_detail_date')?.touched)"
+                >
+                  <div
+                    *ngIf="addRowForm.get('timesheet_detail_date')?.errors?.['required']"
+                    class="text-danger warning-text"
+                  >
+                    *Date is required.
+                  </div>
+                  <div
+                    *ngIf="addRowForm.get('timesheet_detail_date')?.errors?.['maxYear']"
+                    class="text-danger warning-text"
+                  >
+                  *Date cannot be greater than the current year.
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 mb-3 staticHeight">
+                <label for="organisation" class="form-label"
+                  >Organisation<span class="mandatory">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="organisation"
+                  formControlName="organisation"
+                  placeholder="Enter Organisation"
+                />
+                <div
+                  *ngIf="
+                    addRowForm.get('organisation')?.invalid &&
+                    (addRowForm.get('organisation')?.dirty ||
+                      addRowForm.get('organisation')?.touched)"
+                >
+                  <div
+                    *ngIf="addRowForm.get('organisation')?.errors?.['required']"
+                    class="text-danger warning-text"
+                  >
+                    *Organisation is required.
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6 mb-3 staticHeight">
+                  <label for="hourly_pay" class="form-label"
+                    >Hourly Pay <span class="mandatory">*</span></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="hourly_pay"
+                    formControlName="hourly_pay"
+                    placeholder="Enter Hourly Pay"
+                  />
+                  <div
+                    *ngIf="
+                      addRowForm.get('hourly_pay')?.invalid &&
+                      (addRowForm.get('hourly_pay')?.dirty ||
+                        addRowForm.get('hourly_pay')?.touched)"
+                  >
+                    <div
+                      *ngIf="addRowForm.get('hourly_pay')?.errors?.['required']"
+                      class="text-danger warning-text"
+                    >
+                      *Hourly pay is required.
+                    </div>
+                    <div
+                      *ngIf="addRowForm.get('hourly_pay')?.errors?.['pattern']"
+                      class="text-danger warning-text"
+                    >
+                      *Only numbers are allowed.
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 mb-3 staticHeight">
+                  <label for="hours_worked" class="form-label"
+                    >Hours Worked<span class="mandatory">*</span></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="hours_worked"
+                    formControlName="hours_worked"
+                    placeholder="Enter Hours Worked"
+                  />
+                  <div
+                    *ngIf="
+                      addRowForm.get('hours_worked')?.invalid &&
+                      (addRowForm.get('hours_worked')?.dirty ||
+                        addRowForm.get('hours_worked')?.touched)"
+                  >
+                    <div
+                      *ngIf="addRowForm.get('hours_worked')?.errors?.['required']"
+                      class="text-danger warning-text"
+                    >
+                      *Hours worked is required.
+                    </div>
+                    <div
+                      *ngIf="addRowForm.get('hours_worked')?.errors?.['pattern']"
+                      class="text-danger warning-text"
+                    >
+                      *Only numbers are allowed.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-1">
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  [disabled]="addRowForm.invalid"
+                >
+                  Submit
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-dark"
+                  (click)="resetForm()"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <kendo-grid class="grid-container"
+    [data]="grid"
+    [pageSize]="pageSize"
+    [skip]="skip"
+    [height]="500"
+    [pageable]="true"
+    (pageChange)="pageChange($event)"
+    [groupable]="true"
+    [group]="groups"
+    [loading]="gridloading"
+    (groupChange)="groupChange($event)"
+    [filterable]="true"
+    [filter]="filter"
+    (filterChange)="filterChange($event)"
+    (edit)="editHandler($event)"
+    (cancel)="cancelHandler($event)"
+    (save)="saveHandler($event)"
+  >
+    <kendo-grid-column
+      title="S.No"
+      [headerStyle]="{ 'font-weight': 'bold' }"
+      [width]="60"
+    >
+      <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+        {{ rowIndex + 1 }}
+      </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column
+      field="worker_name"
+      [headerStyle]="{ 'font-weight': 'bold' }"
+      title="Worker Name"
+    ></kendo-grid-column>
+
+    <kendo-grid-column
+      field="worker_id"
+      [headerStyle]="{ 'font-weight': 'bold' }"
+      title="Worker Id"
+      [width]="100"
+    ></kendo-grid-column>
+
+    <kendo-grid-column
+      field="organisation"
+      [headerStyle]="{ 'font-weight': 'bold' }"
+      title="Organisation"
+    ></kendo-grid-column>
+
+    <kendo-grid-column
+      field="hourly_pay"
+      [headerStyle]="{ 'font-weight': 'bold' }"
+      title="Hourly Pay(£)"
+      [style]="{ 'text-align': 'right' }"
+    >
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <span>{{ dataItem.hourly_pay }}</span>
+      </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column
+      field="hours_worked"
+      [headerStyle]="{ 'font-weight': 'bold' }"
+      title="Hours Worked"
+      [style]="{ 'text-align': 'right' }"
+    ></kendo-grid-column>
+
+    <kendo-grid-column
+      [headerStyle]="{ 'font-weight': 'bold' }"
+      title="Status"
+      [width]="150"
+    >
+      <ng-template kendoGridCellTemplate let-dataItem>
+        @if(dataItem.draft_status) { Draft }
+        @else if(!dataItem.draft_status && dataItem.invoice_status) { Invoiced }
+        @else if(!dataItem.draft_status) { Invoicing }
+      </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-command-column
+      *ngIf="getTimesheetDetail.invoice_status === 0"
+      title="Actions"
+      [headerStyle]="{ 'font-weight': 'bold' }"
+      [width]="150"
+    >
+      <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem>
+        @if (!dataItem.draft_status && !dataItem.invoice_status ){ Invoicing }
+        @if(!dataItem.draft_status && dataItem.invoice_status){ Invoiced } @if
+        (dataItem.draft_status){
+        <button
+          id="action-button"
+          kendoGridEditCommand
+          type="button"
+          title="Edit"
+          (click)="clickHandler(dataItem.id)"
+        >
+          <i class="fas fa-edit"></i>
+        </button>
+        <button
+          kendoGridRemoveCommand
+          id="action-button"
+          type="button"
+          title="Delete"
+          data-bs-toggle="modal"
+          data-bs-target="#deleteItemModal"
+        >
+          <i class="fa-solid fa-trash"></i>
+        </button>
+        <!-- Deleted Timesheet Invoice Modal -->
+        <div
+          class="modal fade"
+          id="deleteItemModal"
+          data-bs-backdrop="static"
+          data-bs-keyboard="false"
+          tabindex="-1"
+          aria-labelledby="deleteItemModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deleteItemModalLabel">
+                  Delete Timesheet Entry
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to Delete this Timesheet Item?
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-dark"
+                  data-bs-dismiss="modal"
+                  (click)="removeHandler(dataItem.timesheet_id, dataItem.id)"
+                >
+                  Yes
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  No
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+          kendoGridSaveCommand
+          type="button"
+          id="action-button"
+          title="Update"
+        >
+          <i class="fa-solid fa-circle-check"></i>
+        </button>
+        <button
+          kendoGridCancelCommand
+          type="button"
+          id="action-button"
+          title="Cancel"
+          (click)="isEditing[dataItem.id] = false"
+        >
+          <i class="fa-solid fa-circle-xmark"></i>
+        </button>
+        }
+      </ng-template>
+    </kendo-grid-command-column>
+  </kendo-grid>
+
+  <div
+    class="mb-3 my-3 text-end"
+    *ngIf="getTimesheetDetail.csv_flag === 0 || 1"
+  >
+    <button
+      class="btn btn-dark"
+      routerLink="/timesheet"
+      [state]="{ skip: timesheet_skip.skip }"
+    >
+      <i class="bi bi-arrow-return-left"></i> Back
+    </button>
+  </div>
+</div>

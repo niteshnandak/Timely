@@ -1,0 +1,87 @@
+<div>
+  <app-loader [isLoading]="isLoading"></app-loader>
+  <div class="p-3">
+    <h2>Companies</h2>
+    <div class="row row-container" [@heightControl]="state === 'none' ? 'null' : 'open'">
+      <div class="p-2 col-6">
+        <div class="card big-card" [@heightControl]="state === 'none' ? 'null' : 'open'">
+          <div class="card-body" [@displayControl]="state === 'none' ? 'null' : 'open'">
+            <h5 class="z-2 card-title text-body-secondary fw-bold">Companies</h5>
+            <div class="row col-12">
+              <div class="z-2 row">
+                <div class="col-9">
+                  <p class="">Total number of Companies: </p>
+                  <p class="">Total new Companies in last week: </p>
+                  <p class="">Total new Companies in last Month: </p>
+                </div>
+                <div class="col-2 fw-bold">
+                  <p class="">{{ stats.total_companies }}</p>
+                  <p class="">{{ stats.new_companies_last_week }}</p>
+                  <p class="">{{ stats.new_companies_last_month }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-2 col-3">
+        <div class="card small-card1" [@heightControl]="state === 'none' ? 'null' : 'open'">
+          <div class="card-body" [@displayControl]="state === 'none' ? 'null' : 'open'">
+            <h5 class="z-2 card-title text-body-secondary fw-bold">Active Companies</h5>
+            <div class="d-flex justify-content-center text-align-center">
+              <h6 class="card-subtitle mb-2 text-body-secondary fs-0 fw-bold">{{ stats.active_companies }}</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-2 col-3">
+        <div class="card small-card2" [@heightControl]="state === 'none' ? 'null' : 'open'">
+          <div class="card-body" [@displayControl]="state === 'none' ? 'null' : 'open'">
+            <h5 class="z-2 card-title text-body-secondary fw-bold">Top 3 companies</h5>
+            <div class="d-flex justify-content-center text-align-center">
+              <div class="col-9 reduce-paragraph-spacing">
+                <b><p *ngFor="let company of stats.top_companies">{{ company }}</p></b>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="row row-container" [@popOverState]="state !== 'none' ? 'open' : 'null'">
+      <div [ngClass]="state === 'add' ? 'col-3':'col-9' " class="kendo-grid-component p-2 transistion-box">
+        <app-company-kendo-grid (statusUpdated)="onStatusUpdated()"></app-company-kendo-grid>
+      </div>
+      <div [ngClass]="state === 'add' ? 'col-9':'col-3'" class="col-3 p-2 transistion-box">
+        <div class="search-container p-2">
+          <div class="radio-inputs">
+            <label class="radio">
+              <input type="radio" name="radio" [checked]="state === 'search'" (click)="toggleState('search')">
+              <span class="name">
+                @if (state === 'search') {
+                  <i class="bi bi-x-lg"></i> &nbsp; Close
+                }@else {
+                  <i class="bi bi-search"></i> &nbsp; Detailed Search
+                }
+              </span>
+            </label>
+            <label class="radio">
+              <input type="radio" name="radio" [checked]="state === 'add'" (click)="toggleState('add')">
+              <span class="name">
+                  @if (state === 'add') {
+                    <i class="bi bi-x-lg"></i> &nbsp; Close
+                  }@else {
+                    <i class="bi bi-file-plus-fill"></i> &nbsp; Add
+                  }
+              </span>
+            </label>
+          </div>
+          <div>
+            <router-outlet></router-outlet>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

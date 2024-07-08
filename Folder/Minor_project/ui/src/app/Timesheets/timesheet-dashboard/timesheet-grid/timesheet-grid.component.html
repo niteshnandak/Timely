@@ -1,0 +1,86 @@
+
+
+
+<kendo-grid class="grid-container"
+[data]="grid"
+[pageSize]="pageSize"
+[skip]="skip"
+[height]="500"
+[pageable]="true"
+(pageChange)="pageChange($event)"
+[groupable]="true"
+[group]="groups"
+[loading]="gridloading"
+(groupChange)="groupChange($event)"
+[filterable]="true"
+[filter]="filter"
+(filterChange)="filterChange($event)"
+>
+
+  <kendo-grid-column
+  title="S.No"
+  [headerStyle]="{'font-weight': 'bold'}"
+  [width]="60"
+  >
+    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+      {{ rowIndex + 1 }}
+    </ng-template>
+  </kendo-grid-column>
+
+  <kendo-grid-column
+  field="timesheet_name"
+  [headerStyle]="{'font-weight': 'bold'}"
+  title="Timesheet Name"
+  ></kendo-grid-column>
+
+  <kendo-grid-column
+  field="timesheet_date"
+  [headerStyle]="{'font-weight': 'bold'}"
+  title="Timesheet Date"
+    ></kendo-grid-column>
+
+  <kendo-grid-column
+  field="timesheet_detail_count"
+  [headerStyle]="{'font-weight': 'bold'}"
+  title="No of rows"
+  [width]="150"
+  filter="numeric"
+  >
+  <ng-template kendoGridCellTemplate let-dataItem>
+    @if(dataItem.timesheet_detail_count === 0){
+      Empty
+    }
+    @else {
+      {{dataItem.timesheet_detail_count}}
+    }
+  </ng-template>
+
+
+  </kendo-grid-column>
+
+  <kendo-grid-column
+  [headerStyle]="{'font-weight': 'bold'}"
+  title="Status"
+  [width]="150"
+  >
+
+  <ng-template kendoGridCellTemplate let-dataItem>
+    @if(dataItem.invoice_status === 1){
+      Invoiced
+    }
+    @else {
+      Draft
+    }
+  </ng-template>
+
+  </kendo-grid-column>
+
+    <kendo-grid-column title="Actions"
+    [headerStyle]="{'font-weight': 'bold'}"
+    [width]="100" >
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <button class="btn btn-sm btn-smaller"  title="View Timesheet" tooltip="View Timesheet" (click)="navigateToTimehsheetDetail(dataItem.id)">
+          <i class="fa-solid fa-eye"></i>
+        </button>
+      </ng-template>
+    </kendo-grid-column>

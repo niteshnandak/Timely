@@ -1,0 +1,220 @@
+<div class="row m-0 p-0">
+    <h4 class="text-white mt-3">Add Assignment</h4>
+<form class="" [formGroup]="addAssignmentForm" (ngSubmit)="addAssignmentFormSubmit()" >
+    <!-- <div class="col-12 m-0 p-0">
+        <h6 class="text-info">
+            Assignment Details
+        </h6>
+    </div> -->
+    <div class="row ">
+        <div class="col-3 input-height">
+            <b>
+                <small>
+                    <label class="form-label text-white m-0" for="people_name">Person Name <span class="text-danger">*</span></label>
+                </small>
+            </b>
+            <select class="form-select text-dark" name="people_name" id="people_name" formControlName="people_name">
+                <option value="" disabled selected>Select Person</option>
+                <!-- Loop through fetched people names -->
+                <option *ngFor="let person of people" [value]="person.people_id">{{ person.people_name }}</option>
+            </select>
+            <div>
+               @if (peopleName?.errors?.['required'] && (peopleName?.touched || peopleName?.dirty)) {
+                <b><small class="error-message" >*Person Name field is required</small></b>
+            } 
+            </div>
+            
+        </div>
+        <div class="col-3" input-height>
+            <b>
+                <small>
+                    <label class="form-label text-white m-0" for="customer_name">Customer Name <span class="text-danger">*</span></label>
+                </small>
+            </b>
+            <select class="form-select text-dark" name="customer_name" id="customer_name" formControlName="customer_name">
+                <option value="" disabled selected>Select Customer</option>
+                <!-- Loop through fetched customer names -->
+                <option *ngFor="let customer of customers" [value]="customer.customer_id">{{ customer.customer_name }}</option>
+            </select>
+            <div>
+               @if (customerName?.errors?.['required'] && (customerName?.touched || customerName?.dirty)) {
+                <b><small class="error-message" >*Customer Name field is required</small></b>
+            } 
+            </div>
+            
+        </div>
+        <div class="col-3 input-height">
+            <b>
+                <small>
+                    <label class="form-label text-white m-0" for="start_date">Start Date <span class="text-danger">*</span></label>
+                </small>
+            </b>
+            <input type="date" class="form-control text-dark"
+            placeholder="YYYY-MM-DD" name="start_date" id="start_date" (click)="clearInvalidDate($event)"
+            formControlName="start_date">
+            <div>
+                @if (startDate?.errors?.['required'] && (startDate?.touched || startDate?.dirty)) {
+                <b><small class="error-message" >*Start Date field is required</small></b>
+                }
+                @if (startDate?.errors?.['maxYear']){
+                    <b><small class="error-message">*Date cannot be greater than the current year</small></b>
+                }
+            </div>
+    
+        </div>
+        <div class="col-3 input-height">
+            <b>
+                <small>
+                    <label class="form-label text-white m-0" for="end_date">End Date <span class="text-danger">*</span></label>
+                </small>
+            </b>
+            <input type="date" class="form-control text-dark"
+            placeholder="YYYY-MM-DD" name="end_date" id="end_date"
+            formControlName="end_date">
+            <div>
+               @if (endDate?.errors?.['required'] && (endDate?.touched || endDate?.dirty)) {
+                <b><small class="error-message" >*End Date field is required</small></b>
+                }
+                @if (endDate?.errors?.['pattern']){
+                    <b><small class="error-message" >*End Date must be in DD-MM-YYYY format</small></b>
+                } 
+            </div>
+        </div>
+        <div class="col-3 input-height">
+            <b>
+                <small>
+                    <label class="form-label text-white m-0" for="role">Role <span class="text-danger">*</span></label>
+                </small>
+            </b>
+            <input type="text" class="form-control text-dark"
+            placeholder="Enter Role" name="role" id="role" maxlength="51"
+            formControlName="role">
+            <div>
+                @if (role?.errors?.['required'] && (role?.touched || role?.dirty)) {
+                    <b><small class="error-message">*Role field is required</small></b>
+                }
+                @if(role?.errors?.['pattern'] || role?.errors?.['maxlength'] || role?.errors?.['minlength']){
+                    @if (role?.errors?.['pattern']){
+                        <b><small class="error-message">*Only characters are allowed </small></b>
+                    }  
+                    @else if(role?.errors?.['maxlength']){
+                        <b><small class="error-message">*Field Exceeds the Max Length of 50 characters</small></b>
+                    }
+                    @else if(role?.errors?.['minlength']){
+                        <b><small class="error-message">*Field should have the Min Length of 3 characters</small></b>
+                    }
+                    @else{
+                    <b><small class="error-message"></small></b>
+                    } 
+                }
+            </div>
+            
+        </div>
+        <div class="col-3 input-height">
+             <b>
+                <small>
+                    <label class="form-label text-white m-0" for="location">Location <span class="text-danger">*</span></label>
+                </small>
+            </b>
+            <input type="text" class="form-control text-dark"
+            placeholder="Enter Location" name="location" id="location" maxlength="51"
+            formControlName="location">
+            <div>
+                @if (location?.errors?.['required'] && (location?.touched || location?.dirty)) {
+                <b><small class="error-message" >*Location field is required</small></b>
+                }
+                @if (location?.errors?.['pattern'] || location?.errors?.['maxlength'] || location?.errors?.['minlength']){
+                    @if (location?.errors?.['pattern']){
+                        <b><small class="error-message">*Only characters are allowed </small></b>
+                    }  
+                    @else if(location?.errors?.['maxlength']){
+                        <b><small class="error-message">*Field Exceeds the Max Length of 50 characters</small></b>
+                    }
+                    @else if(location?.errors?.['minlength']){
+                        <b><small class="error-message">*Field should have the Min Length of 3 characters</small></b>
+                    }
+                    @else{
+                    <b><small class="error-message"></small></b>
+                    } 
+                } 
+            </div>
+            
+        </div>
+
+        <div class="col-3 input-height">
+            <b>
+                <small>
+                    <label class="form-label text-white m-0" for="status">Status <span class="text-danger">*</span></label>
+                </small>
+            </b>
+            <select class="form-select text-dark" name="status" id="status"
+             formControlName="status">
+                <option value="" disabled selected>Select Status</option>
+                <option value="1">Ongoing</option>
+                <option value="2">Completed</option>
+                <option value="3">Pending</option>
+            </select>
+            <div>
+                @if (status?.errors?.['required'] && (status?.touched || status?.dirty)) {
+                <b><small class="error-message" >*Status field is required</small></b>
+            }
+            </div>
+            
+        </div>
+
+        <div class="col-3 input-height">
+            <b>
+                <small>
+                    <label class="form-label text-white m-0" for="type">Type <span class="text-danger">*</span></label>
+                </small>
+            </b>
+            <select class="form-select text-dark" name="type" id="type"
+            formControlName="type">
+                <option value="" disabled selected>Select Type</option>
+                <option value="1">Part Time</option>
+                <option value="2">Full Time</option>
+                <option value="3">Contract</option>
+            </select>
+            <div>
+              @if (type?.errors?.['required'] && (type?.touched || type?.dirty)) {
+                <b><small class="error-message" >*Type field is required</small></b>
+            }  
+            </div>
+            
+        </div>
+
+        <div class="col-6 input-height">
+            <b>
+                <small>
+                    <label class="form-label text-white m-0" for="description">Description <span class="text-danger">*</span></label>
+                </small>
+            </b>
+            <textarea class="form-control text-dark h-100"
+            placeholder="Enter Description" name="description" id="description" maxlength="2001"
+            formControlName="description"></textarea>
+            <div>
+                @if (description?.errors?.['required'] && (description?.touched || description?.dirty)) {
+                <b><small class="error-message" >*Description field is required</small></b>
+                }  
+                @if (description?.errors?.['maxlength'] || description?.errors?.['minlength']){ 
+                    @if(description?.errors?.['maxlength']){
+                        <b><small class="error-message">*Field Exceeds the Max Length of 2000 characters</small></b>
+                    }
+                    @else if(description?.errors?.['minlength']){
+                        <b><small class="error-message">*Field should have the Min Length of 3 characters</small></b>
+                    }
+                    @else{
+                    <b><small class="error-message"></small></b>
+                    } 
+                }
+            </div>  
+        </div>
+
+    <div class="modal-footer-assignment my-2">
+        <button type="Reset" class="btn btn-info mx-2" (click)="addAssignmentResetForm()">Reset</button> 
+        <button type="submit" class="btn btn-success mx-2" [disabled]="!(this.addAssignmentForm.valid)" >Save</button>  
+    </div>
+</div>
+</form> 
+</div>
+

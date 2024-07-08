@@ -1,0 +1,272 @@
+<div>
+  <app-loader [isLoading]="isLoading"></app-loader>
+  <div class="detail-button">
+    <a routerLink="/people" class="back button detail-back">
+      <i class="bi bi-arrow-left text-dark"></i>&nbsp; &nbsp;<span
+        class="text-dark"
+        >Back</span
+      >
+    </a>
+  </div>
+  <div class="d-flex justify-content-between align-items-center p-3">
+    <h2 class="mb-0">{{ peopleName }}/Invoices</h2>
+  </div>
+
+  <!-- ACCORDION SEARCH -->
+  <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseSearch"
+          aria-expanded="false"
+          aria-controls="collapseSearch"
+        >
+          Search Invoices
+        </button>
+      </h2>
+      <div
+        id="collapseSearch"
+        class="accordion-collapse collapse"
+        data-bs-parent="#accordionExample"
+      >
+        <div class="accordion-body">
+          <div class="search-form">
+            <form [formGroup]="searchFormData" (ngSubmit)="onSearch()">
+              <div class="row">
+                <div class="col-2">
+                  <label for="invoiceNumber">Invoice Number</label>
+                  <input
+                    type="text"
+                    id="invoiceNumber"
+                    placeholder="Enter Invoice Number"
+                    formControlName="invoiceNumber"
+                    class="form-control"
+                  />
+                </div>
+                <div class="col-3">
+                  <label for="assignmentNumber">Assignment Number</label>
+                  <input
+                    type="text"
+                    id="assignmentNumber"
+                    placeholder="Enter Assignment Number"
+                    formControlName="assignmentNumber"
+                    class="form-control"
+                  />
+                </div>
+                <div class="col-3">
+                  <label for="customerName">Customer Name</label>
+                  <input
+                    type="text"
+                    id="customerName"
+                    placeholder="Enter Customer Name"
+                    formControlName="customerName"
+                    class="form-control"
+                  />
+                </div>
+                <div class="col-2">
+                  <label for="periodEndDate">Period End Date</label>
+                  <input
+                    type="date"
+                    id="periodEndDate"
+                    placeholder="Enter Period End Date"
+                    formControlName="periodEndDate"
+                    class="form-control"
+                  />
+                </div>
+
+                <div class="col-2">
+                  <label for="emailStatus">Email Status</label>
+                  <select
+                    id="emailStatus"
+                    formControlName="emailStatus"
+                    class="form-select"
+                  >
+                    <option value="" selected disabled>Select</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </div>
+                <div class="col-2">
+                  <label for="payrollStatus">Payroll Status</label>
+                  <select
+                    id="payrollStatus"
+                    formControlName="payrollStatus"
+                    class="form-select"
+                  >
+                    <option value="" selected disabled>Select</option>
+                    <option value="processed">Yes</option>
+                    <option value="pending">No</option>
+                  </select>
+                </div>
+                <div
+                  class="col-10 d-flex justify-content-end align-items-center mt-3"
+                >
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-secondary"
+                    (click)="onSearchReset()"
+                  >
+                    Reset
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-sm btn-primary mx-2"
+                    [disabled]="isFormEmpty()"
+                  >
+                    Search
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-container p-3">
+    <kendo-grid
+      class="k-grid k-border-none"
+      [data]="gridData"
+      [pageable]="true"
+      [skip]="skip"
+      [pageSize]="pageSize"
+      [loading]="isGridLoading"
+      (pageChange)="pageChange($event)"
+    >
+      <kendo-grid-column
+        field="invoice_number"
+        title="Invoice No"
+        [headerStyle]="{ 'font-weight': 'bold' }"
+        [width]="100"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <span class="custom-cell" [title]="dataItem.invoice_number">{{
+            dataItem.invoice_number
+          }}</span>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column
+        field="people_name"
+        title="People Name"
+        [headerStyle]="{ 'font-weight': 'bold' }"
+        [width]="120"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <span class="custom-cell" [title]="dataItem.people_name">{{
+            dataItem.people_name
+          }}</span>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column
+        field="assignment_num"
+        title="Assign. No"
+        [headerStyle]="{ 'font-weight': 'bold' }"
+        [width]="110"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <span class="custom-cell" [title]="dataItem.assignment_num">{{
+            dataItem.assignment_num
+          }}</span>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column
+        field="customer_name"
+        title="Customer Name"
+        [headerStyle]="{ 'font-weight': 'bold' }"
+        [width]="140"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <span class="custom-cell" [title]="dataItem.customer_name">{{
+            dataItem.customer_name
+          }}</span>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column
+        field="period_end_date"
+        title="Period End Date"
+        [headerStyle]="{ 'font-weight': 'bold' }"
+        [width]="130"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          {{ dataItem.period_end_date | date : "dd-MM-yyyy" }}
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column
+        field="total_amount"
+        title="Total Amount (£)"
+        [headerStyle]="{ 'font-weight': 'bold' }"
+        [width]="100"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          {{ dataItem.total_amount }}
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column
+        field="email_status"
+        title="Email Status"
+        [headerStyle]="{ 'font-weight': 'bold' }"
+        [width]="100"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div class="button-container">
+            @if (dataItem.email_status === 'yes' ) {
+            <span
+              [title]="dataItem.email_status"
+              class="badge rounded-pill text-bg-success"
+              >Yes</span
+            >
+            }@else if (dataItem.email_status === 'no'){
+            <span
+              [title]="dataItem.email_status"
+              class="badge rounded-pill text-bg-danger"
+              >No</span
+            >
+            }
+          </div>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column
+        field="payroll_status"
+        title="Payroll Status"
+        [headerStyle]="{ 'font-weight': 'bold' }"
+        [width]="100"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div class="button-container">
+            @if (dataItem.payroll_status === 'processed' ) {
+            <span
+              [title]="dataItem.payroll_status"
+              class="badge rounded-pill text-bg-success"
+              >Yes</span
+            >
+            } @else if (dataItem.payroll_status === 'pending'){
+            <span
+              [title]="dataItem.payroll_status"
+              class="badge rounded-pill text-bg-danger"
+              >No</span
+            >
+            } @else {
+            <span
+              [title]="dataItem.payroll_status"
+              class="badge rounded-pill text-bg-danger"
+              >Failed</span
+            >
+
+            }
+          </div>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
+  </div>
+</div>

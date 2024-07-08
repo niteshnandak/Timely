@@ -1,0 +1,68 @@
+<div>
+  <div class="detail-button">
+    <a routerLink="/companies" class="back button detail-back">
+      <i class="bi bi-arrow-left text-dark"></i>&nbsp; &nbsp;<span class="text-dark ">Back</span>
+    </a>
+  </div>
+
+  <app-loader [isLoading]="isLoading"></app-loader>
+  <div class="p-3">
+    <h2 class="text-dark">
+    {{ company?.company_name }}</h2>
+    <div class="row">
+      <div class="p-2 col-6">
+        <div class="card big-cardC">
+          <div class="card-body">
+            <img class="company-logoC" [src]="company_logo_path" alt="Company Logo" />
+            <hr class="company-logo-separator">
+            <div class="company-detailsC">
+              <p><b>Company Name:</b> {{ company?.company_name }}</p>
+              <p><b>Company Email:</b> {{ company?.email_address }}</p>
+              <p><b>Address:</b>
+                <span>{{ company?.address?.address_line_1 }}</span>,
+                <span>{{ company?.address?.address_line_2 }}</span>,
+              </p>
+              <p><b>Phone No:</b> {{ company?.phone_number }}</p>
+              <p><b>City:</b> {{company?.address?.city}}</p>
+              <p><b>State:</b> {{company?.address?.state}}</p>
+              <p><b>Country:</b> {{company?.address?.country}}</p>
+              <p><b>Pincode:</b> {{company?.address?.pincode}}</p>
+            </div>
+            <!-- <div class="company-descriptionC">
+              <p><b>Company Description:</b> {{ company?.company_description }}</p>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="p-2 col-3">
+        <div class="card assignment-cardC">
+          <div class="card-body">
+            <h5 class="card-titleC">Total No of Assignments</h5>
+            <p class="card-numberC">{{assignment_total_count}}</p>
+            <h5 class="card-title">New Assignments in past 7 days</h5>
+            <p class="card-numberC">{{assignment_week_count}}</p>
+            <h5 class="card-title">New Assignments in past 1 month</h5>
+            <p class="card-numberC">{{assignment_month_count}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="p-2 col-3">
+        <div class="card customer-cardC">
+          <div class="card-body">
+            <h5 class="card-titleC">Total No of Customers</h5>
+            <p class="card-numberC">{{customer_total_count}}</p>
+            <h5 class="card-title">New Customers in past 7 days</h5>
+            <p class="card-numberC">{{customer_week_count}}</p>
+          </div>
+        </div>
+          <div class="card vat-cardC">
+            <div class="card-body">
+              <h5 class="card-titleC">VAT Percent</h5>
+              <p class="card-numberC">{{company?.vat_percent}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+</div>

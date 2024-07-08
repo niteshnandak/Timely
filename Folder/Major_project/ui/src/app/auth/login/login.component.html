@@ -1,0 +1,84 @@
+<div class="container">
+  <app-loader [isLoading]="isLoading"></app-loader>
+  <h2 class="text-center font-weight-bold pb-5">LOGIN</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+
+    <div class="form-floating mb-4">
+      <!-- <i class="bi bi-person-circle reg-icons"></i> -->
+      <input
+        type="text"
+        id="identifier"
+        class="form-control"
+        formControlName="identifier"
+        placeholder="Enter Username or Email"
+      />
+      <label for="identifier">Username or Email</label>
+
+      <div class="error-message" *ngIf="isInputValid('identifier')">
+        <small
+          class="text-danger"
+          *ngIf="loginForm.get('identifier')?.hasError('required')"
+        >
+          Username or Email is required.
+        </small>
+        <small
+          class="text-danger"
+          *ngIf="loginForm.get('identifier')?.hasError('emailOrUsername')"
+        >
+          Enter valid Username or Email
+        </small>
+        <small
+          class="text-danger"
+          *ngIf="loginForm.get('identifier')?.hasError('maxlength')"
+        >
+          Should should not exceed 30 Characters.
+        </small>
+      </div>
+    </div>
+
+
+    <div class="form-floating">
+      <!-- <i class="bi bi-lock-fill reg-icons"></i> -->
+      <!-- <i class="bi bi-key-fill reg-icons"></i> -->
+      <input
+        type="password"
+        id="password"
+        class="form-control"
+        formControlName="password"
+        placeholder="Enter Password"
+      />
+      <label for="password">Password</label>
+
+      <div class="error-message" *ngIf="isInputValid('password')">
+        <small
+          class="text-danger"
+          *ngIf="loginForm.get('password')?.hasError('required')"
+        >
+          Password is required.
+        </small>
+      </div>
+    </div>
+
+
+    <div class="mt-4">
+      <button
+        type="submit"
+        class="btn btn-dark register-button"
+        [disabled]="loginForm.invalid"
+      >
+        Login
+      </button>
+    </div>
+  </form>
+
+  <div class="d-flex flex-column justify-content-center align-items-center">
+    <div class="mt-2 mb-1">
+      <a style="cursor: pointer;" class="text-secondary" (click)="toForgotPassword()">Forgot Password?</a>
+    </div>
+    <div class="">
+      <p>Dont have a account?
+        <span><a style="cursor: pointer;" class="text-secondary" (click)="toRegister()">Register</a></span>
+      </p>
+    </div>
+  </div>
+</div>

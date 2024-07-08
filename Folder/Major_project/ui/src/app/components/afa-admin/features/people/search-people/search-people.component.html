@@ -1,0 +1,73 @@
+<div class="row m-0  p-0">
+    <h5 class="text-white my-2">Search People</h5>
+<form class=" "[formGroup]="searchPeopleForm" (ngSubmit)="searchPeopleFormSubmit()">
+    <div class="row " formGroupName="peopleSearchDetails"  >
+       
+        <div class="col-12">
+            <b>
+                <small>
+                    <label class="form-label text-white m-0" for="people_name ">People Name</label>
+                </small>
+            </b>
+            <input type="text" class="form-control text-dark " placeholder="People Name" name="people_name"
+                id="people_name" formControlName="people_name"  />
+        </div>
+        <div class="col-12">
+
+            <b>
+                <small>
+                    <label class="form-label text-white m-0" for="job_title ">Job Title</label>
+                </small>
+            </b>
+            <input type="text" class="form-control text-dark" placeholder="Job Title" name="job_title"
+                id="job_title" formControlName="job_title" />
+        </div>
+
+        <div class="col-12">
+            <b>
+                <small>
+                    <label class="form-label text-white m-0" for="gender">Gender</label>
+                </small>
+            </b>
+            <select class="form-select text-dark" name="gender" id="gender" formControlName="gender">
+                <option [ngValue]="null" selected >Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Others">Others</option>
+            </select>
+        </div>
+
+        <div class="col-12">
+            <b>
+                <small>
+                    <label class="form-label text-white m-0" for="company_name ">Company Name</label>
+                </small>
+            </b>
+            <select class="form-select text-dark" name="company_name" id="company_name" formControlName="company_name">
+                <option [ngValue]="null"  selected>Select Company</option>
+                <option *ngFor="let company of companies" [value]="company.company_id" >{{company.company_name}}</option>
+            </select>
+           
+        </div>
+
+        <div class="col-12 my-1">
+            <b>
+                <small>
+                    <label class="form-label text-white m-0" for="joining_date ">Joining Date</label>
+                </small>
+            </b>
+            <input type="date" class="form-control text-dark register m-0" placeholder=" Joining Date"
+                name="joining_date" id="joining_date" formControlName="joining_date" />
+        </div>
+
+    </div>
+
+
+
+
+    <div class="modal-footer my-2">
+        <button type="reset" class="btn btn-info mx-2" (click)="resetForm()">Reset</button>
+        <button type="submit" class="btn btn-success mx-2" >Search</button>
+    </div>
+</form>
+</div>

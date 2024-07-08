@@ -1,0 +1,373 @@
+<div>
+  <div class="p-3">
+    <div class="row">
+      <div class="col-10">
+        <!-- main header -->
+        <h3>Organisations</h3>
+      </div>
+
+      <!-- div button to show whether data or not  -->
+      <div class="col-2 d-flex justify-content-end">
+        <button
+          class="btn-info btn-sm p-2 text-white rounded"
+          (click)="toggleShowCard()"
+        >
+          <!-- <i class="bi bi-info-circle"></i>  -->
+          @if (!isOrgsStatShown) {Show Info} @else{ Hide Info}
+        </button>
+      </div>
+    </div>
+
+    <!-- container grid to changes the ratio based on its state -->
+    <div
+      class="row row-container-grid transistion-box"
+      id="toggleShowCard"
+      [ngClass]="!isOrgsStatShown ? 'status-box-close' : 'status-box-open'"
+    >
+      <!-- organisation stats display div -->
+      <div class="p-2 col-6">
+        <div class="card big-card">
+          <!-- organisation rescent stats div -->
+          <div class="card-body">
+            <div class="row m-0 p-0">
+              <div class="col-10 m-0 p-0">
+                <p>
+                  Number of organizations currently registered:
+
+                  <strong
+                    ><span>{{ org_total_count }}</span></strong
+                  >
+                </p>
+                <p>
+                  Joined within the previous seven days:
+                  <strong
+                    ><span> {{ org_week_count }}</span></strong
+                  >
+                </p>
+                <p>
+                  Joined in the last thirty days:
+                  <strong
+                    ><span>{{ org_month_count }}</span></strong
+                  >
+                </p>
+              </div>
+              <div class="col-2 m-0 p-0 mt-3">
+                <img
+                  src="assets/org img/organization-svgrepo-com.svg"
+                  alt="Admin Profile"
+                  class="card-info-image"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-2 col-3">
+        <div class="card small-card1">
+          <div class="card-body">
+            <h5 class="card-title">Active Organisations</h5>
+
+            <!-- organisation active count div -->
+            <div class="row m-0 p-0">
+              <div class="col-6 m-0 p-0">
+                <div class="col-9 mt-4 mx-auto">
+                  <h6
+                    class="card-subtitle mb-2 text-body-secondary fs-1 fw-bold"
+                  >
+                    {{ org_active_count }}
+                  </h6>
+                </div>
+              </div>
+              <div class="col-5 m-0 p-0 card-image">
+                <img
+                  src="assets/org img/checkbox-circle-svgrepo-com.svg"
+                  alt="Admin Profile"
+                  class="card-info-image"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-2 col-3">
+        <div class="card small-card2">
+          <!-- org_inactive_count div -->
+          <div class="card-body">
+            <h5 class="card-title">Inactive Organisations</h5>
+            <div class="row m-0 p-0">
+              <div class="col-6 m-0 p-0">
+                <div class="col-9 mt-4 mx-auto">
+                  <h6
+                    class="card-subtitle mb-2 text-body-secondary fs-1 fw-bold"
+                  >
+                    {{ org_inactive_count }}
+                  </h6>
+                </div>
+              </div>
+              <div class="col-4 mt-2 m-0 p-0">
+                <img
+                  src="assets/org img/inactive-svgrepo-com.svg"
+                  alt="Admin Profile"
+                  class="card-info-image"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="row grid-body"
+      [@popOverState]="state !== 'none' ? 'open' : 'null'"
+    >
+      <!-- [ngClass]="state === 'add' || state === 'edit' ? 'col-3' : 'col-9'" -->
+
+      <!-- kendogrid -->
+      <div
+        [ngClass]="state === 'add' || state === 'edit' ? 'col-3' : 'col-9'"
+        class="kendo-grid-component p-2 transistion-box"
+      >
+        <kendo-grid
+          class="k-grid k-border-none"
+          [data]="gridData"
+          [pageSize]="pageSize"
+          [skip]="skip"
+          [pageable]="true"
+          (pageChange)="pageChange($event)"
+          [loading]="gridloading"
+        >
+          <!-- <kendo-grid-column
+            title="S.No"
+            [headerStyle]="{ 'font-weight': 'bold' }"
+            [width]="50"
+          >
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem
+              let-rowIndex="rowIndex"
+            >
+              {{ rowIndex + 1 }}
+            </ng-template>
+          </kendo-grid-column> -->
+
+          <!-- name kendo column -->
+          <kendo-grid-column
+            field="name"
+            title="Organisation Name"
+            [headerStyle]="{ 'font-weight': 'bold' }"
+            [width]="100"
+          >
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span kendoTooltip [title]="dataItem.name">{{
+                dataItem.name
+              }}</span>
+            </ng-template>
+          </kendo-grid-column>
+
+          <!-- status kendo column -->
+          <kendo-grid-column
+            field="status"
+            title="Active Status"
+            [headerStyle]="{ 'font-weight': 'bold' }"
+            [width]="75"
+          >
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <div class="button-container">
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    [checked]="dataItem.status == 1"
+                    (click)="toggleActiveStatus(dataItem)"
+                  />
+                  @if(dataItem.status===1){
+                  <span class="slider" [title]="'Active'"></span>
+                  }@else {
+                  <span class="slider" [title]="'Inactive'"></span>
+                  }
+                </label>
+              </div>
+            </ng-template>
+          </kendo-grid-column>
+
+          <!-- action column -->
+          <kendo-grid-column
+            field="Action"
+            title="Action"
+            [headerStyle]="{ 'font-weight': 'bold' }"
+            [width]="90"
+            [sticky]="true"
+          >
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <button
+                class="btn btn-sm btn-smaller btn-edit"
+                title="Edit"
+                tooltip="Edit"
+                (click)="
+                  editOrganisationData(dataItem.organisation_id);
+                  toggleState('edit')
+                "
+              >
+                <i class="fas fa-edit" style="font-weight: bold"></i>
+              </button>
+              <button
+                class="btn btn-sm btn-smaller btn-edit"
+                title="View AFA Users"
+                tooltip="View"
+                (click)="viewUsers(dataItem.organisation_id)"
+              >
+                <i class="bi bi-eye" style="font-weight: bold"></i>
+              </button>
+              <button
+                class="btn btn-sm btn-smaller btn-delete"
+                title="Delete"
+                tooltip="Delete"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteOrgModel"
+                (click)="setDataItem(dataItem.organisation_id)"
+              >
+                <i class="fas fa-trash" style="font-weight: bold"></i>
+              </button>
+              <button
+                class="btn btn-sm btn-smaller"
+                title="View details"
+                tooltip="details"
+                (click)="orgDetailsInfo(dataItem.organisation_id)"
+              >
+                <i class="bi bi-info-circle"></i>
+              </button>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </div>
+      <!-- [ngClass]="state === 'add' || state === 'edit' ? 'col-9' : 'col-3'" -->
+
+      <div
+        [ngClass]="state === 'add' || state === 'edit' ? 'col-9' : 'col-3'"
+        class="col-3 p-2 transistion-box"
+      >
+        <div class="search-container p-2">
+          @if(state!='edit'){
+          <div class="radio-inputs">
+            <label class="radio">
+              <input
+                type="radio"
+                name="radio"
+                [checked]="state === 'search'"
+                (click)="toggleState('search')"
+              />
+              <span class="name">
+                @if (state === 'search') {
+                <i class="bi bi-x-lg"></i> &nbsp; Close }@else {
+                <i class="bi bi-search"></i> &nbsp; Detailed Search }
+              </span>
+            </label>
+            <label class="radio">
+              <input
+                type="radio"
+                name="radio"
+                [checked]="state === 'add'"
+                (click)="toggleState('add')"
+              />
+              <span class="name">
+                @if (state === 'add') {
+                <i class="bi bi-x-lg"></i> &nbsp; Close }@else {
+                <i class="bi bi-file-plus-fill"></i> &nbsp; Add }
+              </span>
+            </label>
+          </div>
+          }
+
+          <!-- search/add router outlet -->
+          <div>
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE CONFIRMATION ORGANISATION MODEL -->
+<div
+  class="modal fade"
+  id="deleteOrgModel"
+  tabindex="-1"
+  aria-labelledby="deleteOrgModel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="deleteOrgModel">Delete</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to remove this Organisation?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+          (click)="deleteOrganisation(deleteOrgId)"
+        >
+          Proceed
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NOT USED ANYMORE -->
+<!-- TOGGLE ORGANISATION STATS BOOTSTRAP MODEL -->
+<div
+  class="modal fade"
+  id="toggleOrgStatusModal"
+  tabindex="-1"
+  aria-labelledby="toggleOrgStatusModal"
+  aria-hidden="true"
+>
+  <!-- <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="toggleOrgStatusModal">
+          Toggle Active status
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        @if(toggleStatus == true) { Are you sure you want to deactivate
+        organisation? } @if(toggleStatus == false) { Are you sure you want to
+        activate organisation? }
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+          (click)="toggleActiveStatus(toggleOrgStatusData)"
+        >
+          Proceed
+        </button>
+      </div>
+    </div>
+  </div> -->
+</div>
+
+<app-loader [isLoading]="isLoading"></app-loader>

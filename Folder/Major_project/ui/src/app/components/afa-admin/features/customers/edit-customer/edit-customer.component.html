@@ -1,0 +1,182 @@
+<div class="row m-0 my-2 p-0">
+  <app-loader [isLoading]="isLoading"></app-loader>
+    <h4 class="text-white">Update Customer</h4>
+    <form class=" " [formGroup]="editCustomerForm" (ngSubmit)="editCustomerSubmit()">
+
+      <div class="row mb-3" formGroupName="customerDetails">
+        <div class="col-12 my-2">
+          <h6 class="text-info">Customer Details</h6>
+        </div>
+        <div class="col-3 input-height">
+          <b>
+            <small>
+              <label class="form-label text-white m-0" for="customer_name">Full Name
+                <span class="text-danger">*</span>
+              </label>
+            </small>
+          </b>
+          <input type="text" class="form-control text-dark rounded-1" placeholder="Customer Name" name="customer_name"
+                 id="customer_name" formControlName="customer_name"/>
+          <div class="error-message" *ngIf="editCustomerForm.get('customerDetails')?.get('customer_name')?.touched">
+            <div *ngIf="editCustomerForm.get('customerDetails')?.get('customer_name')?.hasError('required')">Name is required</div>
+            <div *ngIf="editCustomerForm.get('customerDetails')?.get('customer_name')?.hasError('maxlength')">Max 50 characters allowed</div>
+            <div *ngIf="editCustomerForm.get('customerDetails')?.get('customer_name')?.hasError('minlength')">Min 3 characters required</div>
+          </div>
+        </div>
+        <div class="col-3 input-height">
+          <b>
+            <small>
+              <label class="form-label text-white m-0" for="email_address">Email
+                <span class="text-danger">*</span>
+              </label>
+            </small>
+          </b>
+          <input type="text" class="form-control text-dark rounded-1" placeholder="Email" name="email_address"
+                 id="email_address" formControlName="email_address" required />
+          <div class="error-message" *ngIf="editCustomerForm.get('customerDetails')?.get('email_address')?.touched">
+            <div *ngIf="editCustomerForm.get('customerDetails')?.get('email_address')?.hasError('required')">Email is required</div>
+            <div *ngIf="editCustomerForm.get('customerDetails')?.get('email_address')?.hasError('pattern')">Enter a valid email</div>
+          </div>
+        </div>
+        <div class="col-3 input-height">
+          <b>
+            <small>
+              <label class="form-label text-white m-0" for="phone_number">Phone Number
+                <span class="text-danger">*</span>
+              </label>
+            </small>
+          </b>
+          <input type="text" class="form-control text-dark rounded-1" placeholder="Phone Number" name="phone_number"
+                 id="phone_number" formControlName="phone_number" appNumberOnly />
+          <div class="error-message" *ngIf="editCustomerForm.get('customerDetails')?.get('phone_number')?.touched">
+            <div *ngIf="editCustomerForm.get('customerDetails')?.get('phone_number')?.hasError('required')">Phone number is required</div>
+            <div *ngIf="editCustomerForm.get('customerDetails')?.get('phone_number')?.hasError('maxlength')">Max 10 characters allowed</div>
+            <div *ngIf="editCustomerForm.get('customerDetails')?.get('phone_number')?.hasError('minlength')">Min 10 characters required</div>
+          </div>
+        </div>
+        <div class="col-3 input-height">
+          <b>
+            <small>
+              <label class="form-label text-white m-0" for="customer_vat_percentage">Customer VAT%
+                <span class="text-danger">*</span>
+              </label>
+            </small>
+          </b>
+          <select class="form-control text-dark rounded-1" name="customer_vat_percentage" id="customer_vat_percentage" formControlName="customer_vat_percentage">
+            <option value="" disabled>VAT</option>
+            <option value="0%">0</option>
+            <option value="5%">5</option>
+            <option value="20%">20</option>
+          </select>
+          <div class="error-message" *ngIf="editCustomerForm.get('customerDetails')?.get('customer_vat_percentage')?.touched">
+            <div *ngIf="editCustomerForm.get('customerDetails')?.get('customer_vat_percentage')?.hasError('required')">VAT percentage is required</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row my-3" formGroupName="customerAddressDetails">
+        <div class="col-12 my-2">
+          <h6 class="text-info">Customer Address Details</h6>
+        </div>
+        <div class="col-3 input-height">
+          <b>
+            <small>
+              <label class="form-label text-white m-0" for="country">Country
+                <span class="text-danger">*</span>
+              </label>
+            </small>
+          </b>
+          <input type="text" class="form-control text-dark rounded-1" placeholder="Country"
+                 name="country" id="country" formControlName="country" appCharWithSpace />
+          <div class="error-message" *ngIf="editCustomerForm.get('customerAddressDetails')?.get('country')?.touched">
+            <div *ngIf="editCustomerForm.get('customerAddressDetails')?.get('country')?.hasError('required')">Country is required</div>
+            <div *ngIf="editCustomerForm.get('customerAddressDetails')?.get('country')?.hasError('maxlength')">Max 50 characters allowed</div>
+            <div *ngIf="editCustomerForm.get('customerAddressDetails')?.get('country')?.hasError('minlength')">Min 3 characters required</div>
+          </div>
+        </div>
+        <div class="col-3 input-height">
+          <b>
+            <small>
+              <label class="form-label text-white m-0" for="pincode">Pincode
+                <span class="text-danger">*</span>
+              </label>
+            </small>
+          </b>
+          <input type="text" class="form-control text-dark rounded-1" placeholder="Pincode"
+                 name="pincode" id="pincode" formControlName="pincode" appNumberOnly />
+          <div class="error-message" *ngIf="editCustomerForm.get('customerAddressDetails')?.get('pincode')?.touched">
+            <div *ngIf="editCustomerForm.get('customerAddressDetails')?.get('pincode')?.hasError('required')">Pincode is required</div>
+            <div *ngIf="editCustomerForm.get('customerAddressDetails')?.get('pincode')?.hasError('maxlength')">Max 6 characters allowed</div>
+            <div *ngIf="editCustomerForm.get('customerAddressDetails')?.get('pincode')?.hasError('minlength')">Min 6 characters required</div>
+          </div>
+        </div>
+        <div class="col-3 input-height">
+          <b>
+            <small>
+              <label class="form-label text-white m-0" for="state">State
+                <span class="text-danger">*</span>
+              </label>
+            </small>
+          </b>
+          <input type="text" class="form-control text-dark rounded-1" placeholder="State"
+                 name="state" id="state" formControlName="state" appCharWithSpace />
+          <div class="error-message" *ngIf="editCustomerForm.get('customerAddressDetails')?.get('state')?.touched">
+            <div *ngIf="editCustomerForm.get('customerAddressDetails')?.get('state')?.hasError('required')">State is required</div>
+            <div *ngIf="editCustomerForm.get('customerAddressDetails')?.get('state')?.hasError('maxlength')">Max 50 characters allowed</div>
+            <div *ngIf="editCustomerForm.get('customerAddressDetails')?.get('state')?.hasError('minlength')">Min 3 characters required</div>
+          </div>
+        </div>
+        <div class="col-3 input-height">
+          <b>
+            <small>
+              <label class="form-label text-white m-0" for="city">City
+                <span class="text-danger">*</span>
+              </label>
+            </small>
+          </b>
+          <input type="text" class="form-control text-dark rounded-1" placeholder="City"
+                 name="city" id="city" formControlName="city" appCharWithSpace />
+          <div class="error-message" *ngIf="editCustomerForm.get('customerAddressDetails')?.get('city')?.touched">
+            <div *ngIf="editCustomerForm.get('customerAddressDetails')?.get('city')?.hasError('required')">City is required</div>
+            <div *ngIf="editCustomerForm.get('customerAddressDetails')?.get('city')?.hasError('maxlength')">Max 50 characters allowed</div>
+            <div *ngIf="editCustomerForm.get('customerAddressDetails')?.get('city')?.hasError('minlength')">Min 3 characters required</div>
+          </div>
+        </div>
+        <div class="col-6 input-height">
+          <b>
+            <small>
+              <label class="form-label text-white m-0" for="address_line_1">Address Line 1
+                <span class="text-danger">*</span>
+              </label>
+            </small>
+          </b>
+          <input type="text" class="form-control text-dark rounded-1" placeholder="Address Line 1"
+                 name="address_line_1" id="address_line_1" formControlName="address_line_1" appSomeChars />
+          <div class="error-message" *ngIf="editCustomerForm.get('customerAddressDetails')?.get('address_line_1')?.touched">
+            <div *ngIf="editCustomerForm.get('customerAddressDetails')?.get('address_line_1')?.hasError('required')">Address Line 1 is required</div>
+            <div *ngIf="editCustomerForm.get('customerAddressDetails')?.get('address_line_1')?.hasError('maxlength')">Max 100 characters allowed</div>
+            <div *ngIf="editCustomerForm.get('customerAddressDetails')?.get('address_line_1')?.hasError('minlength')">Min 5 characters required</div>
+          </div>
+        </div>
+        <div class="col-6 input-height">
+          <b>
+            <small>
+              <label class="form-label text-white m-0" for="address_line_2">Address Line 2</label>
+            </small>
+          </b>
+          <input type="text" class="form-control text-dark rounded-1" placeholder="Address Line 2"
+                 name="address_line_2" id="address_line_2" formControlName="address_line_2" appSomeChars />
+          <div class="error-message" *ngIf="editCustomerForm.get('customerAddressDetails')?.get('address_line_2')?.touched">
+            <div *ngIf="editCustomerForm.get('customerAddressDetails')?.get('address_line_2')?.hasError('maxlength')">Max 100 characters allowed</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 my-2 p-0 py-3">
+        <div class="modal-footer my-2">
+          <button type="button" class="btn btn-danger mx-2" (click)="closeEdit()">Close</button>
+          <button type="submit" class="btn btn-success mx-2">Update</button>
+        </div>
+      </div>
+    </form>
+  </div>

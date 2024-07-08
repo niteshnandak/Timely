@@ -1,0 +1,178 @@
+<div>
+  <app-loader [isLoading]="isLoading"></app-loader>
+  <div class="p-3">
+    <div>
+      <a routerLink="/company/company-details/payroll-batch" class="back button detail-back">
+        <i class="bi bi-arrow-left text-dark"></i>&nbsp; &nbsp;<span class="text-dark ">Back</span>
+      </a>
+    </div>
+    <div class="d-flex">
+      <h4 class="w-25">{{companyName}} / Payroll</h4>
+      <div class="w-100 d-flex flex-row-reverse py-2">
+        <button *ngIf="state==='customer'" class="btn btn-success" (click)="fetchInvoice()">
+          Get the invoices
+        </button>
+
+        <button *ngIf="state==='invoices'" class="btn btn-success ms-1" (click)="saveInvoices()" [disabled]="!selectedInvoice.length" >
+          Continue
+        </button>
+
+        <button *ngIf="state==='invoices'" class="btn btn-danger mx-1" (click)="backButton()">
+          Back
+        </button>
+
+      </div>
+    </div>
+
+    <h6> Select
+      @if (state === 'customer') {
+        Customers :
+        <div class="d-flex show-box" style="overflow: scroll;">
+          <div [title]="customerName" *ngFor="let customerName of customerNames" class="bg-secondary text-white me-1 p-2 rounded-3">
+            {{customerName}}
+          </div>
+        </div>
+      }
+      @else {
+        Invoices :
+        <div class="d-flex show-box" style="overflow: scroll;">
+          <div [title]="invoiceNumber" *ngFor="let invoiceNumber of invoiceNumbers" class="bg-secondary text-white me-1 p-2 rounded-3">
+            {{invoiceNumber}}
+          </div>
+        </div>
+      }
+    </h6>
+
+    <div class="d-flex" [ngClass]="take == 5 ? 'change-kendo-row-size-2' : 'change-kendo-row-size-1'">
+      <div [style] = "state === 'customer' ? 'width:100%':'width:0%; opacity:0%;  display:none' " class="transistion-box select-container">
+        <app-loader [isLoading]="isLoading"></app-loader>
+        <kendo-grid class="k-grid k-border-none"
+        [data]="customerGridData"
+        [loading]="gridLoading"
+        [pageable]="{ buttonCount: 5, info: true, type: 'numeric', pageSizes: true, previousNext: true }"
+        [skip]="skip"
+        [pageSize]="take"
+        (pageChange)="customerPageChange($event)"
+        [selectable]="{ checkboxOnly: true }"
+        [kendoGridSelectBy]="getCompositeKeyCustomer"
+        [(selectedKeys)]="selectedCustomer"
+        (selectedKeysChange)="onSelectedKeysChangeCustomer()"
+        >
+
+        <kendo-grid-checkbox-column
+        [showSelectAll]="true"
+        [width]="40"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="20"
+        (click)="selectAllButton()">
+        </kendo-grid-checkbox-column>
+
+        <kendo-grid-column field="customer_name" title="Customer Name"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="50">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span class="custom-cell" [title]="dataItem.customer_name" >
+              {{ dataItem.customer_name }}
+            </span>
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="email_address" title="Email Address"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="115">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <span class="custom-cell" [title]="dataItem.email_address" >
+            {{ dataItem.email_address }}
+          </span>
+        </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="invoice_count" title="Number of Invoices"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="115">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <span class="custom-cell" [title]="dataItem.invoice_count" >
+            {{ dataItem.invoice_count }}
+          </span>
+        </ng-template>
+        </kendo-grid-column>
+
+      </kendo-grid>
+      </div>
+      <div [style] = "state === 'customer' ? 'width:0%; opacity:0%; display: none' :'width:100%' " class="transistion-box select-container">
+        <kendo-grid class="k-grid k-border-none"
+        [data]="invoiceGridData"
+        [pageable]="{ buttonCount: 5, info: true, type: 'numeric', pageSizes: true, previousNext: true }"
+        [loading]="gridLoading"
+        [skip]="skip"
+        [pageSize]="take"
+        (pageChange)="invoicePageChange($event)"
+        [kendoGridSelectBy]="getCompositeKeyInvoice"
+        [selectable]="{ checkboxOnly: true }"
+        [(selectedKeys)]="selectedInvoice"
+        (selectedKeysChange)="onSelectedKeysChangeInvoice()"
+        >
+
+        <kendo-grid-checkbox-column
+        [showSelectAll]="true"
+        [width]="40"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="20">
+        </kendo-grid-checkbox-column>
+
+        <kendo-grid-column field="invoice_number" title="Invoice Number"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="80">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <span class="custom-cell" [title]="dataItem.invoice_number" >
+              {{ dataItem.invoice_number }}
+            </span>
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="people_name" title="People Name"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="115">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <span class="custom-cell" [title]="dataItem.people_name" >
+            {{ dataItem.people_name }}
+          </span>
+        </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="customer_name" title="Customer Name"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="115">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <span class="custom-cell" [title]="dataItem.customer_name" >
+            {{ dataItem.customer_name }}
+          </span>
+        </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="period_end_date" title="Invoice Date"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="115">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <span class="custom-cell" [title]="dataItem.period_end_date" >
+            {{ dataItem.period_end_date | date:'dd-MM-yyyy' }}
+          </span>
+        </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="total_amount" title="Total Amount(€)"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="115">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div style="text-align: right;" [title]="dataItem.total_amount">
+            {{ dataItem.total_amount| currency:'£' }}
+          </div>
+        </ng-template>
+        </kendo-grid-column>
+      </kendo-grid>
+      </div>
+    </div>
+  </div>
+</div>
+
+

@@ -1,0 +1,44 @@
+<!-- container -->
+<div class="auth-container">
+  <!-- template for login & registration & forgot password -->
+  <div class="auth-template">
+    <!-- side banner -->
+    <div class="auth-banner ">
+      <h2 class="mt-2" *ngIf="!isRegistrationPage">TIMELY</h2>
+      <h2 class="mt-2" *ngIf="isRegistrationPage">Register New User!</h2>
+    </div>
+
+    <!-- FORMS:login,registration,forgot-password -->
+    <div class="auth-form-card">
+      <!-- registration page div template -->
+      <div *ngIf="isRegistrationPage">
+        <app-registration (loginPage)="routeToLogin($event)"></app-registration>
+      </div>
+
+      <!-- save-password div template -->
+      <div *ngIf="isSavePasswordPage">
+        <app-save-password></app-save-password>
+      </div>
+
+      <!-- reset-password div template -->
+      <div *ngIf="isResetPasswordPage">
+        <app-reset-password></app-reset-password>
+      </div>
+
+      <!-- login div template -->
+      <div *ngIf="isLoginPage">
+        <app-login
+          (registerPage)="routeToRegister($event)"
+          (forgotPasswordPage)="routeToForgotPassword($event)"
+        ></app-login>
+      </div>
+
+      <!-- forgot-password div template -->
+      <div *ngIf="isForgotPasswordPage">
+        <app-forgot-password
+          (loginPage)="routeToLogin($event)"
+        ></app-forgot-password>
+      </div>
+    </div>
+  </div>
+</div>

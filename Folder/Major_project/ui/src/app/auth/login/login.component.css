@@ -1,0 +1,49 @@
+.form-group {
+  min-height: 40px;
+  position: relative;
+}
+
+.form-floating {
+  max-width: 350px;
+  height: 53px;
+}
+
+.form-floating > label {
+  font-size: 0.875rem;
+}
+
+.form-control {
+  background-color: #D9D9D9;
+
+  max-width: 350px;
+  height: 30px;
+  /* border: hidden; */
+  border: 1.3px solid;
+  border-radius: 0;
+  /* padding-left: 35px; */
+}
+
+
+
+.reg-icons {
+  position: absolute;
+  /* left: 1px; */
+  top: 35%;
+  transform: translateY(-50%);
+  font-size: 1.4em;
+}
+
+.form-control:focus {
+  box-shadow: none;
+}
+
+.error-message {
+  max-height: 1px;
+}
+
+.register-button {
+  padding: 5px;
+  width: 350px;
+  border-radius: 0;
+  cursor: pointer;
+}

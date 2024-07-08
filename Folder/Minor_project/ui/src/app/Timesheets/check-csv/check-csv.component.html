@@ -1,0 +1,78 @@
+
+<div class="container-fluid">
+  <div class="d-flex justify-content-center">
+    <div class="border border-2 py-3 my-4 bg-light" style="width: 90%;">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="ms-2">Check data before submitting</h5>
+        <div class="d-flex me-3">
+          <button class="btn btn-danger me-3" (click) = "discardUpload()">
+            <i class="bi bi-x-lg"></i> Discard
+          </button>
+          <button class="btn btn-primary" (click) = "navigateToDetail()">
+            <i class="bi bi-upload me-2"></i> Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex justify-content-center text-align-center">
+    <div style="width: 90%;">
+      <kendo-grid
+      [kendoGridBinding]="timesheetDatas"
+      [groupable]="true"
+      [pageable]="true"
+      [pageSize]=10
+      [filterable]="true"
+      [sortable]="true"
+
+      >
+
+      <kendo-grid-column
+      title="S.No"
+      [headerStyle]="{'font-weight': 'bold'}"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+          {{ rowIndex + 1 }}
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column
+      field="worker_name"
+      [headerStyle]="{'font-weight': 'bold'}"
+      title="Worker Name"
+      >
+
+      </kendo-grid-column>
+      <kendo-grid-column
+      field="worker_id"
+      [headerStyle]="{'font-weight': 'bold'}"
+      title="Worker Id"
+      >
+
+      </kendo-grid-column>
+      <kendo-grid-column
+      field="organisation"
+      [headerStyle]="{'font-weight': 'bold'}"
+      title="organisation"
+      >
+
+      </kendo-grid-column>
+      <kendo-grid-column
+      field="hourly_pay"
+      [headerStyle]="{'font-weight': 'bold'}"
+      title="Hourly Pay"
+      >
+
+      </kendo-grid-column>
+      <kendo-grid-column
+      field="hours_worked"
+      [headerStyle]="{'font-weight': 'bold'}"
+      title="Hours Worked"
+      >
+      </kendo-grid-column>
+
+
+      </kendo-grid>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,786 @@
+<div class="p-2"> <!--  class="page-container" -->
+  <app-loader [isLoading]="isLoading"></app-loader>
+  <div class="detail-button">
+    <a routerLink="/company/company-details" class="back button detail-back">
+      <i class="bi bi-arrow-left text-dark"></i>&nbsp; &nbsp;<span class="text-dark">Back</span>
+    </a>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center p-3">
+    <h2 class="mb-0">{{company_name}} / Expenses</h2>
+    <div>
+      <button class="btn btn-primary me-2" type="button" tooltip="Search" title="Search" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        <i class="bi bi-search"></i> Search
+      </button>
+      <button type="button" (click)="openAddExpenseModal()" class="btn btn-success me-2" tooltip="Add Expense" title="Add Expense"><i class="bi bi-plus-lg"></i> Add Expense</button>
+    </div>
+  </div>
+
+  <div class="collapse p-2" id="collapseExample">
+    <div class="card card-body">
+      <div class="search-form">
+        <form [formGroup]="searchExpenseForm" (ngSubmit)="onSearch()">
+          <div class="row">
+
+            <div class="col-3">
+              <label for="people_name">People Name</label>
+              <!-- <select class="form-select text-dark" id="people_name" formControlName="people_name">
+                <option value="">Select a person</option>
+                <option *ngFor="let person of peopleNames" [value]="person.people_id">{{ person.people_name }}</option>
+              </select> -->
+              <kendo-combobox
+                [data]="filteredPeopleNames"
+                textField="people_name"
+                valueField="people_id"
+                formControlName="people_name"
+                placeholder="Select a person"
+                id="people_name"
+                [valuePrimitive]="true"
+                [filterable]="true"
+                (filterChange)="handlePeopleNamesFilter($event)"
+                class="k-search-combobox"
+              >
+              </kendo-combobox>
+            </div>
+
+            <div class="col-3">
+              <label for="expense_type">Expense Type</label>
+              <!-- <select class="form-select text-dark" id="expense_type" formControlName="expense_type">
+                <option value="">Select Expense type</option>
+                <option *ngFor="let type of expenseTypes" [value]="type.expense_type_id">{{ type.expense_type }}</option>
+              </select> -->
+              <kendo-combobox
+                [data]="filteredExpenseTypes"
+                textField="expense_type"
+                valueField="expense_type_id"
+                formControlName="expense_type"
+                placeholder="Select an expense type"
+                [valuePrimitive]="true"
+                [filterable]="true"
+                (filterChange)="handleExpenseTypesFilter($event)"
+                class="k-search-combobox"
+              >
+              </kendo-combobox>
+            </div>
+
+            <div class="col-2">
+              <label for="expense_date_from">Expense Date From</label>
+              <input type="date" class="form-control text-dark" style="height: 40px;" id="expense_date_from" formControlName="expense_date_from">
+            </div>
+
+            <div class="col-2">
+              <label for="expense_date_to">Expense Date To</label>
+              <input type="date" class="form-control text-dark" style="height: 40px;" id="expense_date_to" formControlName="expense_date_to">
+              <div class="mt-0 " *ngIf="searchExpenseForm.hasError('dateRangeInvalid')" class="text-danger warning-text">
+                <small class="error-message">Date To must be greater than Date From.</small>
+              </div>
+            </div>
+
+            <div class="col-2">
+              <label for="status">Expense Status</label>
+              <select
+                id="status"
+                formControlName="status"
+                class="form-select"
+              >
+                <option value="" selected>Select Status</option>
+                <option value="processed">Processed</option>
+                <option value="approved">Approved</option>
+                <option value="draft">Draft</option>
+              </select>
+            </div>
+
+            <div class="col-12 d-flex justify-content-end">
+              <button
+                type="button"
+                class="btn btn-sm btn-secondary mt-4"
+                (click)="resetSearchExpenseForm()"
+              >
+                Reset
+              </button>
+              <button
+                type="submit"
+                class="btn btn-sm btn-primary mt-4 mx-2"
+                [disabled]="isFormEmpty()"
+              >
+                Search
+              </button>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- search -->
+  <template>
+    <div class="accordion" id="accordionExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseThree"
+            aria-expanded="false"
+            aria-controls="collapseThree"
+          >
+            Search Expense
+          </button>
+        </h2>
+        <div
+          id="collapseThree"
+          class="accordion-collapse collapse"
+          data-bs-parent="#accordionExample"
+        >
+          <div class="accordion-body">
+            <div class="search-form">
+              <form [formGroup]="searchExpenseForm" (ngSubmit)="onSearch()">
+                <div class="row">
+
+                  <div class="col-3">
+                    <label for="people_name">People Name</label>
+                    <!-- <select class="form-select text-dark" id="people_name" formControlName="people_name">
+                      <option value="">Select a person</option>
+                      <option *ngFor="let person of peopleNames" [value]="person.people_id">{{ person.people_name }}</option>
+                    </select> -->
+                    <kendo-combobox
+                      [data]="filteredPeopleNames"
+                      textField="people_name"
+                      valueField="people_id"
+                      formControlName="people_name"
+                      placeholder="Select a person"
+                      id="people_name"
+                      [valuePrimitive]="true"
+                      [filterable]="true"
+                      (filterChange)="handlePeopleNamesFilter($event)"
+                      class="k-search-combobox"
+                    >
+                    </kendo-combobox>
+                  </div>
+
+                  <div class="col-3">
+                    <label for="expense_type">Expense Type</label>
+                    <!-- <select class="form-select text-dark" id="expense_type" formControlName="expense_type">
+                      <option value="">Select Expense type</option>
+                      <option *ngFor="let type of expenseTypes" [value]="type.expense_type_id">{{ type.expense_type }}</option>
+                    </select> -->
+                    <kendo-combobox
+                      [data]="filteredExpenseTypes"
+                      textField="expense_type"
+                      valueField="expense_type_id"
+                      formControlName="expense_type"
+                      placeholder="Select an expense type"
+                      [valuePrimitive]="true"
+                      [filterable]="true"
+                      (filterChange)="handleExpenseTypesFilter($event)"
+                      class="k-search-combobox"
+                    >
+                    </kendo-combobox>
+                  </div>
+
+                  <div class="col-2">
+                    <label for="expense_date">Expense Date</label>
+                    <input type="date" class="form-control text-dark" style="height: 40px;" id="expense_date" formControlName="expense_date">
+                  </div>
+
+                  <div class="col-2">
+                    <label for="status">Expense Status</label>
+                    <select
+                      id="status"
+                      formControlName="status"
+                      class="form-select"
+                    >
+                      <option value="" selected>Select Status</option>
+                      <option value="processed">Processed</option>
+                      <option value="approved">Approved</option>
+                      <option value="draft">Draft</option>
+                    </select>
+                  </div>
+
+                  <div class="col-1 d-flex just-content-center">
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-secondary mt-4"
+                      (click)="resetSearchExpenseForm()"
+                    >
+                      Reset
+                    </button>
+                    <button
+                      type="submit"
+                      class="btn btn-sm btn-primary mt-4 mx-2"
+                      [disabled]="isFormEmpty()"
+                    >
+                      Search
+                    </button>
+                  </div>
+
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+  <!-- create -->
+  <template>
+      <div class="modal fade" id="addExpenseModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addExpenseModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addExpenseModalLabel">Add Expense</h5>
+              <button type="button" class="btn-close" aria-label="Close" (click)="closeAddExpenseModal()"></button>
+            </div>
+            <div class="modal-body">
+              <!-- Modal content -->
+
+              <form [formGroup]="addExpenseForm" (ngSubmit)="addNewExpenseForm()">
+
+                <!-- People Name -->
+                <div class="mb-4 row" style="max-height: 40px;">
+                  <label for="people_name" class="col-sm-4 mt-1 col-form-label">People Name <span class="text-danger">*</span></label>
+                  <div class="col-sm-8">
+
+                    <!-- <select class="form-select text-dark" id="people_name" formControlName="people_name">
+                      <option value="">Select a person</option>
+                      <option *ngFor="let person of peopleNames" [value]="person.people_id">{{ person.people_name }}</option>
+                    </select> -->
+                    <kendo-combobox
+                      [data]="filteredPeopleNames"
+                      textField="people_name"
+                      valueField="people_id"
+                      formControlName="people_name"
+                      placeholder="Select a person"
+                      id="people_name"
+                      [valuePrimitive]="true"
+                      [filterable]="true"
+                      (filterChange)="handlePeopleNamesFilter($event)"
+                      class="k-combobox"
+                    >
+                    </kendo-combobox>
+
+                    <div *ngIf="peopleName?.errors?.['required'] && (peopleName?.touched || peopleName?.dirty)" >
+                      <small class="error-message">*People name is required</small>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-4 row" style="max-height: 40px;">
+                  <label for="expense_type" class="col-sm-4 mt-1 col-form-label">Expense Type <span class="text-danger">*</span></label>
+                  <div class="col-sm-8">
+                    <!-- <select class="form-select text-dark" id="expense_type" formControlName="expense_type">
+                      <option value="">Select an expense type</option>
+                      <option *ngFor="let type of expenseTypes" [value]="type.expense_type_id">{{ type.expense_type }}</option>
+                    </select> -->
+                    <kendo-combobox
+                      [data]="filteredExpenseTypes"
+                      textField="expense_type"
+                      valueField="expense_type_id"
+                      formControlName="expense_type"
+                      placeholder="Select an expense type"
+                      [valuePrimitive]="true"
+                      [filterable]="true"
+                      (filterChange)="handleExpenseTypesFilter($event)"
+                      class="k-combobox"
+                    >
+                    </kendo-combobox>
+                    <div *ngIf="expenseType?.errors?.['required'] && (expenseType?.touched || expenseType?.dirty)">
+                      <small class="error-message">*Expense Type is required</small>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Expense Date -->
+                <div class="mb-4 row" style="max-height: 40px;">
+                  <label for="expense_date" class="col-sm-4 mt-1 col-form-label">Expense Date <span class="text-danger">*</span></label>
+                  <div class="col-sm-8">
+                    <input
+                      type="date"
+                      class="form-control text-dark"
+                      id="expense_date"
+                      formControlName="expense_date"
+                      (click)="handleDatePickerOpen()"
+                    >
+                    <div class="error-message" *ngIf="addExpenseForm.get('expense_date')?.invalid && (addExpenseForm.get('expense_date')?.dirty || addExpenseForm.get('expense_date')?.touched)">
+                      <small class="error-message" *ngIf="addExpenseForm.get('expense_date')?.errors?.['required']">Date is required.</small>
+                      <!-- <small *ngIf="invoiceForm.get('periodEndDate')?.errors?.['invalidDate']">Invalid date format.</small> -->
+                      <small class="error-message" *ngIf="addExpenseForm.get('expense_date')?.errors?.['futureDateTooFar']">Enter a date within 1 year.</small>
+                      <small class="error-message" *ngIf="addExpenseForm.get('expense_date')?.errors?.['pastDateTooFar']">Date cannot be beyond 1 year.</small>
+                    </div>
+                    <div *ngIf="expenseDate?.errors?.['required'] && (expenseDate?.touched || expenseDate?.dirty)">
+                      <small class="error-message">*Expense Date is required</small>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-4 row" style="max-height: 40px;">
+                  <label for="amount" class="col-sm-4 mt-1 col-form-label">Amount <span class="text-danger">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control text-dark" id="amount" formControlName="amount" appDecimalNumberOnly>
+                    <div *ngIf="amount?.errors?.['required'] && (amount?.touched || amount?.dirty)">
+                      <small class="error-message">*Amount is required</small>
+                    </div>
+                    <div *ngIf="amount?.errors?.['decimal10_2'] && (amount?.touched || amount?.dirty)">
+                      <small class="error-message">*Enter valid amount</small>
+                    </div>
+                    <div *ngIf="amount?.errors?.['minValue'] && !amount?.errors?.['decimal10_2'] && !amount?.errors?.['required'] && (amount?.touched || amount?.dirty)">
+                      <small class="error-message">*Enter some Value</small>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="modal-footer" style="border-top: none;">
+                  <button type="submit" class="btn btn-success" [disabled]="!addExpenseForm.valid">Save</button>
+                  <button type="reset" class="btn" style="color: white; background-color: rgb(37, 67, 176);" (click)="resetAddExpenseForm()">Reset</button>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+  </template>
+
+
+  <!-- CREATE NEW EXPENSE -->
+  <div class="modal fade" id="addExpenseModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addExpenseModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="addExpenseModalLabel">Add Expense</h1>
+          <button type="button" class="btn-close" (click)="closeAddExpenseModal()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <form [formGroup]="addExpenseForm">
+            <div class="row mb-3">
+              <div class="col-12">
+                <div class="row">
+                  <h6 class="text-info col-6">Expense Details</h6>
+                </div>
+              </div>
+
+              <!-- People Name -->
+              <div class="col-5 custom-form-group" style="max-height: 40px;">
+                <b>
+                  <small>
+                    <label class="form-label m-0" for="people_name">People Name</label>
+                    <span class="text-danger">*</span>
+                  </small>
+                </b>
+                <kendo-combobox
+                  [data]="filteredPeopleNames"
+                  textField="people_name"
+                  valueField="people_id"
+                  formControlName="people_name"
+                  placeholder="Select a person"
+                  [valuePrimitive]="true"
+                  [filterable]="true"
+                  (filterChange)="handlePeopleNamesFilter($event)"
+                  class="k-combobox">
+                </kendo-combobox>
+
+                <div *ngIf="peopleName?.errors?.['required'] && (peopleName?.touched || peopleName?.dirty)" >
+                  <small class="error-message">*People name is required</small>
+                </div>
+              </div>
+
+              <!-- Expense Date -->
+              <div class="col-4 custom-form-group" style="max-height: 40px;">
+                <b>
+                  <small>
+                    <label class="form-label m-0" for="expense_date">Expense Date</label>
+                    <span class="text-danger">*</span>
+                  </small>
+                </b>
+                <input
+                  type="date"
+                  class="form-control form-control-sm text-dark rounded-0"
+                  name="expense_date"
+                  id="expense_date"
+                  formControlName="expense_date"
+                  style="height: 35px;"
+                  (click)="handleDatePickerOpen()"
+                >
+                  <div class="error-message" *ngIf="addExpenseForm.get('expense_date')?.invalid && (addExpenseForm.get('expense_date')?.dirty || addExpenseForm.get('expense_date')?.touched)">
+                    <div *ngIf="expenseDate?.errors?.['required'] && (expenseDate?.touched || expenseDate?.dirty)">
+                      <small class="error-message">*Expense Date is required</small>
+                    </div>
+                    <!-- <small class="error-message" *ngIf="addExpenseForm.get('expense_date')?.errors?.['required']">Date is required.</small> -->
+                    <!-- <small *ngIf="invoiceForm.get('periodEndDate')?.errors?.['invalidDate']">Invalid date format.</small> -->
+                    <small class="error-message" *ngIf="addExpenseForm.get('expense_date')?.errors?.['futureDateTooFar']">Enter a date within 1 year.</small>
+                    <small class="error-message" *ngIf="addExpenseForm.get('expense_date')?.errors?.['pastDateTooFar']">Date cannot be beyond 1 year.</small>
+                  </div>
+
+              </div>
+              <div class="col-3 d-flex justify-content-center align-items-center" style="margin-top: 27px;">
+                <button type="button" class="btn btn-sm btn-primary" (click)="addLineItem()" title="Add Expense">
+                  <i class="bi bi-plus-circle-fill"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Line Items -->
+            <div formArrayName="lineItems" class="mt-4">
+              <div *ngFor="let item of lineItems.controls; let i = index" [formGroupName]="i" class="row mb-3">
+                <!-- Expense Type -->
+                <div class="col-5 custom-form-group" style="max-height: 40px;">
+                  <b>
+                    <small>
+                      <label class="form-label m-0" for="expense_type_{{i}}">Expense Type</label>
+                      <span class="text-danger">*</span>
+                    </small>
+                  </b>
+                  <kendo-combobox
+                    [data]="filteredExpenseTypes"
+                    textField="expense_type"
+                    valueField="expense_type_id"
+                    formControlName="expense_type"
+                    placeholder="Select an expense type"
+                    [valuePrimitive]="true"
+                    [filterable]="true"
+                    (filterChange)="handleExpenseTypesFilter($event)"
+                    id="expense_type_{{i}}"
+                    class="k-combobox">
+                  </kendo-combobox>
+                  <div class="error-message mt-0" *ngIf="item.get('expense_type')?.errors?.['required'] && (item.get('expense_type')?.touched || item.get('expense_type')?.dirty)">
+                    <small class="text-danger">Expense Type is required</small>
+                  </div>
+                </div>
+
+                <!-- Amount -->
+                <div class="col-5 custom-form-group" style="max-height: 40px;">
+                  <b>
+                    <small>
+                      <label class="form-label m-0" for="amount_{{i}}">Amount</label>
+                      <span class="text-danger">*</span>
+                    </small>
+                  </b>
+                  <input type="text" style="height: 35px;" class="form-control form-control-sm text-dark rounded-0" formControlName="amount" appDecimalNumberOnly id="amount_{{i}}">
+                  <div class="error-message mt-0" *ngIf="item.get('amount')?.errors?.['required'] && (item.get('amount')?.touched || item.get('amount')?.dirty)">
+                    <small class="text-danger">Amount is required</small>
+                  </div>
+                  <div class="error-message mt-0" *ngIf="item.get('amount')?.errors?.['decimal10_2'] && (item.get('amount')?.touched || item.get('amount')?.dirty)">
+                    <small class="text-danger">Enter valid amount</small>
+                  </div>
+                  <div class="error-message mt-0" *ngIf="item.get('amount')?.errors?.['minValue'] && !item.get('amount')?.errors?.['decimal10_2'] && !item.get('amount')?.errors?.['required'] && (item.get('amount')?.touched || item.get('amount')?.dirty)">
+                    <small class="text-danger">Enter some value</small>
+                  </div>
+                </div>
+
+                <!-- Remove Button -->
+                <div class="col-2 d-flex align-items-center justify-content-center" style="margin-top: 27px;">
+                  <button type="button" class="btn btn-sm btn-danger" (click)="removeLineItem(i)">
+                    <i class="bi bi-trash3"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer mt-5">
+              <button type="submit" class="btn btn-success" [disabled]="!addExpenseForm.valid">Save</button>
+              <button type="reset" class="btn" style="color: white; background-color: rgb(37, 67, 176);" (click)="resetAddExpenseForm()">Reset</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+  <!-- <hr> -->
+
+  <div class="grid-container p-2">
+    <kendo-grid
+      [data]="gridData"
+      [pageSize]="pageSize"
+      [skip]="skip"
+      [pageable]="{ buttonCount: 5, info: true, type: 'numeric', pageSizes: true, previousNext: true }"
+      (pageChange)="pageChange($event)"
+      [loading]="gridloading"
+    >
+    <!-- <ng-template kendoGridNoRecordsTemplate>
+      No data available.
+    </ng-template> -->
+      <kendo-grid-column
+        title="Expense Number"
+        [headerStyle]="{'font-weight': 'bold'}"
+        [width]="90"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <div class="cell-padding">
+              <span kendoTooltip [title]="dataItem.expense_number">
+                {{dataItem.expense_number}}
+              </span>
+            </div>
+          </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column field="people_name" title="People Name"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="130"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <span kendoTooltip [title]="dataItem.people_name">
+            {{dataItem.people_name}}
+          </span>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column field="expense_type" title="Expense Type"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="120"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <span kendoTooltip [title]="dataItem.expense_type">
+            {{dataItem.expense_type}}
+          </span>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column field="expense_date" title="Expense Date"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="100"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <span kendoTooltip [title]="dataItem.expense_date">
+            {{ dataItem.expense_date | date:'dd-MM-yyyy' }}
+          </span>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column field="amount" title="Amount (&pound;)"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="100"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div style="text-align: right;">
+            <span kendoTooltip [title]="dataItem.amount">
+              {{dataItem.amount | currency:' '}}
+            </span>
+          </div>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column field="status" title="Status"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="60">
+
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div class="button-container">
+            @if (dataItem.status === 'draft' ) {
+            <span title="Draft" class="badge rounded-pill text-bg-warning">
+              Draft
+            </span
+            >
+            }@else if (dataItem.status === 'approved'){
+              <span title="Approved" class="badge rounded-pill text-bg-primary">
+                Approved
+              </span>
+            }
+            @else if (dataItem.status === 'processed'){
+              <span title="Processed" class="badge rounded-pill text-bg-success">
+                Processed
+              </span>
+            }
+          </div>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column field="" title="Actions"
+        [headerStyle]="{'font-weight':'bold'}"
+        [width]="80">
+
+        <ng-template kendoGridCellTemplate let-dataItem>
+          @if(dataItem.status != 'processed'){
+              <button
+              class="btn btn-sm btn-smaller btn-delete"
+              title="Delete"
+              tooltip="Delete"
+              data-bs-toggle="modal" data-bs-target="#deleteExpenseModal"
+              (click)="setDataItem(dataItem.expense_id)"
+            >
+              <i class="fas fa-trash" style="font-weight: bold"></i>
+            </button>
+          }
+
+          @if(dataItem.status == 'draft') {
+            <button
+              class="btn btn-sm btn-smaller btn-edit"
+              title="Edit"
+              tooltip="Edit"
+              (click)="getEditExpenseData(dataItem.expense_id)"
+            >
+              <i class="fas fa-edit" style="font-weight: bold"></i>
+            </button>
+
+            <button
+              class="btn btn-sm btn-smaller btn-edit"
+              title="Approve"
+              tooltip="Approve"
+              data-bs-toggle="modal" data-bs-target="#approveExpenseModal"
+              (click)="setDataItem(dataItem.expense_id)"
+
+            >
+              <i class="fas fa-check check-icon" style="font-weight: bold"></i>
+            </button>
+          }
+        </ng-template>
+      </kendo-grid-column>
+
+    </kendo-grid>
+  </div>
+
+</div>
+
+
+<div class="modal fade" id="deleteExpenseModal" tabindex="-1" aria-labelledby="deleteExpenseModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="deleteExpenseModal">Delete</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this expense?
+      </div>
+      <div class="modal-footer">
+        <button style="margin-right: -15px;" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger"  data-bs-dismiss="modal" (click)="deleteExpense(expenseId)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="approveExpenseModal" tabindex="-1" aria-labelledby="approveExpenseModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="approveExpenseModal">Approve</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to Approve this expense?
+      </div>
+      <div class="modal-footer">
+        <button style="margin-right: -15px;" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="approveExpense(expenseId)">Approve</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="editExpenseModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editExpenseModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editExpenseModalLabel">Edit Expense</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="closeEditExpenseModal()"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Modal content -->
+
+        <form [formGroup]="editExpenseForm" (ngSubmit)="updateExpenseForm(expenseId)">
+
+          <div class="mb-4 row" style="max-height: 40px;">
+            <label for="people_name" class="col-sm-4 mt-1 col-form-label">People Name <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <!-- <select class="form-select text-dark" id="people_name" formControlName="people_name">
+                <option value="">Select a person</option>
+                <option *ngFor="let person of peopleNames" [value]="person.people_id">{{ person.people_name }}</option>
+              </select> -->
+              <kendo-combobox
+                  [data]="filteredPeopleNames"
+                  textField="people_name"
+                  valueField="people_id"
+                  formControlName="people_name"
+                  placeholder="Select a person"
+                  id="people_name"
+                  [valuePrimitive]="true"
+                  [filterable]="true"
+                  (filterChange)="handlePeopleNamesFilter($event)"
+                  class="k-combobox"
+                >
+              </kendo-combobox>
+              <div *ngIf="editPeopleName?.errors?.['required'] && (editPeopleName?.touched || editPeopleName?.dirty)" >
+                <small class="error-message">*People name is required</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-4 row" style="max-height: 40px;">
+            <label for="expense_type" class="col-sm-4 mt-1 col-form-label">Expense Type <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <!-- <select class="form-select text-dark" id="expense_type" formControlName="expense_type">
+                <option value="">Select an expense type</option>
+                <option *ngFor="let type of expenseTypes" [value]="type.expense_type_id">{{ type.expense_type }}</option>
+              </select> -->
+              <kendo-combobox
+                [data]="filteredExpenseTypes"
+                textField="expense_type"
+                valueField="expense_type_id"
+                formControlName="expense_type"
+                placeholder="Select an expense type"
+                [valuePrimitive]="true"
+                [filterable]="true"
+                (filterChange)="handleExpenseTypesFilter($event)"
+                class="k-combobox"
+              >
+              </kendo-combobox>
+              <div *ngIf="editExpenseType?.errors?.['required'] && (editExpenseType?.touched || editExpenseType?.dirty)">
+                <small class="error-message">*Expense Type is required</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-4 row" style="max-height: 40px;">
+            <label for="expense_date" class="col-sm-4 mt-1 col-form-label">Expense Date <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="date" class="form-control text-dark" id="expense_date" formControlName="expense_date">
+              <div class="error-message" *ngIf="editExpenseForm.get('expense_date')?.invalid && (editExpenseForm.get('expense_date')?.dirty || editExpenseForm.get('expense_date')?.touched)">
+                <small class="error-message" *ngIf="editExpenseForm.get('expense_date')?.errors?.['required']">Date is required.</small>
+                <!-- <small *ngIf="invoiceForm.get('periodEndDate')?.errors?.['invalidDate']">Invalid date format.</small> -->
+                <small class="error-message" *ngIf="editExpenseForm.get('expense_date')?.errors?.['futureDateTooFar']">Enter a date within 1 year.</small>
+                <small class="error-message" *ngIf="editExpenseForm.get('expense_date')?.errors?.['pastDateTooFar']">Date cannot be beyond 1 year.</small>
+              </div>
+              <div *ngIf="editExpenseDate?.errors?.['required'] && (editExpenseDate?.touched || editExpenseDate?.dirty)">
+                <small class="error-message">*Expense Date is required</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-4 row" style="max-height: 40px;">
+            <label for="amount" class="col-sm-4 mt-1 col-form-label">Amount <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control text-dark" id="amount" formControlName="amount" appDecimalNumberOnly>
+              <div *ngIf="editAmount?.errors?.['required'] && (editAmount?.touched || editAmount?.dirty)">
+                <small class="error-message">*Amount is required</small>
+              </div>
+              <div *ngIf="editAmount?.errors?.['decimal10_2'] && (editAmount?.touched || editAmount?.dirty)">
+                <small class="error-message">*Enter valid amount</small>
+              </div>
+              <div *ngIf="editAmount?.errors?.['minValue'] && !editAmount?.errors?.['required'] && !editAmount?.errors?.['decimal10_2'] && (editAmount?.touched || editAmount?.dirty)">
+                <small class="error-message">*Enter some Value</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer" style="border-top: none;">
+            <button type="submit" class="btn btn-success" [disabled]="!editExpenseForm.valid">Update</button>
+            <button type="reset" class="btn" style="color: white; background-color: rgb(37, 67, 176);" (click)="resetEditExpenseForm()">Reset</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>

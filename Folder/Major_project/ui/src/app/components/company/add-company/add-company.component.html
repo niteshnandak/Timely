@@ -1,0 +1,159 @@
+<div class="row m-0 my-2 p-0">
+<app-loader [isLoading]="isLoading"></app-loader>
+
+  <h4 class="text-white">Add Company</h4>
+  <form [formGroup]="addCompanyForm" (ngSubmit)="addCompanyFormSubmit()">
+    <div class="row mb-3" formGroupName="companyDetails">
+      <div class="col-12 my-2">
+        <h6 class="text-info">Company Details</h6>
+      </div>
+      <div class="col-3">
+        <b><small><label class="form-label text-white m-0" for="company_name">Company Name
+          <span class="text-danger">*</span>
+        </label></small></b>
+        <input type="text" class="form-control text-dark rounded" placeholder="Company Name" id="company_name" formControlName="company_name" appCharWithSpace/>
+        <div class="error-message" *ngIf="addCompanyForm.get('companyDetails.company_name')?.touched">
+          <div *ngIf="addCompanyForm.get('companyDetails.company_name')?.hasError('required')">Company Name is required.</div>
+          <div *ngIf="addCompanyForm.get('companyDetails.company_name')?.hasError('maxlength')">Max 50 characters allowed</div>
+          <div *ngIf="addCompanyForm.get('companyDetails.company_name')?.hasError('minlength')">Min 3 characters required</div>
+        </div>
+      </div>
+      <div class="col-3 input-height">
+        <b><small><label class="form-label text-white m-0" for="email_address">Email
+          <span class="text-danger">*</span>
+        </label></small></b>
+        <input type="email" class="form-control text-dark rounded" placeholder="Email Address" id="email_address" formControlName="email_address" />
+        <div class="error-message" *ngIf="addCompanyForm.get('companyDetails.email_address')?.touched">
+          <div *ngIf="addCompanyForm.get('companyDetails.email_address')?.hasError('required')">Email Address is required.</div>
+          <div *ngIf="addCompanyForm.get('companyDetails.email_address')?.hasError('pattern')">Enter a valid Email.</div>
+          <div *ngIf="addCompanyForm.get('companyDetails.email_address')?.hasError('maxlength')">Max 75 characters allowed</div>
+        </div>
+      </div>
+      <div class="col-3 input-height">
+        <b><small><label class="form-label text-white m-0" for="phone_number">Phone Number
+          <span class="text-danger">*</span>
+        </label></small></b>
+        <input type="text" class="form-control text-dark rounded" placeholder="Phone Number" id="phone_number" formControlName="phone_number" appNumberOnly />
+        <div class="error-message" *ngIf="addCompanyForm.get('companyDetails.phone_number')?.touched">
+          <div *ngIf="addCompanyForm.get('companyDetails.phone_number')?.hasError('required')">Phone Number is required.</div>
+          <div *ngIf="addCompanyForm.get('companyDetails.phone_number')?.hasError('maxlength')">Max 10 characters allowed</div>
+          <div *ngIf="addCompanyForm.get('companyDetails.phone_number')?.hasError('minlength')">Min 10 characters required</div>
+        </div>
+      </div>
+      <div class="col-3 input-height">
+        <b><small><label class="form-label text-white m-0" for="vat_percent">VAT Percent
+          <span class="text-danger">*</span>
+        </label></small></b>
+        <select class="form-control form-select text-dark rounded" id="vat_percent" formControlName="vat_percent">
+          <option value="">Select VAT Percent</option>
+          <option value="0%">0%</option>
+          <option value="5%">5%</option>
+          <option value="20%">20%</option>
+        </select>
+        <div class="error-message" *ngIf="addCompanyForm.get('companyDetails.vat_percent')?.touched">
+          <div *ngIf="addCompanyForm.get('companyDetails.vat_percent')?.hasError('required')">VAT percentage is required.</div>
+        </div>
+      </div>
+      <div class="col-6 input-height">
+        <b><small><label class="form-label text-white m-0" for="company_description">Company Description
+          <span class="text-danger">*</span>
+        </label></small></b>
+        <textarea class="form-control text-dark rounded" placeholder="Company Description" id="company_description" formControlName="company_description"></textarea>
+        <div class="error-message" *ngIf="addCompanyForm.get('companyDetails.company_description')?.touched">
+          <div *ngIf="addCompanyForm.get('companyDetails.company_description')?.hasError('required')">Company description is required.</div>
+        </div>
+      </div>
+      <div class="col-6 input-height">
+        <div class="logo-container d-flex align-items-center">
+          <div class="d-flex align-items-center">
+            <input class="form-control text-dark rounded" type="file" id="company_logo" (change)="onFileChange($event)" accept="image/*" hidden />
+            <div class="d-flex flex-column align-items-center text-white">
+              <label class="comp-logo form-label m-0" for="company_logo">Upload logo for Company
+                <span class="text-danger">*</span>
+              </label>
+              <span id="file-chosen">{{ fileChosen }}</span>
+            </div>
+            <div class="d-flex flex-column text-white">
+              <span style="margin-left: 2rem;">This Logo will be visible on Invoices and Emails</span>
+              <span style="margin-left: 2rem; font-size: 12px;">Preferred Image Dimensions: 240 x 240 pixels</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row my-3" formGroupName="companyAddressDetails">
+      <div class="col-12 my-2">
+        <h6 class="text-info">Company Address Details</h6>
+      </div>
+      <div class="col-6 input-height">
+        <b><small><label class="form-label text-white m-0" for="address_line_1">Address Line 1
+          <span class="text-danger">*</span>
+        </label></small></b>
+        <input type="text" class="form-control text-dark rounded" placeholder="Address Line 1" id="address_line_1" formControlName="address_line_1" appSomeChars/>
+        <div class="error-message" *ngIf="addCompanyForm.get('companyAddressDetails.address_line_1')?.touched">
+          <div *ngIf="addCompanyForm.get('companyAddressDetails.address_line_1')?.hasError('required')">Address Line 1 is required.</div>
+          <div *ngIf="addCompanyForm.get('companyAddressDetails.address_line_1')?.hasError('maxlength')">Max 100 characters allowed</div>
+          <div *ngIf="addCompanyForm.get('companyAddressDetails.address_line_1')?.hasError('minlength')">Min 5 characters required</div>
+        </div>
+      </div>
+      <div class="col-6 input-height">
+        <b><small><label class="form-label text-white m-0" for="address_line_2">Address Line 2
+          <span class="text-danger">*</span>
+        </label></small></b>
+        <input type="text" class="form-control text-dark rounded" placeholder="Address Line 2" id="address_line_2" formControlName="address_line_2" appSomeChars/>
+        <div class="error-message" *ngIf="addCompanyForm.get('companyAddressDetails.address_line_2')?.touched">
+          <div *ngIf="addCompanyForm.get('companyAddressDetails.address_line_2')?.hasError('maxlength')">Max 100 characters allowed</div>
+        </div>
+      </div>
+      
+      <div class="col-3 input-height">
+        <b><small><label class="form-label text-white m-0" for="city">City
+          <span class="text-danger">*</span>
+        </label></small></b>
+        <input type="text" class="form-control text-dark rounded" placeholder="City" id="city" formControlName="city" />
+        <div class="error-message" *ngIf="addCompanyForm.get('companyAddressDetails.city')?.touched">
+          <div *ngIf="addCompanyForm.get('companyAddressDetails.city')?.hasError('required')">City is required.</div>
+          <div *ngIf="addCompanyForm.get('companyAddressDetails.city')?.hasError('maxlength')">Max 50 characters allowed</div>
+          <div *ngIf="addCompanyForm.get('companyAddressDetails.city')?.hasError('minlength')">Min 3 characters required</div>
+        </div>
+      </div>
+      <div class="col-3 input-height">
+        <b><small><label class="form-label text-white m-0" for="state">State
+          <span class="text-danger">*</span>
+        </label></small></b>
+        <input type="text" class="form-control text-dark rounded" placeholder="State" id="state" formControlName="state" />
+        <div class="error-message" *ngIf="addCompanyForm.get('companyAddressDetails.state')?.touched">
+          <div *ngIf="addCompanyForm.get('companyAddressDetails.state')?.hasError('required')">State is required.</div>
+          <div *ngIf="addCompanyForm.get('companyAddressDetails.state')?.hasError('maxlength')">Max 50 characters allowed</div>
+          <div *ngIf="addCompanyForm.get('companyAddressDetails.state')?.hasError('minlength')">Min 3 characters required</div>
+        </div>
+      </div>
+      <div class="col-3 input-height">
+        <b><small><label class="form-label text-white m-0" for="country">Country
+          <span class="text-danger">*</span>
+        </label></small></b>
+        <input type="text" class="form-control text-dark rounded" placeholder="Country" id="country" formControlName="country" />
+        <div class="error-message" *ngIf="addCompanyForm.get('companyAddressDetails.country')?.touched">
+          <div *ngIf="addCompanyForm.get('companyAddressDetails.country')?.hasError('required')">Country is required.</div>
+          <div *ngIf="addCompanyForm.get('companyAddressDetails.country')?.hasError('maxlength')">Max 50 characters allowed</div>
+          <div *ngIf="addCompanyForm.get('companyAddressDetails.country')?.hasError('minlength')">Min 3 characters required</div>
+        </div>
+      </div>
+      <div class="col-3 input-height">
+        <b><small><label class="form-label text-white m-0" for="pincode">Pincode
+          <span class="text-danger">*</span>
+        </label></small></b>
+        <input type="text" class="form-control text-dark rounded" placeholder="Pincode" id="pincode" formControlName="pincode" appNumberOnly />
+        <div class="error-message" *ngIf="addCompanyForm.get('companyAddressDetails.pincode')?.touched">
+          <div *ngIf="addCompanyForm.get('companyAddressDetails.pincode')?.hasError('required')">Pincode is required.</div>
+          <div *ngIf="addCompanyForm.get('companyAddressDetails.pincode')?.hasError('maxlength')">Max 6 characters allowed</div>
+          <div *ngIf="addCompanyForm.get('companyAddressDetails.pincode')?.hasError('minlength')">Min 6 characters required</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer my-2">
+      <button type="reset" class="btn btn-info mx-2" (click)="resetForm()">Reset</button>
+      <button type="submit" class="btn btn-success mx-2" [disabled]="!addCompanyForm.valid">Add</button>
+    </div>
+  </form>
+</div>

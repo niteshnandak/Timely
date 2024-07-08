@@ -1,0 +1,41 @@
+<kendo-grid class="k-grid k-border-none"
+[data]="customerGridData"
+[pageable]="pageable_status"
+[skip]="skip"
+[pageSize]="take"
+(pageChange)="customerPageChange($event)"
+>
+<kendo-grid-column field="customer_name" title="Customer Name"
+[headerStyle]="{'font-weight':'bold'}"
+[width]="115"> </kendo-grid-column>
+
+<kendo-grid-column field="email_address" title="Customer Email"
+[headerStyle]="{'font-weight':'bold'}"
+[width]="130"> </kendo-grid-column>
+
+<kendo-grid-column field="phone_number" title="Customer Phone.No"
+[headerStyle]="{'font-weight':'bold'}"
+[width]="130" ></kendo-grid-column>
+
+<kendo-grid-column field="no_of_assignments" title="No.Assignments"
+[headerStyle]="{'font-weight':'bold'}"
+[width]="115" > </kendo-grid-column>
+
+<kendo-grid-column field="address_id" title="City"
+[headerStyle]="{'font-weight':'bold'}"
+[width]="95" > </kendo-grid-column>
+
+<kendo-grid-column field="Action" title="Action"
+[headerStyle]="{'font-weight':'bold'}"
+[width]="90"
+[sticky]="true">
+<ng-template kendoGridCellTemplate let-dataItem>
+    <button class="btn btn-sm btn-smaller btn-edit"  title="Edit" tooltip="Edit">
+        <i class="fas fa-edit" style="font-weight: bold;"></i>
+    </button>
+    <button class="btn btn-sm btn-smaller btn-delete"  title="Delete" tooltip="Delete">
+        <i class="fas fa-trash" style="font-weight: bold;"></i>
+    </button>
+</ng-template>
+</kendo-grid-column>
+</kendo-grid>

@@ -1,0 +1,98 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-center">
+    <div class="border border-2 py-3 my-4 bg-light" style="width: 90%;">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="ms-2">Generated Reports Data</h5>
+        <div class="d-flex me-3">
+          <button class="btn btn-danger me-3" (click) = "discardReports()">
+            <i class="bi bi-x-lg"></i> Discard
+          </button>
+          <button class="btn btn-primary" (click) = "downloadReports()">
+            <i class="bi bi-download me-2"></i> Download
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-center text-align-center">
+    <div style="width: 90%;">
+      <kendo-grid
+      [kendoGridBinding]="reportsData"
+      [pageable]="true"
+      [pageSize]=10
+      >
+
+      <kendo-grid-column
+      title="S.No"
+      [headerStyle]="{'font-weight': 'bold'}"
+      [width]="60"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+          {{ rowIndex + 1 }}
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column
+      field="worker_id"
+      [headerStyle]="{'font-weight': 'bold'}"
+      title="Worker Id"
+      [width]="110"
+      >
+      </kendo-grid-column>
+
+      <kendo-grid-column
+      field="worker_name"
+      [headerStyle]="{'font-weight': 'bold'}"
+      title="Worker Name"
+      >
+      </kendo-grid-column>
+
+      <kendo-grid-column
+      field="invoice_date"
+      [headerStyle]="{'font-weight':'bold'}"
+      title="Invoice Date"
+      >
+      </kendo-grid-column>
+
+      <kendo-grid-column
+      field="hourly_pay"
+      [headerStyle]="{'font-weight':'bold'}"
+      title="Hourly Pay"
+      >
+      </kendo-grid-column>
+
+      <kendo-grid-column
+      field="hours_worked"
+      [headerStyle]="{'font-weight':'bold'}"
+      title="Hours Worked"
+      >
+      </kendo-grid-column>
+
+      <kendo-grid-column
+      field="organisation"
+      [headerStyle]="{'font-weight':'bold'}"
+      title="Organisation"
+      >
+      </kendo-grid-column>
+
+      <kendo-grid-column
+      field="hourly_pay"
+      [headerStyle]="{'font-weight': 'bold'}"
+      title="Hourly Pay"
+      >
+      </kendo-grid-column>
+
+      <kendo-grid-column
+      field="hours_worked"
+      [headerStyle]="{'font-weight': 'bold'}"
+      title="Hours Worked"
+      >
+      </kendo-grid-column>
+
+      </kendo-grid>
+    </div>
+  </div>
+
+
+</div>

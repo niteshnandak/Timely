@@ -1,0 +1,176 @@
+<div class="container">
+  <div class="border border-2 p-3 my-3 bg-light">
+    <div class="d-flex justify-content-between align-items-center">
+      <h5>Invoices</h5>
+      <div class="d-flex">
+        <button class="btn btn-primary me-3" (click)="toggleInvoiceForm()">
+          <i class="bi bi-plus-lg"></i> Create Invoice
+        </button>
+        <button type="button" class="btn btn-success me-3" (click)="toggleGenerateReports()">
+          <i class="bi bi-download"></i> Generate Report
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="invoiceOffcanvas" [ngClass]="{ 'show': showInvoiceForm }">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title">Add New Invoice </h5>
+      <button type="button" class="btn-close" (click)="toggleInvoiceForm()" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <form [formGroup]="newInvoiceForm" (ngSubmit)="addNewInvoice()">
+        <div class="container">
+          <div class="col-12">
+            <div class="mb-1` staticHeight">
+              <label for="worker_name">Worker Name <span class="mandatory">*</span></label>
+              <input type="text" class="form-control" id="worker_name" formControlName="worker_name"
+                placeholder="Enter Worker Name">
+                <div *ngIf="newInvoiceForm.get('worker_name')?.invalid && (newInvoiceForm.get('worker_name')!.dirty || newInvoiceForm.get('worker_name')!.touched)">
+                  <div *ngIf="newInvoiceForm.get('worker_name')?.errors?.['required']" class="text-danger warning-text">*Worker Name is required.</div>
+                  <div *ngIf="newInvoiceForm.get('worker_name')?.errors?.['pattern']" class="text-danger warning-text">*Only Alphabets are allowed.</div>
+                </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="mb-1 staticHeight">
+              <label for="worker_id">Worker ID <span class="mandatory">*</span></label>
+              <input type="text" class="form-control" id="worker_id" formControlName="worker_id"
+                placeholder="Enter Worker ID">
+                <div *ngIf="newInvoiceForm.get('worker_id')?.invalid && (newInvoiceForm.get('worker_id')!.dirty || newInvoiceForm.get('worker_id')!.touched)">
+                  <div *ngIf="newInvoiceForm.get('worker_id')?.errors?.['required']" class="text-danger warning-text">*Worker ID is required.</div>
+                  <div *ngIf="newInvoiceForm.get('worker_id')?.errors?.['pattern']" class="text-danger warning-text">*Only Numbers are allowed.</div>
+                </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="mb-1 staticHeight">
+              <label for="invoice_date">Date <span class="mandatory">*</span></label>
+              <input type="date" class="form-control" id="invoice_date" formControlName="invoice_date"
+                placeholder="Enter Invoice Date" (click)="clearInvalidDate($event)">
+                <div *ngIf="newInvoiceForm.get('invoice_date')?.invalid && (newInvoiceForm.get('invoice_date')!.dirty || newInvoiceForm.get('invoice_date')!.touched)">
+                  <div *ngIf="newInvoiceForm.get('invoice_date')?.errors?.['required']" class="text-danger warning-text">*Date is Required</div>
+                  <div *ngIf="newInvoiceForm.get('invoice_date')?.errors?.['maxYear']" class="text-danger warning-text">*Date cannot be greater than the current year.</div>
+                </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="mb-1 staticHeight">
+              <label for="organisation">Organisation <span class="mandatory">*</span></label>
+              <input type="text" class="form-control" id="organisation" formControlName="organisation"
+                placeholder="Enter Organisation">
+                <div *ngIf="newInvoiceForm.get('organisation')?.invalid && (newInvoiceForm.get('organisation')!.dirty || newInvoiceForm.get('organisation')!.touched)">
+                  <div *ngIf="newInvoiceForm.get('organisation')?.errors?.['required']" class="text-danger warning-text">*Organisation is Required</div>
+                </div>
+              <input type="hidden" class="form-control" id="timesheet_id" formControlName="timesheet_id">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div class="mb-1 staticHeight">
+                <label for="hourly_pay">Hourly Pay <span class="mandatory">*</span></label>
+                <input type="text" class="form-control" id="hourly_pay" formControlName="hourly_pay"
+                  placeholder="Enter Hourly Pay" appNumberOnly>
+                  <div *ngIf="newInvoiceForm.get('hourly_pay')?.invalid && (newInvoiceForm.get('hourly_pay')!.dirty || newInvoiceForm.get('hourly_pay')!.touched)">
+                    <div *ngIf="newInvoiceForm.get('hourly_pay')?.errors?.['required']" class="text-danger warning-text">*Hourly Pay is Required</div>
+                  </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="staticHeight">
+                <label for="hours_worked">Hours Worked <span class="mandatory">*</span></label>
+                <input type="text" class="form-control" id="hours_worked" formControlName="hours_worked"
+                  placeholder="Enter Hours Worked" appNumberOnly>
+                  <div *ngIf="newInvoiceForm.get('hours_worked')?.invalid && (newInvoiceForm.get('hours_worked')!.dirty || newInvoiceForm.get('hours_worked')!.touched)">
+                    <div *ngIf="newInvoiceForm.get('hours_worked')?.errors?.['required']" class="text-danger warning-text">*Hours Worked is Required</div>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-2">
+            <button type="submit" class="btn btn-primary me-2" [disabled]="newInvoiceForm.invalid">Submit</button>
+            <button type="Reset" class="btn btn-dark" (click)="resetForm()">Reset</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="generareReportsOffcanvas"
+    [ngClass]="{ 'show': showGenerateReports }">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title">Generate Reports</h5>
+      <button type="button" class="btn-close" (click)="toggleGenerateReports()" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <form [formGroup]="generateReportsForm" (ngSubmit)="GenerateReports()">
+        <div class="container">
+          <div class="row mb-3">
+            <div class="col-12">
+              <div class="" style="height: 90px;">
+                <label for="worker_id" class="form-label">Worker ID</label>
+                <input type="text" class="form-control" id="worker_id" formControlName="worker_id"
+                  placeholder="Enter Worker ID">
+                <div class="mt-0 " *ngIf="generateReportsForm.hasError('notANumber')" class="text-danger warning-text">
+                  Please enter a valid worker ID.
+                </div><br>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="" style="height: 90px;">
+                <label for="organisation" class="form-label">Organisation</label>
+                <input type="text" class="form-control" id="organisation" formControlName="organisation"
+                  placeholder="Enter Organisation"><br>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="" style="height: 95px;">
+                <label for="dateFrom" class="form-label">Date From</label>
+                <input type="date" class="form-control" id="dateFrom" formControlName="dateFrom" (click)="clearInvalidDate($event)">
+                <div *ngIf="generateReportsForm.get('dateFrom')?.errors?.['maxYear']" class="text-danger warning-text">
+                  Date cannot be greater than the current year.
+                </div>
+                <br>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="" style="height: 95px;">
+                <label for="dateTo" class="form-label">Date To</label>
+                <input type="date" class="form-control" id="dateTo" formControlName="dateTo" (click)="clearInvalidDate($event)">
+                <div *ngIf="generateReportsForm.hasError('patternInvalid')" class="text-danger warning-text">
+                  Date is in wrong format.
+                </div>
+                <div class="mt-0 " *ngIf="generateReportsForm.hasError('dateRangeInvalid')" class="text-danger warning-text">
+                  Date To must be greater than Date From.
+                </div>
+                <div *ngIf="generateReportsForm.get('dateTo')?.errors?.['maxYear']" class="text-danger warning-text">
+                  Date cannot be greater than the current year.
+                </div>
+                <br>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="d-flex justify-content-start">
+              <button type="submit" class="btn btn-primary me-2"
+                [disabled]="!isAnyFieldFilled() || generateReportsForm.hasError('dateRangeInvalid') || generateReportsForm.hasError('dateRangeInvalid') || generateReportsForm.hasError('notANumber') || generateReportsForm.invalid">
+                Submit
+              </button>
+              <button type="button" class="btn btn-dark" (click)="resetGenerateForm()">
+                Reset
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <app-invoice-dashboard #invoiceDashboard></app-invoice-dashboard>
+  <div class="mb-3 my-3 text-end">
+    <button class="btn btn-dark" routerLink="/timesheet">
+      <i class="bi bi-arrow-return-left"></i> Back </button>
+  </div>
+</div>

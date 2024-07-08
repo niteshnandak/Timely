@@ -1,0 +1,114 @@
+
+/* Label */
+.btn.register{
+    background-color: #06bef8 !important;
+}
+
+input:focus.ng-invalid.register{
+    border-color: #E68427;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #E68427;
+
+}
+
+input:focus.ng-invalid.ng-touched,input:focus.ng-invalid.ng-untouched.ng-dirty,input:focus.ng-invalid.ng-dirty.ng-touched.register{
+    border-color: #E62736;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #E62736;
+
+}
+
+input:focus.ng-valid.ng-dirty.ng-touched,input:focus.ng-valid.ng-dirty.ng-untouched.register{
+    border-color: green;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px green;
+
+}
+
+
+
+input.ng-invalid.ng-touched,input.ng-invalid.ng-touched.ng-dirty.register {
+    border: 0.25px solid  #E62736 !important;
+}
+
+
+input.ng-valid.ng-dirty.ng-touched.register{
+    border: 1.5px solid green !important;
+}
+
+/* Image */
+.body-image.register{
+    height: 23rem;
+    width: 40rem;
+    margin-top: 6rem;
+}
+
+.img-info{
+    width: 15px ;
+    height: 15px;
+    margin-left: 5px;
+}
+
+.password-validation{
+    height: 125x;
+    padding: 2px 2px !important;
+}
+
+.password-validation-span {
+font-size: 0.7rem !important;
+
+}
+
+.phone-number{
+    pointer-events: none;
+    background-color: rgba(223, 222, 222, 0.671) !important;
+    font-weight:400 !important
+    /* color: white !important; */
+}
+
+.popover-text{
+    color: rgb(230, 0, 0) !important;
+}
+
+/* Image */
+.body-image{
+    height: 23rem;
+    width: 40rem;
+    margin-top: 4rem;
+}
+
+.center-container{
+    display:flex ;
+    justify-content: center;
+}
+
+
+.login-form{
+    margin: 50px 0 0 0 !important;
+}
+
+.reset-form{
+    margin: 75px 0 0 0 !important;
+}
+
+/* error messages in form */
+.warning-text {
+    font-size : 12px;
+    font-weight : bold;
+  }
+
+.staticHeight-offCanvas{
+  height: 75px !important;
+}
+
+.staticHeight{
+  height: 75px !important;
+}
+
+.mandatory{
+    color : red;
+}
+
+button{
+  cursor:pointer;
+}
+
+
+

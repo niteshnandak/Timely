@@ -1,0 +1,4 @@
+<app-header *ngIf="shouldShowHeader()"></app-header>
+<app-header-login *ngIf="!shouldShowHeader()"></app-header-login>
+<router-outlet></router-outlet>
+

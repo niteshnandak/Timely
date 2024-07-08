@@ -1,0 +1,37 @@
+.form-floating {
+  max-width: 350px;
+  height: 53px;
+}
+
+.form-floating > label {
+  font-size: 0.875rem;
+}
+
+.form-control {
+  /* max-height: 10x !important;  */
+  font-size: 1rem;
+  background-color: #d9d9d9;
+  border: 1.3px solid;
+  border-radius: 0;
+}
+
+.form-control:focus {
+  box-shadow: none;
+}
+
+.register-button {
+  padding: 5px;
+  width: 350px;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.error-message {
+  max-height: 1px;
+}
+
+.login-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,0 +1,56 @@
+<div class="row m-0 my-2 p-0">
+  <h4 class="text-white">Search Customer</h4>
+<form class=" "[formGroup]="searchCustomerForm" (ngSubmit)="searchCustomerSubmit()" >
+
+  <div class="row">
+      <div class="col-12 my-2">
+          <h6 class="text-info">
+              Customer Details
+          </h6>
+      </div>
+      <div class="col-12 input-height">
+          <b>
+              <small>
+                  <label class="form-label text-white m-0" for="customer_name ">Full Name</label>
+              </small>
+          </b>
+          <input type="text" class="form-control text-dark rounded-0  " placeholder="Customer Name" name="customer_name"
+              id="customer_name" formControlName="customer_name"  />
+          <div class="error-message" *ngIf="searchCustomerForm.get('customer_name')?.invalid">
+            Enter a valid Name
+          </div>
+      </div>
+      <div class="col-12 input-height">
+
+          <b>
+              <small>
+                  <label class="form-label text-white m-0" for="email_address ">Email</label>
+              </small>
+          </b>
+          <input type="text" class="form-control text-dark rounded-0  " placeholder="E Mail" name="email_address"
+          id="email_address" formControlName="email_address" />
+          <div class="error-message" *ngIf="searchCustomerForm.get('email_address')?.invalid">
+            Enter a valid email
+          </div>
+      </div>
+      <div class="col-12 input-height">
+          <b>
+              <small>
+                  <label class="form-label text-white m-0" for="phone_number">Phone Number</label>
+              </small>
+          </b>
+          <input type="text" class="form-control text-dark rounded-0  " placeholder="Phone Number" name="phone_number"
+              id="phone_number" formControlName="phone_number" />
+          <div class="error-message" *ngIf="searchCustomerForm.get('phone_number')?.invalid">
+            Enter a valid Phone Number
+          </div>
+      </div>
+  </div>
+
+  <div class="modal-footer my-2">
+    <button type="reset" class="btn btn-info mx-2" (click)="resetForm()">Reset</button>
+      <button type="submit" class="btn btn-success mx-2" [disabled]="searchCustomerForm.invalid">Search</button>
+  </div>
+</form>
+
+</div>

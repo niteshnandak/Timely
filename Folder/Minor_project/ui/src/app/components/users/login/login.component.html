@@ -1,0 +1,56 @@
+<div class="row justify-content-end m-0 p-0">
+    <div class="col-6">
+        <app-onboard-image></app-onboard-image>
+    </div>
+    <div class="col-6 login-form" >
+        
+        <form [formGroup]="loginForm" (ngSubmit)="login()" >
+            <div class="col-8 p-2 mx-5 rounded ">
+                <div class="d-flex m-0">
+                    <div class="mx-auto">
+                        <h5 class="m-4">{{title}}</h5>
+                    </div>      
+                </div>  
+                <div class="m-2" style="height: 80px;">
+                    <b><small><label class="form-label text-info" for="email ">Email Address</label></small></b>
+                    <input type="text" class="form-control rounded-0 "
+                    placeholder="Enter Email Address" name="email" id="email"
+                    formControlName="email">
+                    @if (email?.errors?.['required'] && (email?.touched || email?.dirty)) {
+                        <b><small class="text-danger warning-text" >*Email field is required</small></b>
+                    }
+                    @if (email?.errors?.['pattern'] && email?.touched && email?.dirty) {
+                        <b><small class="text-danger warning-text">*Invalid Email Address</small></b>
+                    }
+                </div>    
+                <div class="m-2" style="height: 80px;">
+                    <b><small><label class="form-label text-info" for="password ">Password</label></small></b>
+                    <input type="password" class="form-control rounded-0 "
+                    placeholder="Enter Password" name="password"
+                    id="password"
+                    formControlName="password" >
+                    @if (password?.errors?.['required'] && (password?.touched || password?.dirty)) {
+                        <b><small class="text-danger warning-text" >*Password field is required</small></b>
+                    }          
+                </div>    
+                <div class="center-container">
+                    <input type="submit" value="Login"
+                    class="form-control btn btn-info text-dark submitbtn rounded-0 m-2"
+                    id="password_submit" [disabled]="!(this.loginForm.valid)" >
+                </div>
+                <div class="center-container">
+                    <div class="m-2">
+                        <a routerLink="/forgot-password" class="text-info">Forgot Password?</a>   
+                    </div>
+                </div>
+               <div class="center-container">
+                    <div class="m-2">
+                        <p>Don't Have An Account? <a routerLink="/register" class="text-info">Register</a></p>
+                    </div>
+               </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+

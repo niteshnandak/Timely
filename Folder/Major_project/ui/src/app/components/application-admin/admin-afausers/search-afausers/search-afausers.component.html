@@ -1,0 +1,139 @@
+<div class="row m-0 my-2 p-0">
+  <h4 class="text-white">Search AFA Users</h4>
+  <form
+    [formGroup]="adminSearchUserForm"
+    (ngSubmit)="onSubmit()"
+    class=" "
+  >
+
+    <div class="row my-2">
+      <!-- <div class="col-12 my-2">
+        <h6 class="text-info">AFA User Details</h6>
+      </div> -->
+      <div class="col-12">
+        <b>
+          <small>
+              <label class="form-label text-white m-0" for="first_name">First Name</label>
+          </small>
+        </b>
+        <input
+          type="text"
+          class="form-control text-dark rounded-0"
+          placeholder="Enter first name"
+          name="first_name"
+          id="first_name"
+          formControlName="firstName"
+        />
+      </div>
+
+      <div class="col-12">
+        <b>
+          <small>
+              <label class="form-label text-white m-0" for="surname ">Surname</label>
+          </small>
+        </b>
+        <input
+          type="text"
+          class="form-control text-dark rounded-0"
+          placeholder="Enter surname"
+          name="surname"
+          id="surname"
+          formControlName="surName"
+        />
+      </div>
+
+      <div class="col-12">
+        <b>
+          <small>
+              <label class="form-label text-white m-0" for="user_name ">Username</label>
+          </small>
+        </b>
+        <input
+          type="text"
+          class="form-control text-dark rounded-0"
+          placeholder="Enter username"
+          name="user_name"
+          id="user_name"
+          formControlName="userName"
+        />
+      </div>
+
+      <div class="col-12">
+        <b>
+          <small>
+              <label class="form-label text-white m-0" for="email">Email</label>
+          </small>
+        </b>
+        <input
+          type="email"
+          class="form-control text-dark rounded-0"
+          placeholder="Enter user email"
+          name="email"
+          id="email"
+          formControlName="email"
+        />
+      </div>
+
+      <div class="col-12">
+        <b>
+          <small>
+              <label class="form-label text-white m-0" for="status">Status</label>
+          </small>
+        </b>
+        <select
+          class="form-select text-dark rounded-0"
+          name="status"
+          id="status"
+          formControlName="status"
+        >
+          <option value="null" selected disabled>Select</option>
+          <option value="activated">Activated</option>
+          <option value="deactivated">Deactivated</option>
+          <option value="pending">Pending Verification</option>
+        </select>
+      </div>
+
+      <div class="col-12">
+        <b>
+          <small>
+              <label class="form-label text-white m-0" for="activity">Activity</label>
+          </small>
+        </b>
+        <select
+          class="form-select text-dark rounded-0"
+          name="activity"
+          id="activity"
+          formControlName="activity"
+        >
+          <option value="null" selected disabled>Select</option>
+          <option value="LoggedIn">Logged In Users</option>
+          <option value="notLoggedIn">Not Logged In Users</option>
+        </select>
+      </div>
+
+      <div class="col-12">
+        <b>
+          <small>
+              <label class="form-label text-white m-0" for="last_active">Last Active</label>
+          </small>
+        </b>
+        <input
+          type="date"
+          class="form-control text-dark rounded-0"
+          placeholder="Last Active"
+          name="last_active"
+          id="last_active"
+          formControlName="lastActive"
+        />
+      </div>
+
+    </div>
+
+    <div class="modal-footer my-2">
+      <button type="reset" class="btn btn-info mx-2" (click)="resetForm()">
+        Reset
+      </button>
+      <button type="submit" class="btn btn-success mx-2" [disabled]="adminSearchUserForm.invalid || !isAnyFieldFilled()" >Search</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,430 @@
+<div class="  row m-0 my-2 p-0">
+    <app-loader [isLoading]="isLoading"></app-loader>
+    <h4 class="text-white">Edit People</h4>
+    <form class=" " [formGroup]="editPeopleForm" (ngSubmit)="editPeopleFormSubmit()">
+
+        <div class="row mb-1" formGroupName="peopleDetails">
+            <div class="col-12 my-1">
+                <h6 class="text-info">
+                    People Info
+                </h6>
+            </div>
+            <div class="col-3 people-input-height">
+                <b>
+                    <small>
+                        <label class="form-label text-white m-0" for="people_name ">People Name</label> <span
+                            class="text-danger">*</span>
+                    </small>
+                </b>
+                <input type="text" class="form-control text-dark   " placeholder="People Name" name="people_name"
+                    id="people_name" formControlName="people_name" maxlength="51" appCharWithSpace  />
+                @if(people_name?.errors?.['required'] && people_name?.touched){
+                <b><small class="error-message p-0">People Name is required </small></b>
+                }
+                @if(people_name?.errors?.['maxlength'] ){
+                <b><small class="error-message">Field Exceeds the Max Length 50 characters </small></b>
+                }
+                @if(people_name?.errors?.['minlength'] ){
+                <b><small class="error-message">Min 3 characters required</small></b>
+                }
+            </div>
+            <div class="col-3 people-input-height">
+                <b>
+                    <small>
+                        <label class="form-label text-white m-0" for="job_title ">Job Title</label><span
+                            class="text-danger">*</span>
+                    </small>
+                </b>
+                <input type="text" class="form-control text-dark   " placeholder="Job Title" name="job_title"
+                    id="job_title" formControlName="job_title" maxlength="51" appCharWithSpace />
+                @if(job_title?.errors?.['required'] && job_title?.touched){
+                <b><small class="error-message">Job Title is required </small></b>
+                }
+                @if(job_title?.errors?.['maxlength']){
+                <b><small class="error-message">Field Exceeds the Max Length 50 charcaters</small></b>
+                }
+                @if(job_title?.errors?.['minlength']){
+                <b><small class="error-message"> Min  2 charcaters required</small></b>
+                }
+            </div>
+            <div class="col-3 people-input-height">
+                <b>
+                    <small>
+                        <label class="form-label text-white m-0" for="birth_date">Birth Date</label><span
+                            class="text-danger">*</span>
+                    </small>
+                </b>
+                <input type="date" class="form-control text-dark   " placeholder="Birth Date" name="birth_date"
+                    id="birth_date" formControlName="birth_date" />
+                @if(birth_date?.errors?.['required'] && birth_date?.touched){
+                <b><small class="error-message">Birth Date is required </small></b>
+                }
+                @if(birth_date?.errors?.['pattern'] ){
+                <b><small class="error-message">Invalid Birth Date format </small></b>
+                }
+                @if (birth_date?.errors?.['maxYear']){
+                    <b><small class="error-message">*Date cannot be greater than the current year</small></b>
+                }
+            </div>
+            <div class="col-3 people-input-height">
+                <b>
+                    <small>
+                        <label class="form-label text-white m-0" for="gender">Gender</label><span
+                            class="text-danger">*</span>
+                    </small>
+                </b>
+                <select class="form-select text-dark " name="gender" id="gender" formControlName="gender">
+                    <option [ngValue]="null" selected>Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Others">Others</option>
+                </select>
+                @if(gender?.errors?.['required'] && gender?.touched){
+                <b><small class="error-message">Gender is required </small></b>
+                }
+            </div>
+
+            <div class="col-3 people-input-height">
+                <b>
+                    <small>
+                        <label class="form-label text-white m-0" for="email_address">Email Address</label><span
+                            class="text-danger">*</span>
+                    </small>
+                </b>
+                <input type="text" class="form-control text-dark   " placeholder="Email Address" name="email_address"
+                    id="email_address" formControlName="email_address" maxlength="51" />
+                    @if(email_address?.errors?.['required'] && email_address?.touched){
+                        <b><small class="error-message">Email Address is required </small></b>
+                        }
+                    @if(email_address?.errors?.['pattern'] ){
+                    <b><small class="error-message">Invalid Email Address format </small></b>
+                    }
+                    @if(email_address?.errors?.['maxlength']){
+                        <b><small class="error-message">Field Exceeds the Max Length of 75 characters</small></b>
+                        }
+            </div>
+
+            <div class="col-3 people-input-height">
+                <b>
+                    <small>
+                        <label class="form-label text-white m-0" for="phone_number">Phone Number</label><span
+                            class="text-danger">*</span>
+                    </small>
+                </b>
+                <input type="text" class="form-control text-dark   " placeholder="Phone Number" name="phone_number"
+                    id="phone_number" formControlName="phone_number" maxlength="11" appNumberOnly />
+                @if(phone_number?.errors?.['required'] && phone_number?.touched){
+                <b><small class="error-message">Phone Number is required </small></b>
+                }
+                @if(phone_number?.errors?.['pattern'] ){
+                <b><small class="error-message">Invalid Phone Number</small></b>
+                }@else if (phone_number?.errors?.['minlength'] || phone_number?.errors?.['maxlength'] ){
+                <b><small class="error-message">Phone Number should have only 10 characters</small></b>
+                }
+            </div>
+
+        </div>
+
+
+
+        <div class="row my-1" formGroupName="peopleAddressDetails">
+            <div class="col-12 my-1">
+                <h6 class="text-info">
+                    Address Details
+                </h6>
+            </div>
+            <div class="col-6 people-input-height">
+                <b>
+                    <small>
+                        <label class="form-label text-white m-0" for="address_line_1">Address Line 1</label><span
+                            class="text-danger">*</span>
+                    </small>
+                </b>
+                <input type="text" class="form-control text-dark   " placeholder="Address Line 1" name="address_line_1"
+                    id="address_line_1" maxlength="51" formControlName="address_line_1" appSomeChars />
+                @if(address_line_1?.errors?.['required'] && address_line_1?.touched){
+                <b><small class="error-message">Address Line 1 is required </small></b>
+                }
+                @if(address_line_1?.errors?.['minlength']){
+                    <b><small class="error-message">Min 3 characters required</small></b>
+                    }
+                @if(address_line_1?.errors?.['maxlength']){
+                <b><small class="error-message">Field Exceeds the Max Length of 50 charcaters</small></b>
+                }
+            </div>
+
+            <div class="col-6 people-input-height">
+                <b>
+                    <small>
+                        <label class="form-label text-white m-0" for="address_line_2">Address Line 2</label>
+                    </small>
+                </b>
+                <input type="text" class="form-control text-dark   " placeholder="Address Line 2" name="address_line_2"
+                    id="address_line_2" formControlName="address_line_2" maxlength="51" appSomeChars />
+                @if(address_line_2?.errors?.['maxlength']){
+                <b><small class="error-message">Field Exceeds the Max Length of 50 charcaters</small></b>
+                }
+                @if(address_line_2?.errors?.['minlength']){
+                    <b><small class="error-message">Min 3 characters required</small></b>
+                    }
+
+            </div>
+            <div class="col-3 people-input-height">
+                <b>
+                    <small>
+                        <label class="form-label text-white m-0" for="city">City</label><span
+                            class="text-danger">*</span>
+                    </small>
+                </b>
+                <input type="text" class="form-control text-dark   " placeholder="City" name="city" id="city"
+                    formControlName="city" maxlength="51" appCharWithSpace />
+                @if(city?.errors?.['required'] && city?.touched){
+                <b><small class="error-message">City is required </small></b>
+                }
+                @if(city?.errors?.['maxlength']){
+                <b><small class="error-message">Field Exceeds the Max Length of 50 characters</small></b>
+                }
+                @if(city?.errors?.['minlength']){
+                    <b><small class="error-message">Min 3 characters required</small></b>
+                    }
+            </div>
+
+            <div class="col-3 people-input-height">
+                <b>
+                    <small>
+                        <label class="form-label text-white m-0" for="state">State</label><span
+                            class="text-danger">*</span>
+                    </small>
+                </b>
+                <input type="text" class="form-control text-dark   " placeholder="State" name="state" id="state"
+                    formControlName="state" maxlength="51" appCharWithSpace />
+                @if(state?.errors?.['required'] && state?.touched){
+                <b><small class="error-message">State is required</small></b>
+                }
+                @if(state?.errors?.['maxlength']){
+                <b><small class="error-message">Field Exceeds the Max Length of 50 characters</small></b>
+                }
+                @if(state?.errors?.['minlength']){
+                    <b><small class="error-message">Min 3 characters required</small></b>
+                    }
+            </div>
+            <div class="col-3 people-input-height">
+                <b>
+                    <small>
+                        <label class="form-label text-white m-0" for="country">Country</label><span
+                            class="text-danger">*</span>
+                    </small>
+                </b>
+                <input type="text" class="form-control text-dark   " placeholder="Country" name="country" id="country"
+                    formControlName="country" maxlength="51" appCharWithSpace />
+                @if(country?.errors?.['required'] && country?.touched){
+                <b><small class="error-message">Country is required </small></b>
+                }
+                @if(country?.errors?.['maxlength']){
+                <b><small class="error-message">Field Exceeds the Max Length of 50 characters </small></b>
+                }
+                @if(country?.errors?.['minlength']){
+                    <b><small class="error-message">Min 3 characters required</small></b>
+                    }
+            </div>
+
+            <div class="col-3 people-input-height">
+                <b>
+                    <small>
+                        <label class="form-label text-white m-0" for="pincode">Pincode</label><span
+                            class="text-danger">*</span>
+                    </small>
+                </b>
+                <input type="text" class="form-control text-dark   " placeholder="Pincode" name="pincode" id="pincode"
+                    formControlName="pincode" maxlength="7" appNumberOnly />
+                @if(pincode?.errors?.['required'] && pincode?.touched){
+                <b><small class="error-message">Pincode is required</small></b>
+                }
+                @if(pincode?.errors?.['maxlength'] || pincode?.errors?.['minlength']){
+                <b><small class="error-message">Field should have only 6 characters </small></b>
+                }
+            </div>
+        </div>
+
+
+
+        <div class="row my-1" formGroupName="peopleEmploymentDetails">
+            <div class="col-12 my-1">
+                <h6 class="text-info">
+                    Company Mapping
+                </h6>
+            </div>
+
+            <div class="col-3 people-input-height">
+                <b>
+                    <small>
+                        <label class="form-label text-white m-0" for="company_name ">Company Name</label><span
+                            class="text-danger">*</span>
+                    </small>
+                </b>
+                <select class="form-select text-dark " name="company_name" id="company_name" formControlName="company_name">
+                    <option [ngValue]="null" selected>Select Company</option>
+                    <option *ngFor="let company of companies" [value]="company.company_id">{{company.company_name}}
+                    </option>
+                </select>
+                @if(company_name?.errors?.['required'] && company_name?.touched){
+                <b><small class="error-message">Company Name is required </small></b>
+                }
+            </div>
+        </div>
+
+
+
+        <div class="row my-1 " formGroupName="peopleEmploymentDetails">
+            <div class="col-12 my-1">
+                <h6 class="text-info">
+                    Employment Details
+                </h6>
+            </div>
+
+            <div class="col-3 in">
+                <b>
+                    <small>
+                        <label class="form-label text-white m-0" for="joining_date ">Joining Date</label><span
+                            class="text-danger">*</span>
+                    </small>
+                </b>
+                <input type="date" class="form-control text-dark  register m-0" placeholder=" Joining Date"
+                    name="joining_date" id="joining_date" formControlName="joining_date" />
+                @if(joining_date?.errors?.['required'] && joining_date?.touched){
+                <b><small class="error-message">Joining Date is required </small></b>
+                }
+                @if(joining_date?.errors?.['pattern'] ){
+                <b><small class="error-message">Joining Date is not in required format </small></b>
+                }
+            </div>
+            <div class="col-3 people-input-height">
+                <b>
+                    <small>
+                        <label class="form-label text-white m-0" for="pay_frequency ">Pay Frequency</label>
+                        <span class="text-danger">*</span>
+                    </small>
+                </b>
+                <select class="form-select text-dark " name="pay_frequency" id="pay_frequency"
+                    formControlName="pay_frequency">
+                    <option [ngValue]="null" selected>Select Payment Frequency</option>
+                    <option value="Daily">Daily</option>
+                    <option value="Weekly">Weekly</option>
+                    <option value="Monthly">Monthly</option>
+                </select>
+                @if(pay_frequency?.errors?.['required'] && (pay_frequency?.touched || pay_frequency?.dirty)){
+                <b><small class="error-message">Pay Frequency is required </small></b>
+                }
+            </div>
+
+
+            <div class="col-3 people-input-height">
+                <b>
+                    <small>
+                        <label class="form-label text-white m-0" for="nino_number ">NI Number</label><span class="text-danger">*</span>
+                    </small>
+                </b>
+                <input type="text" class="form-control text-dark  register m-0" placeholder=" NINO Number"
+                    name="nino_number" id="first_name" maxlength="10" formControlName="nino_number" />
+                @if(nino_number?.errors?.['required'] && nino_number?.touched){
+                <b><small class="error-message">Ni Number is required </small></b>
+                }
+                @if(nino_number?.errors?.['pattern'] ){
+                <b><small class="error-message">NI Number is not in required format </small></b>
+                }@else if (nino_number?.errors?.['minlength'] || nino_number?.errors?.['maxlength'] ){
+                <b><small class="error-message">NI Number should have only 9 characters</small></b>
+                }
+            </div>
+        </div>
+
+
+
+        <div class="row my-1 " formGroupName="peopleBankDetails">
+            <div class="col-12 my-1">
+                <h6 class="text-info">
+                    Bank Details
+                </h6>
+            </div>
+
+            <div class="col-3 people-input-height">
+                <b>
+                    <small>
+                        <label class="form-label text-white m-0" for="bank_name ">Bank Name</label><span
+                            class="text-danger">*</span>
+                    </small>
+                </b>
+                <input type="text" class="form-control text-dark  register m-0" placeholder=" Bank Name"
+                    name="bank_name" id="bank_name" formControlName="bank_name" maxlength="51" appCharWithSpace />
+                @if(bank_name?.errors?.['required'] && bank_name?.touched){
+                <small class="error-message">Bankname is required </small>
+                }
+                @if(bank_name?.errors?.['maxlength'] ){
+                <b><small class="error-message">Field should not exceed the 50 characters </small></b>
+                }
+            </div>
+            <div class="col-3 people-input-height">
+                <b>
+                    <small>
+                        <label class="form-label text-white m-0" for="account_number ">Account Number</label><span
+                            class="text-danger">*</span>
+                    </small>
+                </b>
+                <input type="text" class="form-control text-dark  register m-0" placeholder=" Account Number"
+                    name="account_number" maxlength="10" id="account_number" formControlName="account_number" maxlength="11" appNumberOnly />
+                @if(account_number?.errors?.['required'] && account_number?.touched){
+                <b><small class="error-message">Account Number is required </small></b>
+                }
+                @if(account_number?.errors?.['maxlength'] || account_number?.errors?.['minlength']){
+                <b><small class="error-message">Field should have only 10 characters </small></b>
+                }
+
+            </div>
+
+
+            <div class="col-3 people-input-height">
+                <b>
+                    <small>
+                        <label class="form-label text-white m-0" for="bank_branch ">Bank Branch</label><span
+                            class="text-danger">*</span>
+                    </small>
+                </b>
+                <input type="text" class="form-control text-dark  register m-0" placeholder="Bank Branch"
+                    name="bank_branch" id="bank_branch" formControlName="bank_branch" maxlength="11" appCharWithSpace />
+                @if(bank_branch?.errors?.['required'] && bank_branch?.touched){
+                <b><small class="error-message">Bank Branch is required </small></b>
+                }
+                @if(bank_branch?.errors?.['maxlength'] ){
+                <b><small class="error-message">Field should not exceed 10 characters </small></b>
+                }
+            </div>
+            <div class="col-3 input-height">
+                <b>
+                    <small>
+                        <label class="form-label text-white m-0" for="ifsc_code ">IFSC / Sort Code</label><span
+                            class="text-danger">*</span>
+                    </small>
+                </b>
+                <input type="text" class="form-control text-dark  register m-0" placeholder=" IFSC / Sort Code"
+                    name="ifsc_code" id="ifsc_code" maxlength="7" formControlName="bank_ifsc_code" />
+                @if(bank_ifsc_code?.errors?.['required'] && bank_ifsc_code?.touched){
+                <b><small class="error-message">IFSC code is required </small></b>
+                }
+                @if(bank_ifsc_code?.errors?.['pattern']){
+                <b><small class="error-message">Field should not lowercase and special characters </small></b>
+                }
+                @else if(bank_ifsc_code?.errors?.['maxlength'] || bank_ifsc_code?.errors?.['minlength'] ){
+                <b><small class="error-message">Field should have only 6 characters </small></b>
+                }
+
+            </div>
+
+
+        </div>
+        <div class="modal-footer my-1">
+            <button type="button" class="btn btn-danger text-white mx-2" data-bs-dismiss="modal"
+                (click)="closeEdit()">Close</button>
+            <button type="submit" class="btn btn-success mx-2" [disabled]="!editPeopleForm.valid">Save changes</button>
+        </div>
+    </form>
+
+</div>

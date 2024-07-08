@@ -1,0 +1,131 @@
+<div>
+  <div class="detail-button">
+    <a routerLink="/company/company-details/payroll-batch" class="back button detail-back">
+      <i class="bi bi-arrow-left text-dark"></i>&nbsp; &nbsp;<span class="text-dark">Back</span></a>
+  </div>
+  <div class="p-3">
+    <div class="d-flex justify-content-between align-items-center ms-2">
+      <h4 class="mb-3">{{companyName}} / Payroll History</h4>
+      <div class="d-flex align-items-center">
+        <button class="btn btn-primary me-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
+          aria-expanded="false" tooltip="Search" title="Search" aria-controls="collapseExample">
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="collapse mt-3" id="collapseExample">
+      <div class="card card-body">
+        <form [formGroup]="searchPayrollHistoryForm" (ngSubmit)="searchPayrollHistoryFormSubmit()">
+          <div class="d-flex flex-wrap">
+            <div class="col-4 mx-4">
+              <label for="people_name">People Name</label>
+              <input type="text" id="people_name" placeholder="Enter People Name" formControlName="people_name"
+                class="form-control" />
+            </div>
+            <div class=" col-4">
+              <label for="payroll_batch_name">Payroll Batch Name</label>
+              <input type="text" class="form-control text-dark" placeholder="Enter Payroll Batch Name"
+                name="payroll_batch_name" id="payroll_batch_name" formControlName="payroll_batch_name">
+            </div>
+            <div class="ms-auto mt-4">
+              <button class="btn btn-primary me-3" type="button" (click)="resetSearchPayrollHistoryForm()">
+                Reset
+              </button>
+              <button class="btn btn-success" type="submit" [disabled]="isFormEmpty()">
+                Search
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+    <div class="row my-3 py-0">
+      <div class="content">
+        <div class="grid-container" [class.collapsed]="showForm">
+          <kendo-grid [data]="gridData" [loading]="loading" [pageSize]="pageSize" [skip]="skip"
+            [pageable]="{ buttonCount: 5, info: true, type: 'numeric', pageSizes: true, previousNext: true }"
+            (pageChange)="onPageChange($event)">
+            <kendo-grid-column title="S.No" [headerStyle]="{'font-weight': 'bold'}" [width]="55">
+              <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                {{ rowIndex + 1 }}
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="people_name" [headerStyle]="{'font-weight':'bold'}" [width]="130"
+              title="People Name">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <span kendoTooltip [title]="dataItem.people_name">{{
+                  dataItem.people_name
+                }}</span>
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="payroll_batch_name" [headerStyle]="{'font-weight':'bold'}" [width]="160"
+              title="Payroll Batch Name">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <span kendoTooltip [title]="dataItem.payroll_batch_name">{{
+                  dataItem.payroll_batch_name
+                }}</span>
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="gross_salary" [headerStyle]="{'font-weight':'bold'}" [width]="120"
+              title="Gross Salary">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div style="text-align: right;">
+                  {{ dataItem.gross_salary | currency:'£' }}
+                </div>
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="expense_amount" [headerStyle]="{'font-weight':'bold'}" [width]="110"
+              title="Expenses ">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div style="text-align: right;">
+                  {{ dataItem.expense_amount != null ? (dataItem.expense_amount | currency:'£') : 'N.A' }}
+                </div>
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="total_tax_deduction" [headerStyle]="{'font-weight':'bold'}" [width]="140"
+              title="Total Deductions">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div style="text-align: right;">
+                  {{ dataItem.total_tax_deduction | currency:'£' }}
+                </div>
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="net_pay" [headerStyle]="{'font-weight':'bold'}" [width]="130" title="Net Pay ">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div style="text-align: right;">
+                  {{ dataItem.net_pay | currency:'£'}}
+                </div>
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="action" [headerStyle]="{'font-weight':'bold'}" [width]="150" title="Action">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                @if(!dataItem.is_rollback){
+                <button class="btn btn-sm btn-smaller btn-eye" (click)="viewPdf(dataItem.payroll_history_id)"
+                  title="View Payslip" tooltip="View Payslip">
+                  <i class="fas fa-eye" style="font-weight: bold;"></i>
+                </button>
+                <button class="btn btn-sm btn-smaller btn-download" (click)="downloadPdf(dataItem.payroll_history_id, dataItem.people_name)"
+                  title="Download Payslip" tooltip="Download Payslip">
+                  <i class="fas fa-download" style="font-weight: bold;"></i>
+                </button>
+                <button class="btn btn-sm btn-smaller btn-envelope" (click)="sendMail(dataItem)"
+                  [disabled]="isMailDisabled[dataItem.payroll_history_id]" title="Mail Payslip" tooltip="Mail Payslip">
+                  <i class="fas fa-envelope" style="font-weight: bold;"></i>
+                </button>
+                <button class="btn btn-sm btn-smaller btn-verify" title="Rollback" tooltip="Rollback"
+                [disabled]="isRollbackDisabled[dataItem.payroll_history_id]"
+                  (click)="rollback(dataItem,dataItem.payroll_batch_id,dataItem.people_id)">
+                  <i class="fas fa-history"></i>
+                </button>
+                }
+              </ng-template>
+            </kendo-grid-column>
+          </kendo-grid>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

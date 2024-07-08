@@ -1,0 +1,491 @@
+<div>
+  <app-loader [isLoading]="isLoading"></app-loader>
+  <div class="p-3">
+    <div class="d-flex">
+      <div class="col">
+        <h2   class="d-inline">People</h2>
+
+          <img class="d-inline ms-2 my-auto info-icon-image d-inline"
+           src="assets/images/people/info-icon.png"
+            alt=""
+            kendoPopoverAnchor
+            [popover]="gridChangeInfo"
+            #anchor="kendoPopoverAnchor"
+             showOn="hover" >
+
+
+          <kendo-popover  #gridChangeInfo [width]="220">
+            <ng-template kendoPopoverBodyTemplate     >
+              <div class="d-flex">
+                <div class="my-auto  ">
+                    <span class="text-dark   mx-auto ">Double click the grid for changing the grid view</span>
+                </div>
+            </div>
+            </ng-template>
+        </kendo-popover>
+      </div>
+      <div class="col-1">
+
+      </div>
+      <div class="ml-auto transistion-box">
+        <button class="btn btn-info text-white me-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+          @if (!showCardState) {
+            Show Info
+            }@else{
+            Hide Info
+            }
+        </button>
+        <!-- <button class="btn-info px-2 py-1  text-white rounded" (click)="toggleShowCard()">
+         
+        </button> -->
+      </div>
+    </div>
+
+    <div class="row collapse row-container-grid transistion-box1" id="collapseExample">
+      <div class="p-2 col-6">
+        <div class="card big-card">
+          <div class="card-body">
+            <h5 class="card-title">Total People</h5>
+
+            <div class="row m-0 p-0">
+              <div class="col-10 m-0 p-0">
+                <p>Total People in the Organization : <strong><span>{{$totalPeople}}</span></strong> </p>
+                <p>Total People in the Organization A Month Ago: <strong><span>{{$totalPeopleMonthAgo}}
+                    </span></strong> </p>
+                <p>Total People in the Organization A Year Ago:
+                  <strong><span>{{$totalPeopleYearAgo}}</span></strong>
+                </p>
+              </div>
+              <div class="col-2 m-0 p-0">
+                <img width="86" height="86" src="https://img.icons8.com/color/96/crowd-skin-type-4.png"
+                  alt="crowd-skin-type-4" />
+                <a href="https://icons8.com/icon/DtHSwLC47QyZ/crowd-skin-type-4"></a>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="p-2 col-3">
+        <div class="card small-card1">
+          <div class="card-body">
+            <h5 class="card-title">With Assignment</h5>
+
+            <div class="row m-0 p-0 ">
+              <div class="col-6 m-0 p-0">
+                <div class="col-9 mt-4 mx-auto ">
+                  <h6 class="card-subtitle mb-2 text-body-secondary fs-2 fw-bold">
+                    {{$peopleWithAssignment}}
+                  </h6>
+                </div>
+              </div>
+              <div class="col-6 m-0 p-0 card-image">
+                <img width="86" height="86" src="https://img.icons8.com/color/96/to-do.png" alt="to-do" />
+                <a href="https://icons8.com/icon/13462/task"></a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="p-2 col-3">
+        <div class="card small-card2">
+          <div class="card-body">
+            <h5 class="card-title">Company Mapped</h5>
+            <div class="row m-0 p-0 ">
+              <div class="col-6 m-0 p-0">
+                <div class="col-9 mt-4 mx-auto ">
+                  <h6 class="card-subtitle mb-2 text-body-secondary fs-2 fw-bold">{{$peopleWithMapped}}
+                  </h6>
+                </div>
+              </div>
+              <div class="col-6 m-0 p-0">
+                <img width="86" height="86" src="https://img.icons8.com/color/96/connected-people.png"
+                  alt="connected-people" />
+                <a href="https://icons8.com/icon/SVwMVjSN5CD7/connection"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row grid-body" (dblclick)="expand()" >
+      <div [ngClass]="state === 'add' || state === 'edit' ? 'col-3':'col-9'"
+        class="kendo-grid-component p-2 transistion-box">
+
+        <kendo-grid [hidden]="expandGrid" class="k-grid k-border-none"
+         [data]="gridData"
+         [pageSize]="pageSize"
+         [skip]="skip"
+          [pageable]="true"
+          (pageChange)="pageChange($event)"
+          [loading]="gridloading"
+
+          >
+
+          <!-- <kendo-grid-column title="S.No" [headerStyle]="{'font-weight': 'bold'}" [width]="57">
+            <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+              {{ rowIndex + 1 }}
+            </ng-template>
+          </kendo-grid-column>
+  -->
+          <kendo-grid-column field="people_name" title="People Name" [headerStyle]="{'font-weight':'bold'}"
+            [width]="125">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span class="custom-cell text-truncate" [title]="dataItem.people_name">
+                {{ dataItem.people_name }}
+              </span>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="company_name" title="Company Name" [headerStyle]="{'font-weight':'bold'}"
+            [width]="131">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span class="custom-cell text-truncate" [title]="dataItem.company_name">
+                {{ dataItem.company_name }}
+              </span>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="job_title" title="Job Title" [headerStyle]="{'font-weight':'bold'}" [width]="100">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span class="custom-cell text-truncate" [title]="dataItem.job_title">
+                {{ dataItem.job_title }}
+              </span>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="email_address" title="Email Address" [headerStyle]="{'font-weight':'bold'}"
+            [width]="125">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span [title]="dataItem.email_address">{{ dataItem.email_address }}</span>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="phone_number" title="Phone Number" [headerStyle]="{'font-weight':'bold'}"
+            [width]="126  "> </kendo-grid-column>
+
+          <kendo-grid-column field="birth_date" title="Birth Date" [headerStyle]="{'font-weight':'bold'}" [width]="110">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem.birth_date | date:'dd-MM-yyyy' }}
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="city" title="City" [headerStyle]="{'font-weight':'bold'}" [width]="80">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span [title]="
+              (dataItem.address_line_1 ? dataItem.address_line_1 + ', ' : '') +
+              (dataItem.address_line_2 ? dataItem.address_line_2 + ', ' : '') +
+              (dataItem.city ? dataItem.city + '-' : '') +
+              (dataItem.pincode ? dataItem.pincode + ', ' : '') +
+              (dataItem.state ? dataItem.state + ', ' : '') +
+              (dataItem.country ? dataItem.country : '')
+              "> {{ dataItem.city }}
+              </span>
+            </ng-template></kendo-grid-column>
+
+          <kendo-grid-column field="gender" title="Gender" [headerStyle]="{'font-weight':'bold'}" [width]="75">
+          </kendo-grid-column>
+
+          <kendo-grid-column field="joining_date" title="Joining Date" [headerStyle]="{'font-weight':'bold'}"
+            [width]="110">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem.joining_date | date:'dd-MM-yyyy' }}
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="pay_frequency" title="Pay Frequency" [headerStyle]="{'font-weight':'bold'}"
+            [width]="124">
+            <ng-template  kendoGridCellTemplate let-dataItem>
+              @if(dataItem.pay_frequency == 'Monthly'){
+                <span class="badge bg-info ms-4">{{dataItem.pay_frequency}}</span>
+              }@else if (dataItem.pay_frequency == 'Weekly') {
+                <span class="badge bg-secondary ms-4">{{dataItem.pay_frequency}}</span>
+              }@else {
+                <span class="badge text-bg-warning ms-4">{{dataItem.pay_frequency}}</span>
+              }
+
+            </ng-template>
+
+          </kendo-grid-column>
+
+
+          <kendo-grid-column field="status" title="Status" [headerStyle]="{'font-weight':'bold'}" [width]="70">
+
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <div class="button-container">
+
+                <label class="switch">
+                  <input type="checkbox"   [checked]="dataItem.status==1" (click)="toggleStatus(dataItem)" />
+
+                  @if(dataItem.status===1){
+                    <span class="slider" [title]="'Active'"></span>
+                  }@else {
+                    <span class="slider" [title]="'Inactive'"></span>
+                  }
+
+                </label>
+              </div>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="View" title="View"
+          [headerStyle]="{'font-weight':'bold'}"
+          [width]="150"
+         >
+          <ng-template kendoGridCellTemplate let-dataItem>
+
+              <!-- Route to people's Assignments -->
+              <button class="btn btn-sm btn-smaller " title="Assignments" tooltip="Assignments"
+                (click)=" routeToAssignment(dataItem.people_id,dataItem.people_name)">
+                <i class="bi bi-clipboard-check-fill"></i>
+              </button>
+
+              <!-- Route to people's expenses -->
+              <button class="btn btn-sm btn-smaller " title="Expenses" tooltip="Expenses"
+                (click)=" routeToExpenses(dataItem.people_id)">
+                <i class="fas fa-coins"></i>
+              </button>
+
+              <!-- Route to people's Payrolls -->
+              <button class="btn btn-sm btn-smaller " title="Payrolls" tooltip="Payrolls"
+                (click)=" routeToPayroll(dataItem.people_id, dataItem.people_name)">
+                <i class="fas fa-file-invoice-dollar"></i>
+              </button>
+
+              <!-- Route to people's Invoices -->
+              <button class="btn btn-sm btn-smaller " title="Invoices" tooltip="Invoices"
+                (click)=" routeToInvoice(dataItem.people_id,dataItem.people_name)">
+              <i class="bi bi-receipt"></i></button>
+
+          </ng-template>
+         </kendo-grid-column>
+
+          <kendo-grid-column field="Action" title="Action" [headerStyle]="{'font-weight':'bold'}" [width]="90"
+            [sticky]="true">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <button class="btn btn-sm btn-smaller btn-edit" title="Edit" tooltip="Edit"
+                (click)=" toggleState('edit',dataItem.people_id)">
+                <i class="fas fa-edit" style="font-weight: bold;"></i>
+              </button>
+              <button class="btn btn-sm btn-smaller btn-delete" title="Delete" tooltip="Delete" data-bs-toggle="modal"
+                data-bs-target="#deletePeopleModal" (click)="setDataItem(dataItem.people_id)">
+                <i class="fas fa-trash" style="font-weight: bold;"></i>
+              </button>
+
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+
+<kendo-grid [hidden]="reduceGrid" class="k-grid k-border-none"
+[data]="gridData"
+[pageSize]="pageSize"
+[skip]="skip"
+ [pageable]="true"
+ (pageChange)="pageChange($event)"
+ [loading]="gridloading"
+ >
+
+
+ <kendo-grid-column field="people_name" title="People Name" [headerStyle]="{'font-weight':'bold'}"
+   [width]="140">
+   <ng-template kendoGridCellTemplate let-dataItem>
+     <span class="custom-cell text-truncate" [title]="dataItem.people_name">
+       {{ dataItem.people_name }}
+     </span>
+   </ng-template>
+ </kendo-grid-column>
+
+ <kendo-grid-column field="company_name" title="Company Name" [headerStyle]="{'font-weight':'bold'}"
+   [width]="130">
+   <ng-template kendoGridCellTemplate let-dataItem>
+     <span class="custom-cell text-truncate" [title]="dataItem.company_name">
+       {{ dataItem.company_name }}
+     </span>
+   </ng-template>
+ </kendo-grid-column>
+
+ <kendo-grid-column field="job_title" title="Job Title" [headerStyle]="{'font-weight':'bold'}" [width]="115">
+   <ng-template kendoGridCellTemplate let-dataItem>
+     <span class="custom-cell text-truncate" [title]="dataItem.job_title">
+       {{ dataItem.job_title }}
+     </span>
+   </ng-template>
+ </kendo-grid-column>
+
+ <kendo-grid-column field="email_address" title="Email Address" [headerStyle]="{'font-weight':'bold'}"
+   [width]="125">
+   <ng-template kendoGridCellTemplate let-dataItem>
+     <span [title]="dataItem.email_address">{{ dataItem.email_address }}</span>
+   </ng-template>
+ </kendo-grid-column>
+
+
+
+
+
+ <kendo-grid-column field="city" title="City" [headerStyle]="{'font-weight':'bold'}" [width]="80">
+   <ng-template kendoGridCellTemplate let-dataItem>
+     <span [title]="
+     (dataItem.address_line_1 ? dataItem.address_line_1 + ', ' : '') +
+     (dataItem.address_line_2 ? dataItem.address_line_2 + ', ' : '') +
+     (dataItem.city ? dataItem.city + '-' : '') +
+     (dataItem.pincode ? dataItem.pincode + ', ' : '') +
+     (dataItem.state ? dataItem.state + ', ' : '') +
+     (dataItem.country ? dataItem.country : '')
+     "> {{ dataItem.city }}
+     </span>
+   </ng-template></kendo-grid-column>
+
+   <kendo-grid-column field="View" title="View"
+    [headerStyle]="{'font-weight':'bold'}"
+    [width]="150"
+   >
+    <ng-template kendoGridCellTemplate let-dataItem>
+
+        <!-- Route to people's Assignments -->
+        <button class="btn btn-sm btn-smaller " title="Assignments" tooltip="Assignments"
+          (click)=" routeToAssignment(dataItem.people_id,dataItem.people_name)">
+          <i class="bi bi-clipboard-check-fill"></i>
+        </button>
+
+        <!-- Route to people's expenses -->
+        <button class="btn btn-sm btn-smaller " title="Expenses" tooltip="Expenses"
+          (click)=" routeToExpenses(dataItem.people_id)">
+          <i class="fas fa-coins"></i>
+        </button>
+
+        <!-- Route to people's Payrolls -->
+        <button class="btn btn-sm btn-smaller " title="Payrolls" tooltip="Payrolls"
+          (click)=" routeToPayroll(dataItem.people_id, dataItem.people_name)">
+          <i class="fas fa-file-invoice-dollar"></i>
+        </button>
+
+        <!-- Route to people's Invoices -->
+        <button class="btn btn-sm btn-smaller " title="Invoices" tooltip="Invoices"
+          (click)=" routeToInvoice(dataItem.people_id,dataItem.people_name)">
+        <i class="bi bi-receipt"></i></button>
+
+    </ng-template>
+   </kendo-grid-column>
+
+
+ <kendo-grid-column  field="Action" title="Action" [headerStyle]="{'font-weight':'bold'}"
+   [sticky]="true"
+   [width]="90"
+   >
+   <ng-template kendoGridCellTemplate let-dataItem>
+     <button class="btn btn-sm btn-smaller btn-edit" title="Edit" tooltip="Edit"
+       (click)=" toggleState('edit',dataItem.people_id)">
+       <i class="fas fa-edit" style="font-weight: bold;"></i>
+     </button>
+
+
+     <button class="btn btn-sm btn-smaller btn-delete" title="Delete" tooltip="Delete" data-bs-toggle="modal"
+       data-bs-target="#deletePeopleModal" (click)="setDataItem(dataItem.people_id)">
+       <i class="fas fa-trash" style="font-weight: bold;"></i>
+     </button>
+
+   </ng-template>
+ </kendo-grid-column>
+</kendo-grid>
+
+      </div>
+      <div [ngClass]="state === 'add' || state === 'edit' ? 'col-9':'col-3'" class="p-2 transistion-box">
+        <div class=" search-container p-2">
+          <div class="radio-inputs">
+            <label class="radio">
+              <input type="radio" name="radio" [checked]="searchShowState " (click)="toggleState('search', null)">
+              <span class="name">
+                <i class="bi bi-search"></i> &nbsp; Search    </span>
+            </label>
+            <label class="radio">
+              <input type="radio" name="radio" [checked]="state === 'add'" (click)="toggleState('add', null)">
+              <span class="name">
+                @if (state === 'add') {
+                <i class="bi bi-x-lg"></i> &nbsp; Close
+                }@else {
+                <i class="bi bi-file-plus-fill"></i> &nbsp; Add
+                }
+              </span>
+            </label>
+          </div>
+          <div>
+            <app-search-people [hidden]="!searchShowState"></app-search-people>
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Delete Modal -->
+
+<div class="modal fade" id="deletePeopleModal" tabindex="-1" aria-labelledby="deletePeopleModal" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="deletePeopleModal">Delete People</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure want to Delete the People?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger text-white" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success text-white" data-bs-dismiss="modal"
+          (click)="deletePeopleData(deletePeopleId)">Proceed</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Status Modal -->
+
+<div
+  class="modal fade"
+  id="toggleOrgStatusModal"
+  tabindex="-1"
+  aria-labelledby="toggleOrgStatusModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="toggleOrgStatusModal">
+          Toggle Status
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to change the Status of People?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger text-white" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-success text-white"
+          data-bs-dismiss="modal"
+          (click)="toggleStatus(getDataItem())"
+        >
+          Proceed
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
